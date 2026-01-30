@@ -35,15 +35,23 @@ Neste desafio, você irá desenvolver uma aplicação **simples**, inspirada nes
 
 ---
 
-## 🛠️ Stack Permitida
+## 🛠️ Stack (Sugestão)
 
-### Backend (escolha **uma** opção)
+A stack abaixo é **apenas uma sugestão**, baseada no que utilizamos no dia a dia.  
+Você pode adaptar conforme seu conhecimento, desde que mantenha uma separação clara entre backend e frontend.
+
+### Backend (sugestão)
 - PHP (preferencialmente seguindo padrões MVC, como CodeIgniter)
 **ou**
 - Node.js (Express ou similar)
 
-### Frontend
+### Frontend (sugestão)
 - React.js
+
+### Banco de Dados (recomendação)
+- MySQL  
+
+📌 O uso de banco de dados **não é obrigatório**, mas o MySQL é recomendado caso você opte por persistência de dados.
 
 ❌ **Não é necessário**
 - Autenticação
@@ -80,12 +88,12 @@ Criar uma API que permita:
 - Os dados podem ser armazenados:
   - Em memória
   - Em arquivo (JSON, por exemplo)
-  - Ou banco simples (opcional)
+  - Em banco de dados (opcional)
 - Validações básicas são esperadas (campos obrigatórios)
 
 ---
 
-### 🎨 Frontend (React)
+### 🎨 Frontend
 
 Criar uma interface simples que permita:
 
@@ -95,8 +103,8 @@ Criar uma interface simples que permita:
 
 📎 Observações:
 - O layout pode ser simples
-- O foco é funcionalidade e organização
-- Utilize componentes React e estado de forma básica
+- O foco é funcionalidade, organização e clareza
+- Utilize componentes e estado de forma básica
 
 ---
 
@@ -109,15 +117,21 @@ Criar uma interface simples que permita:
 
 ---
 
-## ⭐ Itens Opcionais (Diferenciais)
+## ⭐ Pontos Bônus (Não Obrigatórios)
 
-Os itens abaixo **não são obrigatórios**, mas contam como diferencial:
+Os itens abaixo **não são obrigatórios e não são eliminatórios**,  
+mas serão considerados como **diferenciais positivos** na avaliação:
 
-- Filtro por status (`PENDENTE` / `PAGO`)
-- Ordenação por data de vencimento
-- Tratamento de erro e loading no frontend
-- Máscara simples para campo de valor
-- Comentários explicando decisões importantes
+- Testes unitários básicos (backend e/ou frontend)
+- Uso de MySQL para persistência de dados
+- Organização clara de camadas (ex: controller, service, repository)
+- Tratamento simples de erros (mensagens claras)
+- Estados de loading no frontend
+- Commits bem descritos
+- Comentários explicando decisões técnicas importantes
+- Pequenas melhorias além do MVP (ex: filtros ou ordenação)
+
+📌 A ausência desses itens **não prejudica** sua avaliação.
 
 ---
 
