@@ -133,9 +133,5 @@ mas serão considerados como **diferenciais positivos** na avaliação:
 
 📌 A ausência desses itens **não prejudica** sua avaliação.
 
----
 
-## 🗂️ Estrutura Esperada (Sugestão)
-
-Você é livre para organizar como quiser, mas uma sugestão seria:
 
