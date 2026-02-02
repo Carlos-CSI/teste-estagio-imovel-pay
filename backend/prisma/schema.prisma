@@ -23,7 +23,7 @@ model Customer {
 model Charge {
   id         Int          @id @default(autoincrement())
   customerId Int
-  customer   Customer     @relation(fields: [customerId], references: [id])
+    customer   Customer     @relation(fields: [customerId], references: [id], onDelete: Cascade)
   amount     Decimal      @db.Decimal(10,2)
   dueDate    DateTime     @map("due_date")
   status     ChargeStatus @default(PENDENTE)

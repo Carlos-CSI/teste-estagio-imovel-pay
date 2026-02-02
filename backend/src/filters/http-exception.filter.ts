@@ -4,11 +4,16 @@ import {
   ArgumentsHost,
   HttpException,
   HttpStatus,
+  Logger,
 } from '@nestjs/common';
-import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
+import {
+  PrismaClientKnownRequestError,
+  PrismaClientInitializationError,
+} from '@prisma/client/runtime/library';
 
 @Catch()
 export class AllExceptionsFilter implements ExceptionFilter {
+  private readonly logger = new Logger(AllExceptionsFilter.name);
   catch(exception: unknown, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse();
@@ -67,6 +72,18 @@ export class AllExceptionsFilter implements ExceptionFilter {
       }
     } else if (exception instanceof Error) {
       message = exception.message;
+    }
+
+    // Map Prisma initialization errors to 503 and log critical failure
+    if (exception instanceof PrismaClientInitializationError) {
+      status = HttpStatus.SERVICE_UNAVAILABLE;
+      message = 'Database unavailable';
+      this.logger.error('PrismaClientInitializationError', exception as any);
+    }
+
+    // Log server errors for observability
+    if (status >= 500) {
+      this.logger.error(exception as any);
     }
 
     response.status(status).json({
