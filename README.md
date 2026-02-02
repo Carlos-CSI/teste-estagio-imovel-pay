@@ -18,7 +18,7 @@ Neste desafio, você irá desenvolver uma aplicação **simples**, inspirada nes
 
 ## ⏰ Prazo de Entrega
 
-- **Data limite:** **13/02/2026**
+- **Data limite:** **20/02/2026**
 - Pull Requests enviados após essa data **não serão considerados**
 
 ---
