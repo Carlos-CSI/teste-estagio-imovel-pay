@@ -2,10 +2,13 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+import { AllExceptionsFilter } from './filters/http-exception.filter';
+import { ConfigService } from '@nestjs/config';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
+  app.useGlobalFilters(new AllExceptionsFilter());
  
   app.useGlobalPipes(new ValidationPipe({
     whitelist: true,
@@ -23,12 +26,18 @@ async function bootstrap() {
     .build();
   
   const document = SwaggerModule.createDocument(app, config);
+
   SwaggerModule.setup('api', app, document);
 
-  await app.listen(3000);
+  const configService = app.get(ConfigService);
 
-  console.log('Backend listening on http://localhost:3000');
-  console.log('Swagger is running on http://localhost:3000/api');
+  const port = configService.get<number>('PORT') || 3000;
+
+  await app.listen(port);
+
+  console.log(`Backend listening on http://localhost:${port}`);
+
+  console.log(`Swagger is running on http://localhost:${port}/api`);
 }
 
 bootstrap();
