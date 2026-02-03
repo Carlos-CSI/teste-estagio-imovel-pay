@@ -7,7 +7,7 @@ const dbConfig: IDatabaseConfig = {
   host: process.env.DB_HOST || "localhost",
   port: parseInt(process.env.DB_PORT || "3306"),
   user: process.env.DB_USER || "root",
-  password: process.env.DB_PASSWORD || "",
+  password: process.env.DB_PASSWORD || "admin",
   database: process.env.DB_DATABASE || "debt_system",
   waitForConnections: true,
   connectionLimit: 10,
@@ -17,7 +17,7 @@ const dbConfig: IDatabaseConfig = {
 let pool: mysql.Pool | null = null;
 
 // Cria e retorna conexões do MySQL
-const getPool = () => {
+export const getPool = () => {
   if (!pool) {
     pool = mysql.createPool(dbConfig);
   }
