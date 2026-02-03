@@ -1,6 +1,6 @@
 import { ResultSetHeader, RowDataPacket } from "mysql2";
 import { getPool } from "@/config/database";
-import { DebtStatus, DebtId, IDebt, IDebtCreate } from "@/types";
+import { DebtStatus, DebtId, IDebt, IDebtCreate, IDebtFilters } from "@/types";
 import { Debt } from "@/models/debtModel";
 
 // Acesso e manutenção dos dados
@@ -35,6 +35,23 @@ class DebtRepository {
       throw new Error("Erro ao criar nova dívida");
     }
     return created;
+  }
+
+  // Lista todas as dívidas
+  async findAll(filters: IDebtFilters = {}): Promise<Debt[]> {
+    const pool = getPool();
+    let query = "SELECT * FROM debts";
+    const params: any[] = [];
+
+    if (filters.status) {
+      query += " WHERE status = ?";
+      params.push(filters.status);
+    }
+
+    query += " ORDER BY expire_date DESC";
+
+    const [rows] = await pool.execute<RowDataPacket[]>(query, params);
+    return rows.map((row) => new Debt(row as IDebt));
   }
 }
 

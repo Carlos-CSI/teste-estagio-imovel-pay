@@ -1,5 +1,5 @@
 import type { Request, Response, NextFunction } from "express";
-import { IDebtCreate } from "@/types";
+import { IDebtCreate, type DebtStatus } from "@/types";
 import debtService from "@/services/debtService";
 import {
   formatErrorResponse,
@@ -16,7 +16,7 @@ class DebtController {
   ): Promise<void> {
     try {
       const data: IDebtCreate = req.body;
-      const result = await debtService.toCreateDebit(data);
+      const result = await debtService.toCreateDebt(data);
 
       if (!result.success) {
         res
@@ -28,6 +28,32 @@ class DebtController {
       res.status(201).json(
         formatSuccessResponse(result.data, {
           message: result.message,
+        })
+      );
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  // Lista todas as cobranças com filtros opcionais
+  async toList(req: Request, res: Response, next: NextFunction): Promise<void> {
+    try {
+      const { status } = req.query;
+
+      const filters: any = {};
+      if (
+        status &&
+        ["PENDENTE", "PAGO"].includes((status as string).toUpperCase())
+      ) {
+        filters.status = (status as string).toUpperCase() as DebtStatus;
+      }
+
+      const result = await debtService.toListDebts(filters);
+
+      res.status(200).json(
+        formatSuccessResponse(result.data, {
+          total: result.total,
+          filter: filters.status || "TODOS",
         })
       );
     } catch (error) {

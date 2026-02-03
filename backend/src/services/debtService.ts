@@ -1,10 +1,16 @@
-import { DebtStatus, IDebt, IDebtCreate, IServiceResponse } from "@/types";
+import {
+  DebtStatus,
+  IDebt,
+  IDebtCreate,
+  IServiceResponse,
+  IDebtFilters,
+} from "@/types";
 import debtRepository from "@/repositories/debtRepository";
 
 // Logica de negócio
 class DebtService {
   // Cria um nova dívida
-  async toCreateDebit(data: IDebtCreate): Promise<IServiceResponse<IDebt>> {
+  async toCreateDebt(data: IDebtCreate): Promise<IServiceResponse<IDebt>> {
     try {
       // Prepara dados
       const debtData: IDebtCreate = {
@@ -26,6 +32,25 @@ class DebtService {
       const errorMessage = error instanceof Error ? error.message : "Erro 404";
       console.error("Erro ao criar nova dívida:", errorMessage);
       throw new Error("Erro ao criar nova dívida");
+    }
+  }
+
+  // Lista todas as dívidas com filtros opcionais
+  async toListDebts(
+    filters: IDebtFilters = {}
+  ): Promise<IServiceResponse<IDebt[]>> {
+    try {
+      const debts = await debtRepository.findAll(filters);
+
+      return {
+        success: true,
+        data: debts.map((c) => c.toJSON()),
+        total: debts.length,
+      };
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : "Erro 404";
+      console.error("Erro ao listar dívidas:", errorMessage);
+      throw new Error("Erro ao buscar dívidas");
     }
   }
 }

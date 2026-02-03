@@ -7,4 +7,7 @@ const router = Router();
 // POST /api/dividas - Criar novo dívida
 router.post("/", debtController.toCreate.bind(debtController));
 
+// GET /api/dividas - Listar todas as dívidas
+router.get("/", debtController.toList.bind(debtController));
+
 export default router;
