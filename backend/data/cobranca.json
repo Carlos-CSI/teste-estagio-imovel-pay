@@ -1,0 +1,23 @@
+[
+     {
+          "id": 1,
+          "nome": "Maria",
+          "valor": 200,
+          "vencimento": "2026-02-20",
+          "status": "PENDENTE"
+     },
+     {
+          "id": 2,
+          "nome": "João",
+          "valor": 300,
+          "vencimento": "2026-03-20",
+          "status": "PAGO"
+     },
+     {
+          "id": 3,
+          "nome": "Pedro",
+          "valor": 400,
+          "vencimento": "2026-04-20",
+          "status": "PENDENTE"
+     }
+]
