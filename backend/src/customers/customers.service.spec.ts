@@ -48,7 +48,9 @@ describe('CustomersService', () => {
 
       // Assert
       expect(result).toEqual(customers);
-      expect(prisma.customer.findMany).toHaveBeenCalledWith();
+      expect(prisma.customer.findMany).toHaveBeenCalledWith({
+        orderBy: { name: 'asc' },
+      });
     });
   });
 
