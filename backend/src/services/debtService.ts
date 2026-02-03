@@ -5,6 +5,7 @@ import {
   IServiceResponse,
   IDebtFilters,
   DebtId,
+  type IEstatisticas,
 } from "@/types";
 import debtRepository from "@/repositories/debtRepository";
 
@@ -75,6 +76,39 @@ class DebtService {
       const errorMessage = error instanceof Error ? error.message : "Erro 404";
       console.error("Erro ao buscar dívida:", errorMessage);
       throw new Error("Erro ao buscar dívida");
+    }
+  }
+
+  // Calcula estatística das cobranças
+  async toCalculateStatistics(): Promise<IServiceResponse<IEstatisticas>> {
+    try {
+      const allDebts = await debtRepository.findAll();
+
+      const stats: IEstatisticas = {
+        total: allDebts.length,
+        pending: allDebts.filter((d) => d.status === DebtStatus.PENDENTE)
+          .length,
+        paid: allDebts.filter((d) => d.status === DebtStatus.PAGO).length,
+        totalAmount: allDebts.reduce(
+          (sum, c) => sum + parseFloat(c.amount.toString()),
+          0
+        ),
+        pendingAmount: allDebts
+          .filter((d) => d.status === DebtStatus.PENDENTE)
+          .reduce((sum, c) => sum + parseFloat(c.amount.toString()), 0),
+        amountPaid: allDebts
+          .filter((d) => d.status === DebtStatus.PAGO)
+          .reduce((sum, c) => sum + parseFloat(c.amount.toString()), 0),
+      };
+
+      return {
+        success: true,
+        data: stats,
+      };
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : "Erro 404";
+      console.error("Erro ao obter estatísticas:", errorMessage);
+      throw new Error("Erro ao calcular estatísticas");
     }
   }
 }

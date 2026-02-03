@@ -90,6 +90,20 @@ class DebtController {
       next(error);
     }
   }
+
+  // Retorna estatísitcas das dívidas
+  async toGetStatistics(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
+    try {
+      const result = await debtService.toCalculateStatistics();
+      res.status(200).json(formatSuccessResponse(result.data));
+    } catch (error) {
+      next(error);
+    }
+  }
 }
 
 export default new DebtController();

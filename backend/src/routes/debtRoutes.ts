@@ -10,6 +10,12 @@ router.post("/", debtController.toCreate.bind(debtController));
 // GET /api/dividas - Listar todas as dívidas
 router.get("/", debtController.toList.bind(debtController));
 
+// GET /api/dividas/estatisticas - Retorna estatísitcas das dívidas
+router.get(
+  "/estatisticas",
+  debtController.toGetStatistics.bind(debtController)
+);
+
 // GET /api/dividas/:id - Buscar dívida por ID
 router.get("/:id", debtController.toFindById.bind(debtController));
 

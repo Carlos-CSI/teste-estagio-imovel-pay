@@ -56,6 +56,15 @@ export interface IServiceResponse<T> {
   total?: number;
 }
 
+export interface IEstatisticas {
+  total: number;
+  pending: number;
+  paid: number;
+  totalAmount: number;
+  pendingAmount: number;
+  amountPaid: number;
+}
+
 // Tipos utilitários
 export type DebtId = number;
 export type Status = DebtStatus.PENDENTE | DebtStatus.PAGO;
