@@ -60,6 +60,36 @@ class DebtController {
       next(error);
     }
   }
+
+  // Busca uma dívida específica por ID
+  async toFindById(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
+    try {
+      const { id } = req.params;
+
+      // Valida que id é string
+      if (Array.isArray(id)) {
+        res.status(400).json(formatErrorResponse(["ID inválido"]));
+        return;
+      }
+
+      const result = await debtService.toFindDebtById(parseInt(id));
+
+      if (!result.success) {
+        res
+          .status(404)
+          .json(formatErrorResponse(result.errors || ["Erro 404"]));
+        return;
+      }
+
+      res.status(200).json(formatSuccessResponse(result.data));
+    } catch (error) {
+      next(error);
+    }
+  }
 }
 
 export default new DebtController();

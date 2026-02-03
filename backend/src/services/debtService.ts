@@ -4,6 +4,7 @@ import {
   IDebtCreate,
   IServiceResponse,
   IDebtFilters,
+  DebtId,
 } from "@/types";
 import debtRepository from "@/repositories/debtRepository";
 
@@ -51,6 +52,29 @@ class DebtService {
       const errorMessage = error instanceof Error ? error.message : "Erro 404";
       console.error("Erro ao listar dívidas:", errorMessage);
       throw new Error("Erro ao buscar dívidas");
+    }
+  }
+
+  // Busca dívida por ID
+  async toFindDebtById(id: DebtId): Promise<IServiceResponse<IDebt>> {
+    try {
+      const debt = await debtRepository.findById(id);
+
+      if (!debt) {
+        return {
+          success: false,
+          errors: ["Dívida não encontrada"],
+        };
+      }
+
+      return {
+        success: true,
+        data: debt.toJSON(),
+      };
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : "Erro 404";
+      console.error("Erro ao buscar dívida:", errorMessage);
+      throw new Error("Erro ao buscar dívida");
     }
   }
 }
