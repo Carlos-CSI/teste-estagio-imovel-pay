@@ -1,73 +1,55 @@
-# React + TypeScript + Vite
+# Sistema de Cobranças (Imovel Pay)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Aplicação simples para listar, criar e atualizar cobranças. O frontend é feito em React + TypeScript (Vite) e o backend é uma API Express com dados locais em JSON.
 
-Currently, two official plugins are available:
+## Funcionalidades
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Listar cobranças.
+- Criar nova cobrança.
+- Atualizar status da cobrança (PAGO/PENDENTE).
 
-## React Compiler
+## Tecnologias
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- Frontend: React, TypeScript, Vite, Styled Components.
+- Backend: Node.js, Express, CORS.
 
-## Expanding the ESLint configuration
+## Como rodar o projeto
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### 1) Instalar dependências
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm install
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### 2) Iniciar o backend (API)
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+node backend/server.js
 ```
+
+A API sobe em `http://localhost:3000`.
+
+### 3) Iniciar o frontend
+
+```bash
+npm run dev
+```
+
+O frontend sobe no endereço indicado pelo Vite (geralmente `http://localhost:5173`).
+
+## Como usar
+
+1. Clique em **Listar cobranças** para ver todas as cobranças.
+2. Clique em **Criar nova cobrança** para preencher o formulário e criar.
+3. Clique em **Atualizar status de cobrança** para alternar entre **PAGO** e **PENDENTE**.
+
+## Estrutura do projeto
+
+- `frontend/`: aplicação React.
+- `backend/`: API Express.
+- `backend/data/cobranca.json`: dados iniciais das cobranças.
+
+## Observações
+
+- O status é atualizado via `PATCH /cobrancas/:id`.
+- Os dados ficam em memória enquanto o servidor está rodando. Reiniciar o backend volta para o JSON inicial.
