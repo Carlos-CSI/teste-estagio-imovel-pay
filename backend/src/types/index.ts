@@ -39,6 +39,12 @@ export interface IDebtFilters {
   status?: DebtStatus;
 }
 
+// Intefaces de Validação
+export interface IValidationResult {
+  valid: boolean;
+  errors: string[];
+}
+
 // Interfaces de Resposta
 export interface IApiResponse<T> {
   success: boolean;

@@ -6,6 +6,10 @@ import {
   formatSuccessResponse,
 } from "@/utils/responseFormatter";
 
+interface DebtParams {
+  id: string;
+}
+
 // Recebe requisições HTTP e envia respostas
 class DebtController {
   // Cria um novo dívida
@@ -63,18 +67,12 @@ class DebtController {
 
   // Busca uma dívida específica por ID
   async toFindById(
-    req: Request,
+    req: Request<DebtParams>,
     res: Response,
     next: NextFunction
   ): Promise<void> {
     try {
       const { id } = req.params;
-
-      // Valida que id é string
-      if (Array.isArray(id)) {
-        res.status(400).json(formatErrorResponse(["ID inválido"]));
-        return;
-      }
 
       const result = await debtService.toFindDebtById(parseInt(id));
 
@@ -107,19 +105,13 @@ class DebtController {
 
   // Atualiza o status de uma dívida
   async toUpdateStatus(
-    req: Request,
+    req: Request<DebtParams>,
     res: Response,
     next: NextFunction
   ): Promise<void> {
     try {
       const { id } = req.params;
       const { status } = req.body;
-
-      // Valida que id é string
-      if (Array.isArray(id)) {
-        res.status(400).json(formatErrorResponse(["ID inválido"]));
-        return;
-      }
 
       const result = await debtService.toUpdateDebtStatus(parseInt(id), status);
 

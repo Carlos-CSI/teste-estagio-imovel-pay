@@ -8,11 +8,21 @@ import {
   type IEstatisticas,
 } from "@/types";
 import debtRepository from "@/repositories/debtRepository";
+import debtValidator from "@/validators/debtValidator";
 
 // Logica de negócio
 class DebtService {
   // Cria um nova dívida
   async toCreateDebt(data: IDebtCreate): Promise<IServiceResponse<IDebt>> {
+    // Valida dados de entrada
+    const validate = debtValidator.validateCreate(data);
+    if (!validate.valid) {
+      return {
+        success: false,
+        errors: validate.errors,
+      };
+    }
+
     try {
       // Prepara dados
       const debtData: IDebtCreate = {
