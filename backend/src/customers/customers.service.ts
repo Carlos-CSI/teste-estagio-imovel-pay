@@ -8,9 +8,7 @@ export class CustomersService {
   constructor(private prisma: PrismaService) {}
 
   findAll() {
-    return this.prisma.customer.findMany({
-      include: { charges: true },
-    });
+    return this.prisma.customer.findMany();
   }
 
   findOne(id: number) {
