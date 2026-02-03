@@ -39,8 +39,12 @@ const startServer = async (): Promise<void> => {
         Banco de Dados: MySQL (${process.env.DB_NAME}) 
 
         Rotas disponíveis:
-        POST /api/dividas
-        
+        POST /api/cobrancas
+        GET /api/cobrancas
+        GET /api/cobrancas/:id
+        PATCH /api/cobrancas/:id/status
+        GET /api/cobrancas/estatisticas
+                
         Para encerrar o servidor, pressione Ctrl+C.
         `);
     });

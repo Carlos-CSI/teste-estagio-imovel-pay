@@ -12,7 +12,7 @@ interface DebtParams {
 
 // Recebe requisições HTTP e envia respostas
 class DebtController {
-  // Cria um novo dívida
+  // Cria uma nova cobrança
   async toCreate(
     req: Request,
     res: Response,
@@ -65,7 +65,7 @@ class DebtController {
     }
   }
 
-  // Busca uma dívida específica por ID
+  // Busca uma cobrança específica por ID
   async toFindById(
     req: Request<DebtParams>,
     res: Response,
@@ -89,7 +89,7 @@ class DebtController {
     }
   }
 
-  // Retorna estatísitcas das dívidas
+  // Retorna estatísitcas das cobranças
   async toGetStatistics(
     req: Request,
     res: Response,
@@ -103,7 +103,7 @@ class DebtController {
     }
   }
 
-  // Atualiza o status de uma dívida
+  // Atualiza o status de uma cobrança
   async toUpdateStatus(
     req: Request<DebtParams>,
     res: Response,
@@ -116,7 +116,7 @@ class DebtController {
       const result = await debtService.toUpdateDebtStatus(parseInt(id), status);
 
       if (!result.success) {
-        const statusCode = result.errors?.includes("Dívida não encontrada")
+        const statusCode = result.errors?.includes("Cobrança não encontrada")
           ? 404
           : 400;
         res

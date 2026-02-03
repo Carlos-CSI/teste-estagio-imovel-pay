@@ -1,6 +1,6 @@
 import type { DebtStatus, IDebt } from "@/types";
 
-// Modelo de um Dívida
+// Modelo de uma Cobrança
 export class Debt implements IDebt {
   id?: number;
   client_name: string;

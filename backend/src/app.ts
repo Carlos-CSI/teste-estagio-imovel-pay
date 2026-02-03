@@ -30,7 +30,7 @@ if (process.env.NODE_ENV === "development") {
 }
 
 // Rotas da API
-app.use("/api/dividas", debtRoutes);
+app.use("/api/cobrancas", debtRoutes);
 
 // Tratamentos de erros
 app.use(notFoundHandler); // Handler de rotas não encontradas (404)

@@ -2,7 +2,7 @@ import { DebtStatus, type IDebtCreate, type IValidationResult } from "@/types";
 
 // Centraliza todas as validações de entrada
 class DebtValidator {
-  // Valida dados para criação de dívida
+  // Valida dados para criação de cobrança
   validateCreate(data: Partial<IDebtCreate>): IValidationResult {
     const errors: string[] = [];
 
@@ -15,7 +15,7 @@ class DebtValidator {
       errors.push("Nome do cliente deve ter no máximo 255 caracteres");
     }
 
-    // Valor da dívida
+    // Valor da cobrança
     if (data.amount === undefined || data.amount === null) {
       errors.push("Valor é obrigatório");
     } else {

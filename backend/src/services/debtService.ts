@@ -12,7 +12,7 @@ import debtValidator from "@/validators/debtValidator";
 
 // Logica de negócio
 class DebtService {
-  // Cria um nova dívida
+  // Cria um nova cobrança
   async toCreateDebt(data: IDebtCreate): Promise<IServiceResponse<IDebt>> {
     // Valida dados de entrada
     const validate = debtValidator.validateCreate(data);
@@ -32,22 +32,22 @@ class DebtService {
         status: data.status || DebtStatus.PENDENTE,
       };
 
-      // Cria um nova dívida no repositório
+      // Cria um nova cobrança no repositório
       const newDebt = await debtRepository.create(debtData);
 
       return {
         success: true,
         data: newDebt.toJSON(),
-        message: "Dívida criada com sucesso!",
+        message: "Ccobrança criada com sucesso!",
       };
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : "Erro 404";
-      console.error("Erro ao criar nova dívida:", errorMessage);
-      throw new Error("Erro ao criar nova dívida");
+      console.error("Erro ao criar nova cobrança:", errorMessage);
+      throw new Error("Erro ao criar nova cobrança");
     }
   }
 
-  // Lista todas as dívidas com filtros opcionais
+  // Lista todas as cobranças com filtros opcionais
   async toListDebts(
     filters: IDebtFilters = {}
   ): Promise<IServiceResponse<IDebt[]>> {
@@ -61,12 +61,12 @@ class DebtService {
       };
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : "Erro 404";
-      console.error("Erro ao listar dívidas:", errorMessage);
-      throw new Error("Erro ao buscar dívidas");
+      console.error("Erro ao listar cobranças:", errorMessage);
+      throw new Error("Erro ao buscar cobranças");
     }
   }
 
-  // Busca dívida por ID
+  // Busca cobrança por ID
   async toFindDebtById(id: DebtId): Promise<IServiceResponse<IDebt>> {
     try {
       const debt = await debtRepository.findById(id);
@@ -74,7 +74,7 @@ class DebtService {
       if (!debt) {
         return {
           success: false,
-          errors: ["Dívida não encontrada"],
+          errors: ["Cobrança não encontrada"],
         };
       }
 
@@ -84,12 +84,12 @@ class DebtService {
       };
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : "Erro 404";
-      console.error("Erro ao buscar dívida:", errorMessage);
-      throw new Error("Erro ao buscar dívida");
+      console.error("Erro ao buscar cobrança:", errorMessage);
+      throw new Error("Erro ao buscar cobrança");
     }
   }
 
-  // Calcula estatística das dívidas
+  // Calcula estatística das cobranças
   async toCalculateStatistics(): Promise<IServiceResponse<IEstatisticas>> {
     try {
       const allDebts = await debtRepository.findAll();
@@ -122,18 +122,18 @@ class DebtService {
     }
   }
 
-  // Atualiza status de uma dívida
+  // Atualiza status de uma cobrança
   async toUpdateDebtStatus(
     id: DebtId,
     newStatus: DebtStatus
   ): Promise<IServiceResponse<IDebt>> {
     try {
-      // Verifica se a dívida existe
+      // Verifica se a cobrança existe
       const existingDebt = await debtRepository.findById(id);
       if (!existingDebt) {
         return {
           success: false,
-          errors: ["Dívida não encontrada"],
+          errors: ["Cobrança não encontrada"],
         };
       }
 
@@ -141,7 +141,7 @@ class DebtService {
       if (existingDebt.status === newStatus) {
         return {
           success: false,
-          errors: [`Dívida já está no status  ${newStatus}`],
+          errors: [`Cobrança já está no status  ${newStatus}`],
         };
       }
 
@@ -151,19 +151,19 @@ class DebtService {
       if (!updatedDebt) {
         return {
           success: false,
-          errors: ["Erro ao atualizar status da dívida"],
+          errors: ["Erro ao atualizar status da cobrança"],
         };
       }
 
       return {
         success: true,
         data: updatedDebt.toJSON(),
-        message: `Status da dívida atualizado para ${newStatus}`,
+        message: `Status da cobrança atualizado para ${newStatus}`,
       };
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : "Erro 404";
       console.error("Erro ao atualizar status:", errorMessage);
-      throw new Error("Erro ao atualizar status da dívida");
+      throw new Error("Erro ao atualizar status da cobrança");
     }
   }
 }
