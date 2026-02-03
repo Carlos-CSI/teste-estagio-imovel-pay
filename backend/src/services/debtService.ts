@@ -79,7 +79,7 @@ class DebtService {
     }
   }
 
-  // Calcula estatística das cobranças
+  // Calcula estatística das dívidas
   async toCalculateStatistics(): Promise<IServiceResponse<IEstatisticas>> {
     try {
       const allDebts = await debtRepository.findAll();
@@ -109,6 +109,51 @@ class DebtService {
       const errorMessage = error instanceof Error ? error.message : "Erro 404";
       console.error("Erro ao obter estatísticas:", errorMessage);
       throw new Error("Erro ao calcular estatísticas");
+    }
+  }
+
+  // Atualiza status de uma dívida
+  async toUpdateDebtStatus(
+    id: DebtId,
+    newStatus: DebtStatus
+  ): Promise<IServiceResponse<IDebt>> {
+    try {
+      // Verifica se a dívida existe
+      const existingDebt = await debtRepository.findById(id);
+      if (!existingDebt) {
+        return {
+          success: false,
+          errors: ["Dívida não encontrada"],
+        };
+      }
+
+      // Verifica se já está no status desejado
+      if (existingDebt.status === newStatus) {
+        return {
+          success: false,
+          errors: [`Dívida já está no status  ${newStatus}`],
+        };
+      }
+
+      // Atualiza status
+      const updatedDebt = await debtRepository.updateStatus(id, newStatus);
+
+      if (!updatedDebt) {
+        return {
+          success: false,
+          errors: ["Erro ao atualizar status da dívida"],
+        };
+      }
+
+      return {
+        success: true,
+        data: updatedDebt.toJSON(),
+        message: `Status da dívida atualizado para ${newStatus}`,
+      };
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : "Erro 404";
+      console.error("Erro ao atualizar status:", errorMessage);
+      throw new Error("Erro ao atualizar status da dívida");
     }
   }
 }

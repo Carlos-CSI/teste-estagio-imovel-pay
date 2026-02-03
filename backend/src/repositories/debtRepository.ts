@@ -53,6 +53,17 @@ class DebtRepository {
     const [rows] = await pool.execute<RowDataPacket[]>(query, params);
     return rows.map((row) => new Debt(row as IDebt));
   }
+
+  // Atualiza status da dívida
+  async updateStatus(id: DebtId, status: DebtStatus): Promise<Debt | null> {
+    const pool = getPool();
+    await pool.execute(
+      "UPDATE debts SET status = ?, updated_at = NOW() WHERE id = ?",
+      [status, id]
+    );
+
+    return this.findById(id);
+  }
 }
 
 export default new DebtRepository();

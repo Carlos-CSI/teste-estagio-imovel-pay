@@ -19,4 +19,7 @@ router.get(
 // GET /api/dividas/:id - Buscar dívida por ID
 router.get("/:id", debtController.toFindById.bind(debtController));
 
+// PATCH /api/dividas/:id/status - Atualizar status de uma dívida
+router.patch("/:id/status", debtController.toUpdateStatus.bind(debtController));
+
 export default router;

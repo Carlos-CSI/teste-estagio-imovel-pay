@@ -104,6 +104,42 @@ class DebtController {
       next(error);
     }
   }
+
+  // Atualiza o status de uma dívida
+  async toUpdateStatus(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
+    try {
+      const { id } = req.params;
+      const { status } = req.body;
+
+      // Valida que id é string
+      if (Array.isArray(id)) {
+        res.status(400).json(formatErrorResponse(["ID inválido"]));
+        return;
+      }
+
+      const result = await debtService.toUpdateDebtStatus(parseInt(id), status);
+
+      if (!result.success) {
+        const statusCode = result.errors?.includes("Dívida não encontrada")
+          ? 404
+          : 400;
+        res
+          .status(statusCode)
+          .json(formatErrorResponse(result.errors || ["Erro desconhecido"]));
+        return;
+      }
+
+      res
+        .status(200)
+        .json(formatSuccessResponse(result.data, { message: result.message }));
+    } catch (error) {
+      next(error);
+    }
+  }
 }
 
 export default new DebtController();
