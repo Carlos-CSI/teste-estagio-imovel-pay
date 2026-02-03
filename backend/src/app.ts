@@ -1,5 +1,6 @@
 import express, { Application, Request, Response } from "express";
 import cors from "cors";
+import debtRoutes from "@/routes/debtRoutes";
 
 // Configuração principal da aplicação Express
 const app: Application = express();
@@ -26,5 +27,8 @@ if (process.env.NODE_ENV === "development") {
     next();
   });
 }
+
+// Rotas da API
+app.use("/api/dividas", debtRoutes);
 
 export default app;

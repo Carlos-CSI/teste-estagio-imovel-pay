@@ -37,6 +37,9 @@ const startServer = async (): Promise<void> => {
 
         Ambiente: ${process.env.NODE_ENV || "development"}
         Banco de Dados: MySQL (${process.env.DB_NAME}) 
+
+        Rotas disponíveis:
+        POST /api/dividas
         
         Para encerrar o servidor, pressione Ctrl+C.
         `);
