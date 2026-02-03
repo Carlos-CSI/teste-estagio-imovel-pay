@@ -1,5 +1,6 @@
 import express, { Application, Request, Response } from "express";
 import cors from "cors";
+import { errorHandler, notFoundHandler } from "./middlewares/errorHandler";
 import debtRoutes from "@/routes/debtRoutes";
 
 // Configuração principal da aplicação Express
@@ -30,5 +31,9 @@ if (process.env.NODE_ENV === "development") {
 
 // Rotas da API
 app.use("/api/dividas", debtRoutes);
+
+// Tratamentos de erros
+app.use(notFoundHandler); // Handler de rotas não encontradas (404)
+app.use(errorHandler); // Handler de erros global
 
 export default app;
