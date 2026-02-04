@@ -2,7 +2,7 @@
 
 Este repositório contém a solução para o desafio técnico de estágio em desenvolvimento. Trata-se de uma aplicação **Full Stack** para gerenciamento de cobranças, composta por uma API REST robusta em Java e um frontend moderno em React.
 
-O projeto foi arquitetado focando em **boas práticas de Engenharia de Software**, incluindo separação de camadas, tratamento global de erros, DTOs e testes automatizados.
+O projeto foi arquitetado focando em **boas práticas de Engenharia de Software**, incluindo separação de camadas, tratamento global de erros e DTOs 
 
 ## 🚀 Tecnologias Utilizadas
 
