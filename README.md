@@ -34,7 +34,7 @@ Acesse seu cliente MySQL (Workbench, DBeaver ou Terminal) e crie o database:
 
 ```
 CREATE DATABASE db_cobrancas;
-Nota: As configurações de conexão estão no arquivo src/main/resources/application.properties. Por padrão, o usuário está configurado como root. Caso sua senha não seja vazia ou seu usuário seja diferente, ajuste este arquivo antes de rodar.
+Nota: As configurações de conexão estão no arquivo src/main/resources/application.properties. Ajuste os campos spring.datasource.username e spring.datasource.password antes de rodar.
 ```
 ### 2. Executando o Backend
 Abra um terminal na raiz do projeto (onde está o arquivo pom.xml) e execute:
