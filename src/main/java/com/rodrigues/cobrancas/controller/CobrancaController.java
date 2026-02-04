@@ -17,7 +17,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/cobrancas")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "*") // Para facilitar o frontend depois (desenvolvimento)
+@CrossOrigin(origins = "*")
 public class CobrancaController {
 
     private final CobrancaService service;
@@ -33,7 +33,7 @@ public class CobrancaController {
         return ResponseEntity.status(HttpStatus.CREATED).body(criada);
     }
 
-    // PATCH para atualização parcial (somente o status)
+    // PATCH para atualização parcial (somente o status da cobranca)
     @PatchMapping("/{id}/status")
     public ResponseEntity<CobrancaResponseDTO> atualizarStatus(
             @PathVariable Long id,
