@@ -1,1 +1,15 @@
 @import "tailwindcss";
+
+:root {
+  --gradient-primary: linear-gradient(
+    135deg,
+    oklch(63% 0.16 272) 0%,
+    oklch(50% 0.14 305) 100%
+  );
+}
+
+@layer utilities {
+  .gradient {
+    background: var(--gradient-primary);
+  }
+}
