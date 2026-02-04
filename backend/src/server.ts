@@ -55,4 +55,14 @@ const startServer = async (): Promise<void> => {
   }
 };
 
+// Tratamentos de erros não capturados
+process.on("unhandledRejection", (reason: any) => {
+  console.error("Rejeição não tratada:", reason);
+});
+
+process.on("uncaughtException", (error: Error) => {
+  console.error("Exceção não tratada:", error);
+  process.exit(1);
+});
+
 startServer();
