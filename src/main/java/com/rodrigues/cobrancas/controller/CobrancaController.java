@@ -1,7 +1,6 @@
 package com.rodrigues.cobrancas.controller;
 
 
-
 import com.rodrigues.cobrancas.dto.CobrancaRequestDTO;
 import com.rodrigues.cobrancas.dto.CobrancaResponseDTO;
 import com.rodrigues.cobrancas.dto.StatusRequestDTO;

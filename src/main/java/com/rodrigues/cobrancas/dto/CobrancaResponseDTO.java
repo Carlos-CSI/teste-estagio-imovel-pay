@@ -3,7 +3,6 @@ package com.rodrigues.cobrancas.dto;
 import com.rodrigues.cobrancas.entity.Cobranca;
 import com.rodrigues.cobrancas.enums.StatusCobranca;
 import lombok.Builder;
-import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -17,7 +16,7 @@ public record CobrancaResponseDTO(
         StatusCobranca status
 ) {
     //Conversor Entidade p/ DTO p/ nao expor a entidade
-    public static CobrancaResponseDTO paraDTO(Cobranca cobranca){
+    public static CobrancaResponseDTO paraDTO(Cobranca cobranca) {
         return CobrancaResponseDTO.builder()
                 .id(cobranca.getId())
                 .nomeCliente(cobranca.getNomeCliente())

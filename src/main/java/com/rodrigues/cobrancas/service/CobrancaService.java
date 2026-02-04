@@ -18,14 +18,14 @@ public class CobrancaService {
 
     private final CobrancaRepository repository;
 
-    public List<CobrancaResponseDTO> listarTodas(){
+    public List<CobrancaResponseDTO> listarTodas() {
         return repository.findAll().stream()
                 .map(CobrancaResponseDTO::paraDTO)
                 .toList();
 
     }
 
-    public CobrancaResponseDTO criarCobranca (@Valid CobrancaRequestDTO dto){
+    public CobrancaResponseDTO criarCobranca(@Valid CobrancaRequestDTO dto) {
         Cobranca novaCobranca = Cobranca.builder()
                 .nomeCliente(dto.nomeCliente())
                 .valor(dto.valor())
@@ -38,7 +38,7 @@ public class CobrancaService {
 
     }
 
-    public CobrancaResponseDTO atualizarStatus (Long id, StatusCobranca novoStatus){
+    public CobrancaResponseDTO atualizarStatus(Long id, StatusCobranca novoStatus) {
         Cobranca cobranca = repository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Cobranca nao encontrada!"));
         cobranca.setStatus(novoStatus);

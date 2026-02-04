@@ -7,4 +7,5 @@ public record StatusRequestDTO(
 
         @NotNull(message = "O status deve ser informado")
         StatusCobranca status
-) {}
+) {
+}
