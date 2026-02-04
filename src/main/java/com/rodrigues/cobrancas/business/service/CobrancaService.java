@@ -30,7 +30,7 @@ public class CobrancaService {
                 .nomeCliente(dto.nomeCliente())
                 .valor(dto.valor())
                 .dataVencimento(dto.dataVencimento())
-                .status(StatusCobranca.PENDENTE) //Toda cobranca nasce com status Pendente
+                .status(StatusCobranca.PENDENTE) //Garantindo que toda cobranca nasce com status PENDENTE
                 .build();
 
         Cobranca salva = repository.save(novaCobranca);

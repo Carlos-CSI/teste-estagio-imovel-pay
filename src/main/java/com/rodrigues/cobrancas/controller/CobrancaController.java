@@ -32,7 +32,7 @@ public class CobrancaController {
         return ResponseEntity.status(HttpStatus.CREATED).body(criada);
     }
 
-    // PATCH para atualização parcial (somente o status da cobranca)
+    // PATCH para atualizacao parcial (somente o status da cobranca)
     @PatchMapping("/{id}/status")
     public ResponseEntity<CobrancaResponseDTO> atualizarStatus(
             @PathVariable Long id,
