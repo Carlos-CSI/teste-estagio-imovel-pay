@@ -1,11 +1,35 @@
 @import "tailwindcss";
 
 :root {
+  --primary: oklch(63% 0.16 272);
+  --primary-foreground: oklch(56% 0.16 272);
+
+  --alert: oklch(63% 0.19 29);
+  --pending: oklch(52% 0.1 85);
+  --pending-foreground: oklch(96% 0.05 92);
+  --paid: oklch(40% 0.1 147);
+  --paid-foreground: oklch(92% 0.03 152);
+  --amount: oklch(74% 0.18 152);
+  --amount-foreground: oklch(66% 0.16 152);
+
   --gradient-primary: linear-gradient(
     135deg,
     oklch(63% 0.16 272) 0%,
     oklch(50% 0.14 305) 100%
   );
+}
+
+@theme inline {
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+
+  --color-alert: var(--alert);
+  --color-pending: var(--pending);
+  --color-pending-foreground: var(--pending-foreground);
+  --color-paid: var(--paid);
+  --color-paid-foreground: var(--paid-foreground);
+  --color-amount: var(--amount);
+  --color-amount-foreground: var(--amount-foreground);
 }
 
 @layer utilities {
