@@ -1,4 +1,4 @@
-package com.rodrigues.cobrancas.exceptions;
+package com.rodrigues.cobrancas.infrastructure.exceptions;
 
 
 import org.springframework.http.HttpStatus;

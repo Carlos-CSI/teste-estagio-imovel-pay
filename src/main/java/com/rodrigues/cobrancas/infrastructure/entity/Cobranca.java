@@ -1,6 +1,6 @@
-package com.rodrigues.cobrancas.entity;
+package com.rodrigues.cobrancas.infrastructure.entity;
 
-import com.rodrigues.cobrancas.enums.StatusCobranca;
+import com.rodrigues.cobrancas.business.enums.StatusCobranca;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -1,6 +1,6 @@
-package com.rodrigues.cobrancas.repository;
+package com.rodrigues.cobrancas.infrastructure.repository;
 
-import com.rodrigues.cobrancas.entity.Cobranca;
+import com.rodrigues.cobrancas.infrastructure.entity.Cobranca;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

@@ -1,7 +1,7 @@
-package com.rodrigues.cobrancas.dto;
+package com.rodrigues.cobrancas.business.dto;
 
-import com.rodrigues.cobrancas.entity.Cobranca;
-import com.rodrigues.cobrancas.enums.StatusCobranca;
+import com.rodrigues.cobrancas.infrastructure.entity.Cobranca;
+import com.rodrigues.cobrancas.business.enums.StatusCobranca;
 import lombok.Builder;
 
 import java.math.BigDecimal;

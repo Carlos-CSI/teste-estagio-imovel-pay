@@ -1,10 +1,10 @@
 package com.rodrigues.cobrancas.controller;
 
 
-import com.rodrigues.cobrancas.dto.CobrancaRequestDTO;
-import com.rodrigues.cobrancas.dto.CobrancaResponseDTO;
-import com.rodrigues.cobrancas.dto.StatusRequestDTO;
-import com.rodrigues.cobrancas.service.CobrancaService;
+import com.rodrigues.cobrancas.business.dto.CobrancaRequestDTO;
+import com.rodrigues.cobrancas.business.dto.CobrancaResponseDTO;
+import com.rodrigues.cobrancas.business.dto.StatusRequestDTO;
+import com.rodrigues.cobrancas.business.service.CobrancaService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

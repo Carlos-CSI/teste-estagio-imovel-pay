@@ -1,11 +1,11 @@
-package com.rodrigues.cobrancas.service;
+package com.rodrigues.cobrancas.business.service;
 
 
-import com.rodrigues.cobrancas.dto.CobrancaRequestDTO;
-import com.rodrigues.cobrancas.dto.CobrancaResponseDTO;
-import com.rodrigues.cobrancas.entity.Cobranca;
-import com.rodrigues.cobrancas.enums.StatusCobranca;
-import com.rodrigues.cobrancas.repository.CobrancaRepository;
+import com.rodrigues.cobrancas.business.dto.CobrancaRequestDTO;
+import com.rodrigues.cobrancas.business.dto.CobrancaResponseDTO;
+import com.rodrigues.cobrancas.infrastructure.entity.Cobranca;
+import com.rodrigues.cobrancas.business.enums.StatusCobranca;
+import com.rodrigues.cobrancas.infrastructure.repository.CobrancaRepository;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

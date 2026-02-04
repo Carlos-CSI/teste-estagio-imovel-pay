@@ -1,4 +1,4 @@
-package com.rodrigues.cobrancas.dto;
+package com.rodrigues.cobrancas.business.dto;
 
 
 import jakarta.validation.constraints.DecimalMin;

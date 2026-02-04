@@ -1,6 +1,6 @@
-package com.rodrigues.cobrancas.dto;
+package com.rodrigues.cobrancas.business.dto;
 
-import com.rodrigues.cobrancas.enums.StatusCobranca;
+import com.rodrigues.cobrancas.business.enums.StatusCobranca;
 import jakarta.validation.constraints.NotNull;
 
 public record StatusRequestDTO(
