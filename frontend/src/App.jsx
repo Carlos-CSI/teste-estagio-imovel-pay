@@ -2,7 +2,7 @@ import { useState } from 'react'
 import './App.css'
 
 function App() {
-
+  const [listarcobranca, setlistarcobranca] = useState(false);
   const [mostrarFormulario, setMostrarFormulario] = useState(false);
   const [cobrancas, setCobrancas] = useState([]);
 
@@ -58,20 +58,21 @@ function App() {
 
   return (
     <>
+    <div className='container'>
+      <h1>Sistema de Cobranças</h1>
     <div>
              {/* LISTAGEM */}
-    <button type="button" onClick={listar_cobrancas}>
+    <button type="button" onClick={() => {setlistarcobranca(true); listar_cobrancas()}}>
     Listar cobranças
     </button>
-
+    {listarcobranca && (
       <table>
         <thead>
           <tr>
             <th>Cliente</th>
             <th>Valor</th>
-            <th>Vencimento</th>
+            <th> Data de vencimento</th>
             <th>Status</th>
-            <th>Ação</th>
           </tr>
         </thead>
         <tbody>
@@ -84,7 +85,7 @@ function App() {
               <td>
                 {c.status === "pendente" && (
                   <button onClick={() => atualizarStatus(c.id, "pago")}>
-                    Marcar como pago
+                    Pago
                   </button>
                 )}
               </td>
@@ -92,7 +93,7 @@ function App() {
           ))}
         </tbody>
       </table>
-
+)}
     </div>
     
     
@@ -139,6 +140,7 @@ function App() {
         </div>
       
       )}
+    </div>
     </div>
     </>
   );
