@@ -106,23 +106,34 @@ export default function DebtList({ refreshList }: DebtListProps) {
       </div>
 
       {/* Listagem de cobranças */}
-      <div className="">
-        <div className="mb-4 border-b border-gray-300 pb-2.5">
-          <span className="text-sm font-medium text-gray-600">
-            {debts.length} {debts.length === 1 ? "cobrança" : "cobranças"}{" "}
-            encontrada(s)
-          </span>
+      {debts.length === 0 ? (
+        <div className="space-y-2.5 px-5 py-16 text-center text-gray-500">
+          <p className="text-lg">Nenhuma cobrança encontrada</p>
+          <p className="text-sm text-gray-400">
+            {filterStatus === "TODOS"
+              ? "Crie sua primeira cobrança usando o formulário acima"
+              : `Não há cobranças com status "${filterStatus}"`}
+          </p>
         </div>
-        <div className="space-y-4">
-          {debts.map((debt) => (
-            <DebtItem
-              key={debt.id}
-              data={debt}
-              onStatusUpdated={handleStatusUpdated}
-            />
-          ))}
-        </div>
-      </div>
+      ) : (
+        <>
+          <div className="mb-4 border-b border-gray-300 pb-2.5">
+            <span className="text-sm font-medium text-gray-600">
+              {debts.length} {debts.length === 1 ? "cobrança" : "cobranças"}{" "}
+              encontrada(s)
+            </span>
+          </div>
+          <div className="space-y-4">
+            {debts.map((debt) => (
+              <DebtItem
+                key={debt.id}
+                data={debt}
+                onStatusUpdated={handleStatusUpdated}
+              />
+            ))}
+          </div>
+        </>
+      )}
     </section>
   );
 }
