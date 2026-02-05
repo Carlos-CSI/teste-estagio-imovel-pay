@@ -30,7 +30,7 @@ export default function App() {
 
       <main className="flex-1 py-10">
         <div className="mx-auto max-w-7xl space-y-8">
-          <div className="flex justify-end">
+          <div className="flex justify-end max-lg:px-8 max-md:px-6">
             <CreateDebtButton onCreatedDebt={handleCreatedDebt} />
           </div>
 

@@ -54,17 +54,17 @@ export default function DebtItem({ data, onStatusUpdated }: DebtItemProps) {
   return (
     <div
       className={cn(
-        "flex items-center justify-between rounded-lg border border-gray-200 p-5 transition-all duration-300 hover:shadow-lg",
+        "flex items-center justify-between rounded-lg border border-gray-200 p-5 transition-all duration-300 hover:shadow-lg max-md:flex-col max-md:gap-2.5",
         expired && "border-l-expired border-l-4",
       )}
     >
-      <div className="flex-1 space-y-2.5">
+      <div className="flex-1 space-y-2.5 max-md:w-full">
         <div className="flex items-center gap-2.5 text-lg">
           <strong>{data.client_name}</strong>
           {expired && <Badge variant="expired">Vencida</Badge>}
         </div>
 
-        <div className="flex flex-wrap gap-8">
+        <div className="flex flex-wrap gap-8 max-md:justify-between">
           <div className="flex flex-col gap-1">
             <span className="text-xs text-gray-600 uppercase">Valor:</span>
             <span className="text-amount font-semibold">
@@ -88,9 +88,10 @@ export default function DebtItem({ data, onStatusUpdated }: DebtItemProps) {
         </div>
       </div>
 
-      <div className="flex items-center">
+      <div className="flex items-center max-md:w-full max-md:justify-center">
         {data.status === "PENDENTE" && (
           <Button
+            className="max-md:w-full"
             onClick={handleMarkAsPaid}
             variant="forPaid"
             disabled={loading}

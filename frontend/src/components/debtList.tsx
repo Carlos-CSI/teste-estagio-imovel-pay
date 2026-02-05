@@ -86,13 +86,13 @@ export default function DebtList({ refreshList }: DebtListProps) {
   }
 
   return (
-    <section className="space-y-6 rounded-lg bg-white p-8 shadow-md">
+    <section className="space-y-6 rounded-lg bg-white p-6 shadow-md sm:p-8">
       <div className="flex flex-wrap items-center justify-between gap-4">
         <h2 className="text-2xl font-bold">Lista de Cobranças</h2>
 
         {/* Filtros de pesquisa */}
         <Select value={filterStatus} onValueChange={handleFilterChange}>
-          <SelectTrigger className="w-60">
+          <SelectTrigger className="w-full sm:w-60">
             <SelectValue placeholder="Filtrar por status:" />
           </SelectTrigger>
           <SelectContent>
