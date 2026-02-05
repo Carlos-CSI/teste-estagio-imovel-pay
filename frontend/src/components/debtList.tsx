@@ -10,7 +10,6 @@ import {
   SelectValue,
 } from "./ui/select";
 import DebtItem from "./debtItem";
-import { Spinner } from "./ui/spinner";
 import Loading from "./loading";
 import { Button } from "./ui/button";
 
@@ -110,7 +109,8 @@ export default function DebtList({ refreshList }: DebtListProps) {
       <div className="">
         <div className="mb-4 border-b border-gray-300 pb-2.5">
           <span className="text-sm font-medium text-gray-600">
-            2 cobranças encontrada(s)
+            {debts.length} {debts.length === 1 ? "cobrança" : "cobranças"}{" "}
+            encontrada(s)
           </span>
         </div>
         <div className="space-y-4">
