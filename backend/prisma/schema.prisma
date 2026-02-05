@@ -11,6 +11,7 @@ enum ChargeStatus {
   PENDENTE
   PAGO
   CANCELADO
+  VENCIDO
 }
 
 model Customer {
