@@ -1,3 +1,6 @@
+import { useEffect, useState } from "react";
+import { debtAPI } from "../services/api";
+import type { Debt, StatusFilter } from "../types";
 import {
   Select,
   SelectContent,
@@ -9,6 +12,24 @@ import {
 import DebtItem from "./debtItem";
 
 export default function DebtList() {
+  const [debts, setDebts] = useState<Debt[]>([]);
+  const [filterStatus, setFilterStatus] = useState<StatusFilter>("TODOS");
+
+  // Carrega os dados da API
+  const loadDebts = async (): Promise<void> => {
+    try {
+      const filter = filterStatus === "TODOS" ? null : filterStatus;
+      const response = await debtAPI.toListAll(filter);
+      setDebts(response.data || []);
+    } catch (error) {
+      console.error("Erro ao carregar cobranças:", error);
+    }
+  };
+
+  useEffect(() => {
+    loadDebts();
+  }, [filterStatus]);
+
   return (
     <section className="space-y-6 rounded-lg bg-white p-8 shadow-md">
       <div className="flex flex-wrap items-center justify-between gap-4">
@@ -37,9 +58,9 @@ export default function DebtList() {
           </span>
         </div>
         <div className="space-y-4">
-          <DebtItem />
-          <DebtItem />
-          <DebtItem />
+          {debts.map((debt) => (
+            <DebtItem key={debt.id} data={debt} />
+          ))}
         </div>
       </div>
     </section>

@@ -8,6 +8,7 @@ const badgeVariants = cva(
   {
     variants: {
       variant: {
+        expired: "border-transparent bg-expired text-white",
         pending: "border-transparent bg-pending-foreground text-pending",
         paid: "border-transparent bg-paid-foreground text-paid",
       },

@@ -4,7 +4,7 @@
   --primary: oklch(63% 0.16 272);
   --primary-foreground: oklch(56% 0.16 272);
 
-  --alert: oklch(63% 0.19 29);
+  --expired: oklch(63% 0.19 29);
   --pending: oklch(52% 0.1 85);
   --pending-foreground: oklch(96% 0.05 92);
   --paid: oklch(40% 0.1 147);
@@ -23,7 +23,7 @@
   --color-primary: var(--primary);
   --color-primary-foreground: var(--primary-foreground);
 
-  --color-alert: var(--alert);
+  --color-expired: var(--expired);
   --color-pending: var(--pending);
   --color-pending-foreground: var(--pending-foreground);
   --color-paid: var(--paid);
