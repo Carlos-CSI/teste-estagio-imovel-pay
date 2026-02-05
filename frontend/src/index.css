@@ -1,0 +1,26 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  min-height: 100vh;
+  width: 100vw;
+  font-family: 'Sansita', sans-serif;
+  background: linear-gradient(180deg, #5b805e 0%, #d1dcba 80%);
+  color: #ffffff;}
+  
+button {
+  padding: 0.70rem 1.0rem;
+  display: block;
+  inline-size: 40%;
+  margin: 1rem auto;
+  border-radius: 6px;
+  border:aliceblue;
+  color: #000000;
+  background-color: #fcfcfc;
+  font-size: 1rem;
+  cursor: pointer;   /*Muda o cursor*/
+  transition: background-color 0.3s ease; /*tempo para mudança do cursor*/
+}

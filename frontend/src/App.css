@@ -1,0 +1,52 @@
+/* GLOBAL */
+body {
+  min-height: 100vh;
+  width: 100vw;
+  font-family: 'Sansita', sans-serif;
+  background: linear-gradient(180deg, #5b805e 0%, #d1dcba 80%);
+  color: #ffffff;}
+
+/* CONTAINER */
+.container {
+  max-width: 900px;
+  margin: 100px auto;
+  border: 1px solid #1f2f12;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+/* TITULO */
+h1 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #000000;
+}
+
+/* BOTÃO */
+button {
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  inline-size: 50%;
+  margin: 1rem auto;
+  border-radius: 6px;
+  border:aliceblue;
+  color: #000000;
+  background-color: #fcfcfc;
+  font-size: 1rem;
+  cursor: pointer;   /*Muda o cursor*/
+  transition: background-color 0.3s ease; /*tempo para mudança do cursor*/
+}
+
+/* TABELA */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+th, td {
+  padding: 22px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+  color: #000000;
+}
