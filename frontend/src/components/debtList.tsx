@@ -10,6 +10,9 @@ import {
   SelectValue,
 } from "./ui/select";
 import DebtItem from "./debtItem";
+import { Spinner } from "./ui/spinner";
+import Loading from "./loading";
+import { Button } from "./ui/button";
 
 interface DebtListProps {
   refreshList: number;
@@ -18,15 +21,25 @@ interface DebtListProps {
 export default function DebtList({ refreshList }: DebtListProps) {
   const [debts, setDebts] = useState<Debt[]>([]);
   const [filterStatus, setFilterStatus] = useState<StatusFilter>("TODOS");
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
 
   // Carrega os dados da API
   const loadDebts = async (): Promise<void> => {
+    setLoading(true);
+    setError(null);
+
     try {
       const filter = filterStatus === "TODOS" ? null : filterStatus;
       const response = await debtAPI.toListAll(filter);
       setDebts(response.data || []);
     } catch (error) {
+      const errorMessage =
+        error instanceof Error ? error.message : "Erro ao carregar cobranças";
+      setError(errorMessage);
       console.error("Erro ao carregar cobranças:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -59,6 +72,19 @@ export default function DebtList({ refreshList }: DebtListProps) {
       loadDebts();
     }
   }, [refreshList]);
+
+  if (loading) {
+    return <Loading message="Carregando cobranças..." />;
+  }
+
+  if (error) {
+    return (
+      <div className="space-y-5 px-5 py-10 text-center">
+        <p className="text-expired">{error}</p>
+        <Button onClick={loadDebts}>Tentar novamente</Button>
+      </div>
+    );
+  }
 
   return (
     <section className="space-y-6 rounded-lg bg-white p-8 shadow-md">

@@ -24,12 +24,14 @@ export default function CreateDebtButton({
   onCreatedDebt,
 }: CreateDebtButtonProps) {
   const [open, setOpen] = useState(false);
+  const [submitErrors, setSubmitErrors] = useState<string[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const {
     register,
     handleSubmit,
     reset,
-    formState: { errors, isSubmitting },
+    formState: { errors },
   } = useForm<DebtFormData>({
     resolver: zodResolver(debtValidate),
     defaultValues: {
@@ -41,6 +43,9 @@ export default function CreateDebtButton({
 
   // Submete o formulário
   const onSubmit = async (data: DebtFormData) => {
+    setLoading(true);
+    setSubmitErrors([]);
+
     try {
       await onCreatedDebt(data);
       reset({
@@ -51,6 +56,8 @@ export default function CreateDebtButton({
       setOpen(false);
     } catch (error) {
       console.error("Erro ao criar cobrança:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -65,6 +72,16 @@ export default function CreateDebtButton({
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Nova Cobrança</DialogTitle>
+
+          {submitErrors.length > 0 && (
+            <div className="mb-5 rounded-sm border border-b-orange-200 bg-gray-50 p-3.5">
+              {submitErrors.map((err, i) => (
+                <p key={i} className="mt-1.5 text-sm text-red-500">
+                  {err}
+                </p>
+              ))}
+            </div>
+          )}
         </DialogHeader>
 
         <form onSubmit={handleSubmit(onSubmit)} className="mt-3">
@@ -94,7 +111,7 @@ export default function CreateDebtButton({
                 step={0.01}
                 min={0.01}
                 {...register("amount")}
-                disabled={isSubmitting}
+                disabled={loading}
               />
               {errors.amount && (
                 <p className="text-sm text-red-500">{errors.amount.message}</p>
@@ -107,7 +124,7 @@ export default function CreateDebtButton({
                 type="date"
                 id="expire_date"
                 {...register("expire_date")}
-                disabled={isSubmitting}
+                disabled={loading}
               />
               {errors.expire_date && (
                 <p className="text-sm text-red-500">
@@ -122,12 +139,12 @@ export default function CreateDebtButton({
               variant="secondary"
               type="button"
               onClick={() => setOpen(false)}
-              disabled={isSubmitting}
+              disabled={loading}
             >
               Cancelar
             </Button>
-            <Button type="submit" disabled={isSubmitting}>
-              {isSubmitting ? "Salvando..." : "Salvar cobrança"}
+            <Button type="submit" disabled={loading}>
+              {loading ? "Salvando..." : "Salvar cobrança"}
             </Button>
           </div>
         </form>

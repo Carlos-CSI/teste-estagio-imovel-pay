@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { DebtStatus, type Debt, type StatusInfo } from "../types";
 import { cn, formatCurrency, formatDate, isExpired } from "../utils";
 import { Badge } from "./ui/badge";
@@ -10,6 +11,8 @@ interface DebtItemProps {
 }
 
 export default function DebtItem({ data, onStatusUpdated }: DebtItemProps) {
+  const [loading, setLoading] = useState<boolean>(false);
+
   // Determina a variante do badge com base na classe de status
   const getBadgeVariant = (statusClass: string): "pending" | "paid" => {
     switch (statusClass) {
@@ -32,12 +35,15 @@ export default function DebtItem({ data, onStatusUpdated }: DebtItemProps) {
   // Marca a cobrança como paga
   const handleMarkAsPaid = async (): Promise<void> => {
     if (window.confirm("Deseja marcar esta cobrança como paga?")) {
+      setLoading(true);
       try {
         await onStatusUpdated(data.id, DebtStatus.PAGO);
       } catch (error) {
         const errorMessage =
           error instanceof Error ? error.message : "Erro 404";
         alert("Erro ao atualizar status: " + errorMessage);
+      } finally {
+        setLoading(false);
       }
     }
   };
@@ -84,8 +90,12 @@ export default function DebtItem({ data, onStatusUpdated }: DebtItemProps) {
 
       <div className="flex items-center">
         {data.status === "PENDENTE" && (
-          <Button onClick={handleMarkAsPaid} variant="forPaid">
-            Marcar como pago
+          <Button
+            onClick={handleMarkAsPaid}
+            variant="forPaid"
+            disabled={loading}
+          >
+            {loading ? "Processando..." : "Marcar como pago"}
           </Button>
         )}
         {data.status === "PAGO" && (
