@@ -4,6 +4,7 @@ import type { DebtCreate } from "./types";
 import Header from "./components/header";
 import DebtList from "./components/debtList";
 import CreateDebtButton from "./components/createDebt";
+import Footer from "./components/footer";
 
 export default function App() {
   const [refreshList, setRefreshList] = useState<number>(0);
@@ -36,6 +37,8 @@ export default function App() {
           <DebtList refreshList={refreshList} />
         </div>
       </main>
+
+      <Footer />
     </>
   );
 }
