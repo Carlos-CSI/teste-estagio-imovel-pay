@@ -3,6 +3,8 @@ import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { CustomersService } from './customers.service';
 import { CreateCustomerDto } from './dto/create-customer.dto';
 import { UpdateCustomerDto } from './dto/update-customer.dto';
+import type { Customer } from '@prisma/client';
+import { CustomerWithCharges } from './interfaces/customer-response.interface';
 
 @ApiTags('customers')
 @Controller('customers')
@@ -12,28 +14,28 @@ export class CustomersController {
   @Get()
   @ApiOperation({ summary: 'List all customers' })
   @ApiResponse({ status: 200, description: 'List returned successfully.' })
-  findAll() {
+  findAll(): Promise<Customer[]> {
     return this.service.findAll();
   }
 
   @Get(':id')
   @ApiOperation({ summary: 'Get customer by ID' })
   @ApiResponse({ status: 200, description: 'Customer returned successfully.' })
-  findOne(@Param('id', ParseIntPipe) id: number ) {
+  findOne(@Param('id', ParseIntPipe) id: number ): Promise<CustomerWithCharges> {
     return this.service.findOne(id);
   }
 
   @Post()
   @ApiOperation({ summary: 'Create new customer' })
   @ApiResponse({ status: 201, description: 'Customer created successfully.' })
-  create(@Body() dto: CreateCustomerDto) {
+  create(@Body() dto: CreateCustomerDto): Promise<Customer> {
     return this.service.create(dto);
   }
 
   @Patch(':id')
   @ApiOperation({ summary: 'Update customer name' })
   @ApiResponse({ status: 200, description: 'Customer updated successfully.' })
-  update(@Param('id', ParseIntPipe) id: number, @Body() dto: UpdateCustomerDto) {
+  update(@Param('id', ParseIntPipe) id: number, @Body() dto: UpdateCustomerDto): Promise<Customer> {
     return this.service.update(id, dto);
   }
 
@@ -41,7 +43,7 @@ export class CustomersController {
   @HttpCode(204)
   @ApiOperation({ summary: 'Delete customer by ID' })
   @ApiResponse({ status: 204, description: 'Customer deleted successfully.' })
-  async remove(@Param('id', ParseIntPipe) id: number) {
+  async remove(@Param('id', ParseIntPipe) id: number): Promise<void> {
     await this.service.remove(id);
   }
 }
