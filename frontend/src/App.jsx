@@ -9,10 +9,10 @@ function App() {
   const [nome_cliente, setnome_cliente] = useState("");
   const [valor, setvalor] = useState("");
   const [data_vencimento, setdata_vencimento] = useState("");
-  const [status, setstatus] = useState("");
+  const [status, setstatus] = useState("pendente");
  
  //Lista as cobranças do banco de dados
-  const listarcobrancas = async () => {
+  const listar_cobrancas = async () => {
     const resposta = await fetch("http://localhost:8000/cobrancas");
     const dados = await resposta.json();
     setCobrancas(dados);
@@ -30,7 +30,7 @@ function App() {
         status: novoStatus
       }),
     });
-    listarcobrancas();
+    listar_cobrancas();
   }
  
  //Salva a cobrança no banco de dados
@@ -53,16 +53,17 @@ function App() {
     setvalor("");
     setdata_vencimento("");
     setstatus("");
-    listarcobrancas();
+    listar_cobrancas();
   };
 
   return (
     <>
     <div>
-      <button type="button" onClick={() => {setMostrarFormulario(false);listarcobrancas()}}>
-        Listar cobranças
-      </button>
-        {/* LISTAGEM */}
+             {/* LISTAGEM */}
+    <button type="button" onClick={listar_cobrancas}>
+    Listar cobranças
+    </button>
+
       <table>
         <thead>
           <tr>

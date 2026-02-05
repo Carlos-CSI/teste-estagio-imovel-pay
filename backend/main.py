@@ -4,6 +4,7 @@ from banco import conectar, criar_tabela
 from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
+
 @app.get("/")
 def root():
     return {"status": "ok"}
@@ -14,15 +15,19 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-"""COmentario"""
+
 criar_tabela()
+
 class Cobranca(BaseModel):
     nome_cliente: str
     valor: float
     data_vencimento: str
-    status: str 
+    status: str
 
-"""COmentario"""
+# 🔴 ESTAVA FALTANDO ISSO
+class StatusUpdate(BaseModel):
+    status: str
+
 @app.post("/cobrancas")
 def criar_cobranca(cobranca: Cobranca):
     conn = conectar()
@@ -34,7 +39,7 @@ def criar_cobranca(cobranca: Cobranca):
     conn.commit()
     conn.close()
     return {"status": "ok"}
-"""COmentario"""
+
 @app.get("/cobrancas")
 def listar_cobrancas():
     conn = conectar()
@@ -44,10 +49,16 @@ def listar_cobrancas():
     conn.close()
 
     return [
-        {"id": d[0], "nome_cliente": d[1], "valor": d[2], "data_vencimento": d[3], "status": d[4]}
+        {
+            "id": d[0],
+            "nome_cliente": d[1],
+            "valor": d[2],
+            "data_vencimento": d[3],
+            "status": d[4],
+        }
         for d in dados
     ]
-"""COmentario"""
+
 @app.put("/cobrancas/{id}")
 def atualizar_status(id: int, dados: StatusUpdate):
     conn = conectar()
