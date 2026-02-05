@@ -42,4 +42,15 @@ export const debtAPI = {
     const query = status ? `?status=${status}` : "";
     return request<Debt[]>(`/api/cobrancas${query}`);
   },
+
+  // Atualiza status da cobrança
+  toUpdateStatus: async (
+    id: number,
+    status: DebtStatus,
+  ): Promise<ApiResponse<Debt>> => {
+    return request<Debt>(`/api/cobrancas/${id}/status`, {
+      method: "PATCH",
+      body: JSON.stringify({ status }),
+    });
+  },
 };

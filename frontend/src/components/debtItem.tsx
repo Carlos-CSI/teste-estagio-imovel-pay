@@ -1,4 +1,4 @@
-import type { Debt, StatusInfo } from "../types";
+import { DebtStatus, type Debt, type StatusInfo } from "../types";
 import { cn, formatCurrency, formatDate, isExpired } from "../utils";
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
@@ -6,9 +6,10 @@ import { Check } from "lucide-react";
 
 interface DebtItemProps {
   data: Debt;
+  onStatusUpdated: (id: number, status: DebtStatus) => Promise<void>;
 }
 
-export default function DebtItem({ data }: DebtItemProps) {
+export default function DebtItem({ data, onStatusUpdated }: DebtItemProps) {
   // Determina a variante do badge com base na classe de status
   const getBadgeVariant = (statusClass: string): "pending" | "paid" => {
     switch (statusClass) {
@@ -26,6 +27,19 @@ export default function DebtItem({ data }: DebtItemProps) {
       return { label: "Pago", class: "status-paid", variant: "paid" };
     }
     return { label: "Pendente", class: "status-pending", variant: "pending" };
+  };
+
+  // Marca a cobrança como paga
+  const handleMarkAsPaid = async (): Promise<void> => {
+    if (window.confirm("Deseja marcar esta cobrança como paga?")) {
+      try {
+        await onStatusUpdated(data.id, DebtStatus.PAGO);
+      } catch (error) {
+        const errorMessage =
+          error instanceof Error ? error.message : "Erro 404";
+        alert("Erro ao atualizar status: " + errorMessage);
+      }
+    }
   };
 
   const statusInfo = getStatusInfo(data.status);
@@ -70,7 +84,9 @@ export default function DebtItem({ data }: DebtItemProps) {
 
       <div className="flex items-center">
         {data.status === "PENDENTE" && (
-          <Button variant="forPaid">Marcar como pago</Button>
+          <Button onClick={handleMarkAsPaid} variant="forPaid">
+            Marcar como pago
+          </Button>
         )}
         {data.status === "PAGO" && (
           <span className="text-paid flex items-center gap-2 font-semibold">

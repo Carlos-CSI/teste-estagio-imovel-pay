@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { debtAPI } from "../services/api";
-import type { Debt, StatusFilter } from "../types";
+import type { Debt, DebtStatus, StatusFilter } from "../types";
 import {
   Select,
   SelectContent,
@@ -23,6 +23,19 @@ export default function DebtList() {
       setDebts(response.data || []);
     } catch (error) {
       console.error("Erro ao carregar cobranças:", error);
+    }
+  };
+
+  // Atualiza o status de uma cobrança
+  const handleStatusUpdated = async (
+    id: number,
+    newStatus: DebtStatus,
+  ): Promise<void> => {
+    try {
+      await debtAPI.toUpdateStatus(id, newStatus);
+      await loadDebts();
+    } catch (error) {
+      throw error;
     }
   };
 
@@ -64,7 +77,11 @@ export default function DebtList() {
         </div>
         <div className="space-y-4">
           {debts.map((debt) => (
-            <DebtItem key={debt.id} data={debt} />
+            <DebtItem
+              key={debt.id}
+              data={debt}
+              onStatusUpdated={handleStatusUpdated}
+            />
           ))}
         </div>
       </div>
