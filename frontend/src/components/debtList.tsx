@@ -26,6 +26,11 @@ export default function DebtList() {
     }
   };
 
+  // Muda o filtro de status
+  const handleFilterChange = (status: StatusFilter): void => {
+    setFilterStatus(status);
+  };
+
   useEffect(() => {
     loadDebts();
   }, [filterStatus]);
@@ -36,7 +41,7 @@ export default function DebtList() {
         <h2 className="text-2xl font-bold">Lista de Cobranças</h2>
 
         {/* Filtros de pesquisa */}
-        <Select>
+        <Select value={filterStatus} onValueChange={handleFilterChange}>
           <SelectTrigger className="w-60">
             <SelectValue placeholder="Filtrar por status:" />
           </SelectTrigger>
