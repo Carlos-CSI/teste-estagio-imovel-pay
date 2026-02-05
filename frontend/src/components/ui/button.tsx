@@ -9,6 +9,7 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default: "bg-primary hover:bg-primary-foreground text-white",
+        secondary: "bg-secondary hover:bg-secondary-foreground text-white",
         forPaid: "bg-amount hover:bg-amount-foreground text-white",
       },
     },

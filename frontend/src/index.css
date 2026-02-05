@@ -3,6 +3,8 @@
 :root {
   --primary: oklch(63% 0.16 272);
   --primary-foreground: oklch(56% 0.16 272);
+  --secondary: oklch(70% 0.02 202);
+  --secondary-foreground: oklch(62% 0.02 203);
 
   --expired: oklch(63% 0.19 29);
   --pending: oklch(52% 0.1 85);
@@ -22,6 +24,8 @@
 @theme inline {
   --color-primary: var(--primary);
   --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
 
   --color-expired: var(--expired);
   --color-pending: var(--pending);
