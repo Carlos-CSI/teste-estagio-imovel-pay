@@ -1,9 +1,9 @@
 import sqlite3
-
+# Função para conectar ao banco de dados SQLite
 def conectar():
-    return sqlite3.connect("cobrancas.db")
-
-def criar_tabela():
+    return sqlite3.connect("cobrancas.db") #Conecta ao arquivo do banco de dados
+# Função para criar a tabela de cobranças se não existir
+def criar_tabela(): 
     conn = conectar()
     cursor = conn.cursor()
     cursor.execute("""
@@ -15,5 +15,5 @@ def criar_tabela():
             status TEXT 
         )
     """)
-    conn.commit()
-    conn.close()
+    conn.commit() #Salva as mudanças
+    conn.close() #Fecha a conexão
