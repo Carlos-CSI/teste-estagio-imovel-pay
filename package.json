@@ -24,6 +24,11 @@
   },
   "homepage": "https://github.com/Carlos-CSI/teste-estagio-imovel-pay#readme",
   "devDependencies": {
+    "@types/express": "^5.0.6",
     "concurrently": "^9.2.1"
+  },
+  "dependencies": {
+    "body-parser": "^2.2.2",
+    "express": "^5.2.1"
   }
 }
