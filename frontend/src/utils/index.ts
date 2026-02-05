@@ -49,3 +49,13 @@ export const isExpired = (expireDate: string, status: DebtStatus): boolean => {
 
   return expiration < today;
 };
+
+// Retorna a data atual no formato YYYY-MM-DD
+export const getCurrentDate = (): string => {
+  const today = new Date();
+  const year = today.getFullYear();
+  const month = String(today.getMonth() + 1).padStart(2, "0");
+  const day = String(today.getDate()).padStart(2, "0");
+
+  return `${year}-${month}-${day}`;
+};

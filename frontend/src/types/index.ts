@@ -15,6 +15,13 @@ export interface Debt {
   updated_at?: string;
 }
 
+export interface DebtCreate {
+  client_name: string;
+  amount: string | number;
+  expire_date: string;
+  status?: DebtStatus;
+}
+
 // Interfaces de resposta da API
 export interface ApiResponse<T> {
   success: boolean;

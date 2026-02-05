@@ -1,4 +1,4 @@
-import { DebtStatus, type ApiResponse, type Debt } from "../types";
+import type { DebtStatus, ApiResponse, Debt, DebtCreate } from "../types";
 
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3001";
 
@@ -51,6 +51,14 @@ export const debtAPI = {
     return request<Debt>(`/api/cobrancas/${id}/status`, {
       method: "PATCH",
       body: JSON.stringify({ status }),
+    });
+  },
+
+  // Cria nova cobrança
+  toCreate: async (debt: DebtCreate): Promise<ApiResponse<Debt>> => {
+    return request<Debt>("/api/cobrancas", {
+      method: "POST",
+      body: JSON.stringify(debt),
     });
   },
 };

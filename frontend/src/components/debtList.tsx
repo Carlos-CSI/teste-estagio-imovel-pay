@@ -11,7 +11,11 @@ import {
 } from "./ui/select";
 import DebtItem from "./debtItem";
 
-export default function DebtList() {
+interface DebtListProps {
+  refreshList: number;
+}
+
+export default function DebtList({ refreshList }: DebtListProps) {
   const [debts, setDebts] = useState<Debt[]>([]);
   const [filterStatus, setFilterStatus] = useState<StatusFilter>("TODOS");
 
@@ -44,9 +48,17 @@ export default function DebtList() {
     setFilterStatus(status);
   };
 
+  // Carregar cobranças
   useEffect(() => {
     loadDebts();
   }, [filterStatus]);
+
+  // Recarregar quando for atualizado
+  useEffect(() => {
+    if (refreshList) {
+      loadDebts();
+    }
+  }, [refreshList]);
 
   return (
     <section className="space-y-6 rounded-lg bg-white p-8 shadow-md">
