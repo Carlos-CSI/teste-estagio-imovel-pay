@@ -1,34 +1,52 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { useEffect, useState } from 'react'
 import './App.css'
 
+
+export interface BillingModel {
+  id: string
+  clientName: string
+  value: number
+  dueDate: string
+  status: "PENDENTE" | "PAGO"
+}
+
+
 function App() {
-  const [count, setCount] = useState(0)
+  const [billings, setBillings] = useState<BillingModel[]>([])
+  useEffect(()=>{
+    fetch("http://localhost:3333/billings").then((result)=>{
+      return result.json()
+    }).then((result)=>{
+      setBillings(result)
+    })
+  }, [])
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    <div>
+      <h1>Sistema de Cobranças</h1>
+      <table>
+        <thead>
+          <tr>
+            <th>Nome do cliente</th>
+            <th>Valor</th>
+            <th>Data de vencimento</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          {billings.map((item) => {
+            return <tr key={item.id}>
+              <td>{item.clientName}</td>
+              <td>{item.value}</td>
+              <td>{item.dueDate}</td>
+              <td>{item.status}</td>
+            </tr>
+          })}
+        </tbody>
+
+      </table>
+    </div>
   )
 }
 
