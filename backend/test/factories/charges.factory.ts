@@ -1,4 +1,4 @@
-import { Charge, Customer, ChargeStatus, Payment } from '@prisma/client';
+import { Charge, Customer, ChargeStatus, Payment, PaymentMethod } from '@prisma/client';
 import { CreateChargeDto } from '../../src/charges/dto/create-charge.dto';
 import { UpdateChargeDto } from '../../src/charges/dto/update-charge.dto';
 import { Decimal } from '@prisma/client/runtime/library';
@@ -14,10 +14,10 @@ export function makeCharge(overrides: Partial<Charge> = {}): Charge {
     id: overrides.id ?? chargeIdCounter++,
     customerId: overrides.customerId ?? 1,
     amount: overrides.amount ?? new Decimal(100.50),
-    dueDate: overrides.dueDate ?? new Date('2026-03-01'),
+    dueDate: overrides.dueDate ?? new Date('2026-03-01T00:00:00.000Z'),
     status: overrides.status ?? ChargeStatus.PENDENTE,
-    createdAt: overrides.createdAt ?? new Date(),
-    updatedAt: overrides.updatedAt ?? new Date(),
+    createdAt: overrides.createdAt ?? new Date('2024-01-01T00:00:00.000Z'),
+    updatedAt: overrides.updatedAt ?? new Date('2024-01-01T00:00:00.000Z'),
   } as Charge;
 
   return { ...charge, ...overrides } as Charge;
@@ -51,8 +51,8 @@ export function makeChargeWithCustomerAndPayment(
     id: payment.id ?? 1,
     chargeId: payment.chargeId ?? chargeWithCustomer.id,
     amount: payment.amount ?? chargeWithCustomer.amount,
-    paidAt: payment.paidAt ?? new Date(),
-    method: payment.method ?? 'PIX',
+    paidAt: payment.paidAt ?? new Date('2024-01-15T10:00:00.000Z'),
+    method: payment.method ?? PaymentMethod.PIX,
   } as Payment : null;
   
   return { ...chargeWithCustomer, payment: paymentData } as Charge & { customer: Customer; payment: Payment | null };

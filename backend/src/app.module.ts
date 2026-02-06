@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { CustomersModule } from './customers/customers.module';
 import { ChargesModule } from './charges/charges.module';
+import { PaymentsModule } from './payments/payments.module';
 import { PrismaService } from './prisma/prisma.service';
 
 @Module({
@@ -12,6 +13,7 @@ import { PrismaService } from './prisma/prisma.service';
     }),
     CustomersModule,
     ChargesModule,
+    PaymentsModule,
   ],
   providers: [PrismaService],
 })

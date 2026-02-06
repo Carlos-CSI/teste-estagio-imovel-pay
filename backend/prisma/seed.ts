@@ -1,4 +1,4 @@
-import { PrismaClient, ChargeStatus } from '@prisma/client';
+import { PrismaClient, ChargeStatus, PaymentMethod } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
@@ -91,6 +91,8 @@ async function main() {
   const threeMonthsAhead = new Date(now);
   threeMonthsAhead.setMonth(now.getMonth() + 3);
 
+  const createdCharges = [];
+  
   for (let i = 0; i < 500; i++) {
     const customer = customers[i % 20]; // Distribute evenly among the 20 customers
     const status = statusDistribution[i];
@@ -124,7 +126,7 @@ async function main() {
         break;
     }
 
-    await prisma.charge.create({
+    const charge = await prisma.charge.create({
       data: {
         customerId: customer.id,
         amount,
@@ -132,6 +134,8 @@ async function main() {
         status,
       },
     });
+    
+    createdCharges.push(charge);
 
     if ((i + 1) % 100 === 0) {
       console.log(`⏳ Created ${i + 1}/500 charges...`);
@@ -139,8 +143,34 @@ async function main() {
   }
 
   console.log('✅ Created 500 charges');
+  
+  // Create payments for charges with PAGO status
+  const paidCharges = createdCharges.filter(charge => charge.status === ChargeStatus.PAGO);
+  const paymentMethods = [...Object.values(PaymentMethod)] as PaymentMethod[];
+  
+  for (let i = 0; i < paidCharges.length; i++) {
+    const charge = paidCharges[i];
+    // Payment date should be between due date and a few days after
+    const paymentDate = randomDate(charge.dueDate, new Date(charge.dueDate.getTime() + 7 * 24 * 60 * 60 * 1000));
+    const method = paymentMethods[Math.floor(Math.random() * paymentMethods.length)];
+    
+    await prisma.payment.create({
+      data: {
+        chargeId: charge.id,
+        amount: charge.amount,
+        paidAt: paymentDate,
+        method,
+      },
+    });
+    
+    if ((i + 1) % 50 === 0) {
+      console.log(`⏳ Created ${i + 1}/${paidCharges.length} payments...`);
+    }
+  }
+  
+  console.log(`✅ Created ${paidCharges.length} payments for PAGO charges`);
   console.log('\n📊 Distribution:');
-  console.log('  - PAGO: 147');
+  console.log(`  - PAGO: 147 (with ${paidCharges.length} payments)`);
   console.log('  - PENDENTE: 262');
   console.log('  - CANCELADO: 7');
   console.log('  - VENCIDO: 84');

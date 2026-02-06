@@ -43,9 +43,12 @@ export class AllExceptionsFilter implements ExceptionFilter {
         }
       }
     } else if (exception instanceof PrismaClientKnownRequestError) {
-      // Handle Prisma errors
+      // Sanitize and map Prisma errors to safe HTTP responses
+      // Log full details server-side
+      this.logger.error(exception.message, JSON.stringify({ code: exception.code, meta: exception.meta }));
+
       switch (exception.code) {
-        case 'P2002':
+        case 'P2002': {
           status = HttpStatus.CONFLICT;
           const rawTarget = exception.meta?.target;
           let targetStr = '';
@@ -54,21 +57,20 @@ export class AllExceptionsFilter implements ExceptionFilter {
           } else if (typeof rawTarget === 'string') {
             targetStr = rawTarget;
           }
-          message = targetStr
-            ? `Unique constraint failed: ${targetStr} already exists`
-            : 'Unique constraint failed';
+          message = targetStr ? `Conflict on: ${targetStr}` : 'Conflict: unique constraint';
           break;
+        }
         case 'P2025':
           status = HttpStatus.NOT_FOUND;
-          message = 'Record not found';
+          message = 'Resource not found';
           break;
         case 'P2003':
           status = HttpStatus.BAD_REQUEST;
           message = 'Foreign key constraint failed';
           break;
         default:
-          status = HttpStatus.BAD_REQUEST;
-          message = 'Database error occurred';
+          status = HttpStatus.INTERNAL_SERVER_ERROR;
+          message = 'Database error';
       }
     } else if (exception instanceof Error) {
       message = exception.message;

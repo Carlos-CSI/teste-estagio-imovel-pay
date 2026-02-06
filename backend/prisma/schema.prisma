@@ -14,6 +14,14 @@ enum ChargeStatus {
   VENCIDO
 }
 
+enum PaymentMethod {
+  PIX
+  CREDIT_CARD
+  DEBIT_CARD
+  BOLETO
+  BANK_TRANSFER
+}
+
 model Customer {
   id      Int      @id @default(autoincrement())
   name    String
@@ -39,8 +47,8 @@ model Charge {
 model Payment {
   id       Int      @id @default(autoincrement())
   chargeId Int     @unique
-  charge   Charge  @relation(fields: [chargeId], references: [id])
+  charge   Charge  @relation(fields: [chargeId], references: [id], onDelete: Cascade)
   amount   Decimal  @db.Decimal(10,2)
   paidAt   DateTime @default(now())
-  method   String?
+  method   PaymentMethod?
 }
