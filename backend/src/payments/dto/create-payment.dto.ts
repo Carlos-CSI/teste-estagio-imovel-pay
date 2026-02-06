@@ -1,6 +1,6 @@
 import { IsInt, IsPositive, IsNumber, IsEnum } from 'class-validator';
 import { Type } from 'class-transformer';
-import { ApiProperty,  } from '@nestjs/swagger';
+import { ApiProperty } from '@nestjs/swagger';
 import { PaymentMethod } from '@prisma/client';
 
 export class CreatePaymentDto {

@@ -1,4 +1,14 @@
-import { Body, Controller, Get, Param, Post, Delete, Patch, ParseIntPipe, HttpCode } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  Delete,
+  Patch,
+  ParseIntPipe,
+  HttpCode,
+} from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { CustomersService } from './customers.service';
 import { CreateCustomerDto } from './dto/create-customer.dto';
@@ -21,7 +31,7 @@ export class CustomersController {
   @Get(':id')
   @ApiOperation({ summary: 'Get customer by ID' })
   @ApiResponse({ status: 200, description: 'Customer returned successfully.' })
-  findOne(@Param('id', ParseIntPipe) id: number ): Promise<CustomerWithCharges> {
+  findOne(@Param('id', ParseIntPipe) id: number): Promise<CustomerWithCharges> {
     return this.service.findOne(id);
   }
 

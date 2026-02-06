@@ -20,7 +20,7 @@ export class AllExceptionsFilter implements ExceptionFilter {
     const request = ctx.getRequest();
 
     let status = HttpStatus.INTERNAL_SERVER_ERROR;
-    let message: string = 'Internal server error';
+    let message = 'Internal server error';
 
     const joinWithDotNewline = (arr: string[]) => {
       const joined = arr.join('.\n');
@@ -45,7 +45,10 @@ export class AllExceptionsFilter implements ExceptionFilter {
     } else if (exception instanceof PrismaClientKnownRequestError) {
       // Sanitize and map Prisma errors to safe HTTP responses
       // Log full details server-side
-      this.logger.error(exception.message, JSON.stringify({ code: exception.code, meta: exception.meta }));
+      this.logger.error(
+        exception.message,
+        JSON.stringify({ code: exception.code, meta: exception.meta }),
+      );
 
       switch (exception.code) {
         case 'P2002': {

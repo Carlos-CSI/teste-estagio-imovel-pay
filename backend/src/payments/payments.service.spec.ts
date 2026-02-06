@@ -19,7 +19,10 @@ resetPaymentIdCounter();
 const payment1 = makePayment();
 const payment1WithCharge = makePaymentWithCharge();
 const payment1WithChargeAndCustomer = makePaymentWithChargeAndCustomer();
-const payments = [payment1WithChargeAndCustomer, makePaymentWithChargeAndCustomer({ payment: { id: 2, chargeId: 2 } })];
+const payments = [
+  payment1WithChargeAndCustomer,
+  makePaymentWithChargeAndCustomer({ payment: { id: 2, chargeId: 2 } }),
+];
 const createPayment1Dto = makeCreatePaymentDto();
 const charge1 = makeCharge({ id: 1, status: 'PENDENTE', amount: new Decimal('100.00') });
 
@@ -74,12 +77,8 @@ describe('PaymentsService', () => {
       prisma.charge.findUnique.mockResolvedValue(null);
 
       // Act & Assert
-      await expect(service.create(createPayment1Dto)).rejects.toThrow(
-        NotFoundException
-      );
-      await expect(service.create(createPayment1Dto)).rejects.toThrow(
-        'Charge with ID 1 not found'
-      );
+      await expect(service.create(createPayment1Dto)).rejects.toThrow(NotFoundException);
+      await expect(service.create(createPayment1Dto)).rejects.toThrow('Charge with ID 1 not found');
     });
 
     it('should throw BadRequestException when charge already has a payment', async () => {
@@ -88,11 +87,9 @@ describe('PaymentsService', () => {
       prisma.payment.findUnique.mockResolvedValue(payment1);
 
       // Act & Assert
+      await expect(service.create(createPayment1Dto)).rejects.toThrow(BadRequestException);
       await expect(service.create(createPayment1Dto)).rejects.toThrow(
-        BadRequestException
-      );
-      await expect(service.create(createPayment1Dto)).rejects.toThrow(
-        'Charge 1 already has a payment registered'
+        'Charge 1 already has a payment registered',
       );
     });
 
@@ -109,9 +106,7 @@ describe('PaymentsService', () => {
       prisma.payment.findUnique.mockResolvedValue(null);
 
       // Act / Assert
-      await expect(service.create(partialPaymentDto)).rejects.toThrow(
-        BadRequestException,
-      );
+      await expect(service.create(partialPaymentDto)).rejects.toThrow(BadRequestException);
       await expect(service.create(partialPaymentDto)).rejects.toThrow(
         'Partial payments are not allowed',
       );
@@ -164,9 +159,7 @@ describe('PaymentsService', () => {
   describe('findOne', () => {
     it('should return a single payment with charge and customer', async () => {
       // Arrange
-      prisma.payment.findUniqueOrThrow.mockResolvedValue(
-        payment1WithChargeAndCustomer
-      );
+      prisma.payment.findUniqueOrThrow.mockResolvedValue(payment1WithChargeAndCustomer);
 
       // Act
       const result = await service.findOne(payment1.id);
@@ -187,9 +180,7 @@ describe('PaymentsService', () => {
 
     it('should throw an error if payment not found', async () => {
       // Arrange
-      prisma.payment.findUniqueOrThrow.mockRejectedValue(
-        new Error('Record not found')
-      );
+      prisma.payment.findUniqueOrThrow.mockRejectedValue(new Error('Record not found'));
 
       // Act & Assert
       await expect(service.findOne(999)).rejects.toThrow('Record not found');

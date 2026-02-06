@@ -18,10 +18,7 @@ export function makeCustomer(overrides: Partial<Customer> = {}): Customer {
   return { ...customer, ...overrides } as Customer;
 }
 
-export function makeCustomerWithCharges(
-  overrides: Partial<Customer> = {},
-  charges: Charge[] = [],
-) {
+export function makeCustomerWithCharges(overrides: Partial<Customer> = {}, charges: Charge[] = []) {
   const customer = makeCustomer(overrides);
   return { ...customer, charges } as Customer & { charges: Charge[] };
 }

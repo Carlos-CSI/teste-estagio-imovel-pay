@@ -13,7 +13,7 @@ export function makeCharge(overrides: Partial<Charge> = {}): Charge {
   const charge: Charge = {
     id: overrides.id ?? chargeIdCounter++,
     customerId: overrides.customerId ?? 1,
-    amount: overrides.amount ?? new Decimal(100.50),
+    amount: overrides.amount ?? new Decimal(100.5),
     dueDate: overrides.dueDate ?? new Date('2026-03-01T00:00:00.000Z'),
     status: overrides.status ?? ChargeStatus.PENDENTE,
     createdAt: overrides.createdAt ?? new Date('2024-01-01T00:00:00.000Z'),
@@ -28,16 +28,18 @@ export function makeChargeWithCustomer(
   customer?: Partial<Customer>,
 ) {
   const charge = makeCharge(overrides);
-  const customerData: Customer = customer ? {
-    id: customer.id ?? charge.customerId,
-    name: customer.name ?? 'Test Customer',
-    cpf: customer.cpf ?? '12345678900',
-  } as Customer : {
-    id: charge.customerId,
-    name: 'Test Customer',
-    cpf: '12345678900',
-  } as Customer;
-  
+  const customerData: Customer = customer
+    ? ({
+        id: customer.id ?? charge.customerId,
+        name: customer.name ?? 'Test Customer',
+        cpf: customer.cpf ?? '12345678900',
+      } as Customer)
+    : ({
+        id: charge.customerId,
+        name: 'Test Customer',
+        cpf: '12345678900',
+      } as Customer);
+
   return { ...charge, customer: customerData } as Charge & { customer: Customer };
 }
 
@@ -47,31 +49,32 @@ export function makeChargeWithCustomerAndPayment(
   payment?: Partial<Payment>,
 ) {
   const chargeWithCustomer = makeChargeWithCustomer(overrides, customer);
-  const paymentData: Payment = payment ? {
-    id: payment.id ?? 1,
-    chargeId: payment.chargeId ?? chargeWithCustomer.id,
-    amount: payment.amount ?? chargeWithCustomer.amount,
-    paidAt: payment.paidAt ?? new Date('2024-01-15T10:00:00.000Z'),
-    method: payment.method ?? PaymentMethod.PIX,
-  } as Payment : null;
-  
-  return { ...chargeWithCustomer, payment: paymentData } as Charge & { customer: Customer; payment: Payment | null };
+  const paymentData: Payment = payment
+    ? ({
+        id: payment.id ?? 1,
+        chargeId: payment.chargeId ?? chargeWithCustomer.id,
+        amount: payment.amount ?? chargeWithCustomer.amount,
+        paidAt: payment.paidAt ?? new Date('2024-01-15T10:00:00.000Z'),
+        method: payment.method ?? PaymentMethod.PIX,
+      } as Payment)
+    : null;
+
+  return { ...chargeWithCustomer, payment: paymentData } as Charge & {
+    customer: Customer;
+    payment: Payment | null;
+  };
 }
 
-export function makeCreateChargeDto(
-  overrides: Partial<CreateChargeDto> = {},
-): CreateChargeDto {
+export function makeCreateChargeDto(overrides: Partial<CreateChargeDto> = {}): CreateChargeDto {
   return {
     customerId: overrides.customerId ?? 1,
-    amount: overrides.amount ?? 100.50,
+    amount: overrides.amount ?? 100.5,
     dueDate: overrides.dueDate ?? '2026-03-01T00:00:00.000Z',
     ...overrides,
   } as CreateChargeDto;
 }
 
-export function makeUpdateChargeDto(
-  overrides: Partial<UpdateChargeDto> = {},
-): UpdateChargeDto {
+export function makeUpdateChargeDto(overrides: Partial<UpdateChargeDto> = {}): UpdateChargeDto {
   return {
     amount: overrides.amount,
     dueDate: overrides.dueDate,

@@ -8,7 +8,7 @@ export class CreateChargeDto {
   @IsPositive()
   customerId: number;
 
-  @ApiProperty({ example: 100.50, description: 'Charge amount in BRL' })
+  @ApiProperty({ example: 100.5, description: 'Charge amount in BRL' })
   @Type(() => Number)
   @IsPositive()
   @Min(0.01)

@@ -2,7 +2,13 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { CustomersController } from './customers.controller';
 import { CustomersService } from './customers.service';
 import { mockDeep, DeepMockProxy } from 'jest-mock-extended';
-import { makeCustomer, makeCustomerWithCharges, makeCreateCustomerDto, makeUpdateCustomerDto, resetCustomerIdCounter } from '../../test/factories';
+import {
+  makeCustomer,
+  makeCustomerWithCharges,
+  makeCreateCustomerDto,
+  makeUpdateCustomerDto,
+  resetCustomerIdCounter,
+} from '../../test/factories';
 
 // Use factories to create test data
 resetCustomerIdCounter();
@@ -88,9 +94,7 @@ describe('CustomersController', () => {
     });
 
     it('should throw an error when CPF already exists', async () => {
-      const prismaError: any = new Error(
-        'Unique constraint failed on the fields: (`cpf`)'
-      );
+      const prismaError: any = new Error('Unique constraint failed on the fields: (`cpf`)');
       prismaError.code = 'P2002';
 
       // Arrange
@@ -98,7 +102,7 @@ describe('CustomersController', () => {
 
       // Act / Assert
       await expect(controller.create(createCustomer1Dto)).rejects.toThrow(
-        'Unique constraint failed on the fields: (`cpf`)'
+        'Unique constraint failed on the fields: (`cpf`)',
       );
       expect(service.create).toHaveBeenCalledWith(createCustomer1Dto);
     });
@@ -114,10 +118,7 @@ describe('CustomersController', () => {
 
       // Assert
       expect(result).toEqual(updatedCustomer);
-      expect(service.update).toHaveBeenCalledWith(
-        customer1.id,
-        updateCustomer1Dto
-      );
+      expect(service.update).toHaveBeenCalledWith(customer1.id, updateCustomer1Dto);
     });
 
     it('should throw an error if customer to update not found', async () => {
@@ -125,9 +126,7 @@ describe('CustomersController', () => {
       service.update.mockRejectedValue(new Error('Record not found'));
 
       // Act / Assert
-      await expect(
-        controller.update(999, updateCustomer1Dto)
-      ).rejects.toThrow('Record not found');
+      await expect(controller.update(999, updateCustomer1Dto)).rejects.toThrow('Record not found');
       expect(service.update).toHaveBeenCalledWith(999, updateCustomer1Dto);
     });
   });

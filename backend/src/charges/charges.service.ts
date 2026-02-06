@@ -4,7 +4,11 @@ import { CreateChargeDto } from './dto/create-charge.dto';
 import { UpdateChargeDto } from './dto/update-charge.dto';
 import { QueryChargesDto } from './dto/query-charges.dto';
 import { Prisma } from '@prisma/client';
-import { PaginatedChargesResponse, ChargeWithCustomer, ChargeWithRelations } from './interfaces/charge-response.interface';
+import {
+  PaginatedChargesResponse,
+  ChargeWithCustomer,
+  ChargeWithRelations,
+} from './interfaces/charge-response.interface';
 
 @Injectable()
 export class ChargesService {
@@ -38,7 +42,7 @@ export class ChargesService {
   findOne(id: number): Promise<ChargeWithRelations> {
     return this.prisma.charge.findUniqueOrThrow({
       where: { id },
-      include: { 
+      include: {
         customer: true,
         payment: true,
       },
@@ -58,7 +62,7 @@ export class ChargesService {
 
   update(id: number, data: UpdateChargeDto): Promise<ChargeWithCustomer> {
     const updateData: Prisma.ChargeUpdateInput = {};
-    
+
     if (data.amount !== undefined) {
       updateData.amount = new Prisma.Decimal(data.amount);
     }

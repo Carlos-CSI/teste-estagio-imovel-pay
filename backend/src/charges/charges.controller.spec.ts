@@ -2,13 +2,13 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { ChargesController } from './charges.controller';
 import { ChargesService } from './charges.service';
 import { mockDeep, DeepMockProxy } from 'jest-mock-extended';
-import { 
-  makeCharge, 
+import {
+  makeCharge,
   makeChargeWithCustomer,
   makeChargeWithCustomerAndPayment,
-  makeCreateChargeDto, 
-  makeUpdateChargeDto, 
-  resetChargeIdCounter 
+  makeCreateChargeDto,
+  makeUpdateChargeDto,
+  resetChargeIdCounter,
 } from '../../test/factories';
 import { ChargeStatus } from '@prisma/client';
 import { Decimal } from '@prisma/client/runtime/library';
@@ -18,7 +18,10 @@ resetChargeIdCounter();
 const charge1 = makeCharge();
 const charge1WithCustomer = makeChargeWithCustomer();
 const charge1WithCustomerAndPayment = makeChargeWithCustomerAndPayment();
-const charge2WithCustomer = makeChargeWithCustomer({ amount: new Decimal(200.00), status: ChargeStatus.PAGO });
+const charge2WithCustomer = makeChargeWithCustomer({
+  amount: new Decimal(200.0),
+  status: ChargeStatus.PAGO,
+});
 const charges = [charge1WithCustomer, charge2WithCustomer];
 const createCharge1Dto = makeCreateChargeDto();
 const updateCharge1Dto = makeUpdateChargeDto({ status: ChargeStatus.PAGO });
@@ -89,7 +92,11 @@ describe('ChargesController', () => {
 
       // Assert
       expect(result).toEqual(expectedResult);
-      expect(service.findAll).toHaveBeenCalledWith({ page: 1, limit: 10, status: ChargeStatus.PAGO });
+      expect(service.findAll).toHaveBeenCalledWith({
+        page: 1,
+        limit: 10,
+        status: ChargeStatus.PAGO,
+      });
     });
   });
 
@@ -130,9 +137,7 @@ describe('ChargesController', () => {
     });
 
     it('should throw an error when customer does not exist', async () => {
-      const prismaError: any = new Error(
-        'Foreign key constraint failed'
-      );
+      const prismaError: any = new Error('Foreign key constraint failed');
       prismaError.code = 'P2003';
 
       // Arrange
@@ -140,7 +145,7 @@ describe('ChargesController', () => {
 
       // Act / Assert
       await expect(controller.create(createCharge1Dto)).rejects.toThrow(
-        'Foreign key constraint failed'
+        'Foreign key constraint failed',
       );
       expect(service.create).toHaveBeenCalledWith(createCharge1Dto);
     });
@@ -164,9 +169,7 @@ describe('ChargesController', () => {
       service.update.mockRejectedValue(new Error('Record not found'));
 
       // Act / Assert
-      await expect(controller.update(999, updateCharge1Dto)).rejects.toThrow(
-        'Record not found'
-      );
+      await expect(controller.update(999, updateCharge1Dto)).rejects.toThrow('Record not found');
       expect(service.update).toHaveBeenCalledWith(999, updateCharge1Dto);
     });
   });

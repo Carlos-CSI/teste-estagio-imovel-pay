@@ -16,11 +16,11 @@ export class UpdateChargeDto {
   @IsDateString()
   dueDate?: string;
 
-  @ApiProperty({ 
-    example: 'PAGO', 
+  @ApiProperty({
+    example: 'PAGO',
     description: 'Charge status',
     enum: ChargeStatus,
-    required: false
+    required: false,
   })
   @IsOptional()
   @IsEnum(ChargeStatus, { message: 'Status must be PENDENTE, PAGO, or CANCELADO' })

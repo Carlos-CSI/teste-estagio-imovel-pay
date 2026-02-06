@@ -64,9 +64,7 @@ export function makePaymentWithChargeAndCustomer(overrides?: {
   return { ...payment, charge };
 }
 
-export function makeCreatePaymentDto(
-  overrides?: Partial<CreatePaymentDto>
-): CreatePaymentDto {
+export function makeCreatePaymentDto(overrides?: Partial<CreatePaymentDto>): CreatePaymentDto {
   return {
     chargeId: 1,
     amount: 100.0,

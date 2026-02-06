@@ -2,7 +2,13 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { CustomersService } from './customers.service';
 import { PrismaService } from '../prisma/prisma.service';
 import { mockDeep, DeepMockProxy } from 'jest-mock-extended';
-import { makeCustomer, makeCustomerWithCharges, makeCreateCustomerDto, makeUpdateCustomerDto, resetCustomerIdCounter } from '../../test/factories';
+import {
+  makeCustomer,
+  makeCustomerWithCharges,
+  makeCreateCustomerDto,
+  makeUpdateCustomerDto,
+  resetCustomerIdCounter,
+} from '../../test/factories';
 
 // Use factories to create test data
 resetCustomerIdCounter();
@@ -13,7 +19,6 @@ const customers = [customer1, customer2];
 const createCustomer1Dto = makeCreateCustomerDto();
 const updateCustomer1Dto = makeUpdateCustomerDto();
 const updatedCustomer = { ...customer1, name: updateCustomer1Dto.name };
-
 
 describe('CustomersService', () => {
   let service: CustomersService;
@@ -72,9 +77,7 @@ describe('CustomersService', () => {
 
     it('should throw an error if customer not found', async () => {
       // Arrange
-      prisma.customer.findUniqueOrThrow.mockRejectedValue(
-        new Error('Record not found')
-      );
+      prisma.customer.findUniqueOrThrow.mockRejectedValue(new Error('Record not found'));
 
       // Act / Assert
       await expect(service.findOne(999)).rejects.toThrow('Record not found');
@@ -100,9 +103,7 @@ describe('CustomersService', () => {
     });
 
     it('should throw an error when CPF already exists', async () => {
-      const prismaError: any = new Error(
-        'Unique constraint failed on the fields: (`cpf`)'
-      );
+      const prismaError: any = new Error('Unique constraint failed on the fields: (`cpf`)');
       prismaError.code = 'P2002';
       prismaError.meta = { target: ['cpf'] };
 
@@ -111,7 +112,7 @@ describe('CustomersService', () => {
 
       // Act / Assert
       await expect(service.create(createCustomer1Dto)).rejects.toThrow(
-        'Unique constraint failed on the fields: (`cpf`)'
+        'Unique constraint failed on the fields: (`cpf`)',
       );
       expect(prisma.customer.create).toHaveBeenCalledWith({
         data: {
@@ -142,14 +143,10 @@ describe('CustomersService', () => {
 
     it('should throw an error if customer to update not found', async () => {
       // Arrange
-      prisma.customer.update.mockRejectedValue(
-        new Error('Record not found')
-      );
+      prisma.customer.update.mockRejectedValue(new Error('Record not found'));
 
       // Act / Assert
-      await expect(service.update(999, updateCustomer1Dto)).rejects.toThrow(
-        'Record not found'
-      );
+      await expect(service.update(999, updateCustomer1Dto)).rejects.toThrow('Record not found');
     });
   });
 
@@ -170,9 +167,7 @@ describe('CustomersService', () => {
 
     it('should throw an error if customer to delete not found', async () => {
       // Arrange
-      prisma.customer.delete.mockRejectedValue(
-        new Error('Record not found')
-      );
+      prisma.customer.delete.mockRejectedValue(new Error('Record not found'));
 
       // Act / Assert
       await expect(service.remove(999)).rejects.toThrow('Record not found');

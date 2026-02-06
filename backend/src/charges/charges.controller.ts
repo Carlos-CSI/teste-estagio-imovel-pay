@@ -1,10 +1,25 @@
-import { Body, Controller, Get, Param, Post, Delete, Patch, ParseIntPipe, HttpCode, Query } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  Delete,
+  Patch,
+  ParseIntPipe,
+  HttpCode,
+  Query,
+} from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse, ApiQuery } from '@nestjs/swagger';
 import { ChargesService } from './charges.service';
 import { CreateChargeDto } from './dto/create-charge.dto';
 import { UpdateChargeDto } from './dto/update-charge.dto';
 import { QueryChargesDto } from './dto/query-charges.dto';
-import { PaginatedChargesResponse, ChargeWithCustomer, ChargeWithRelations } from './interfaces/charge-response.interface';
+import {
+  PaginatedChargesResponse,
+  ChargeWithCustomer,
+  ChargeWithRelations,
+} from './interfaces/charge-response.interface';
 
 @ApiTags('charges')
 @Controller('charges')
@@ -38,7 +53,10 @@ export class ChargesController {
   @Patch(':id')
   @ApiOperation({ summary: 'Update charge' })
   @ApiResponse({ status: 200, description: 'Charge updated successfully.' })
-  update(@Param('id', ParseIntPipe) id: number, @Body() dto: UpdateChargeDto): Promise<ChargeWithCustomer> {
+  update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() dto: UpdateChargeDto,
+  ): Promise<ChargeWithCustomer> {
     return this.service.update(id, dto);
   }
 

@@ -2,7 +2,10 @@ import { Injectable, NotFoundException, BadRequestException } from '@nestjs/comm
 import { Prisma } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreatePaymentDto } from './dto/create-payment.dto';
-import { PaymentWithCharge, PaymentWithChargeAndCustomer } from './interfaces/payment-response.interface';
+import {
+  PaymentWithCharge,
+  PaymentWithChargeAndCustomer,
+} from './interfaces/payment-response.interface';
 import { Decimal } from '@prisma/client/runtime/library';
 import type { Payment } from '@prisma/client';
 

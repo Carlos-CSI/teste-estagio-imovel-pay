@@ -2,13 +2,13 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { ChargesService } from './charges.service';
 import { PrismaService } from '../prisma/prisma.service';
 import { mockDeep, DeepMockProxy } from 'jest-mock-extended';
-import { 
-  makeCharge, 
-  makeChargeWithCustomer, 
+import {
+  makeCharge,
+  makeChargeWithCustomer,
   makeChargeWithCustomerAndPayment,
-  makeCreateChargeDto, 
-  makeUpdateChargeDto, 
-  resetChargeIdCounter 
+  makeCreateChargeDto,
+  makeUpdateChargeDto,
+  resetChargeIdCounter,
 } from '../../test/factories';
 import { ChargeStatus } from '@prisma/client';
 import { Decimal } from '@prisma/client/runtime/library';
@@ -18,7 +18,10 @@ resetChargeIdCounter();
 const charge1 = makeCharge();
 const charge1WithCustomer = makeChargeWithCustomer();
 const charge1WithCustomerAndPayment = makeChargeWithCustomerAndPayment();
-const charge2WithCustomer = makeChargeWithCustomer({ amount: new Decimal(200.00), status: ChargeStatus.PAGO });
+const charge2WithCustomer = makeChargeWithCustomer({
+  amount: new Decimal(200.0),
+  status: ChargeStatus.PAGO,
+});
 const charges = [charge1WithCustomer, charge2WithCustomer];
 const createCharge1Dto = makeCreateChargeDto();
 const updateCharge1Dto = makeUpdateChargeDto({ status: ChargeStatus.PAGO });
@@ -121,7 +124,7 @@ describe('ChargesService', () => {
       expect(result).toEqual(charge1WithCustomerAndPayment);
       expect(prisma.charge.findUniqueOrThrow).toHaveBeenCalledWith({
         where: { id: charge1.id },
-        include: { 
+        include: {
           customer: true,
           payment: true,
         },
@@ -130,9 +133,7 @@ describe('ChargesService', () => {
 
     it('should throw an error if charge not found', async () => {
       // Arrange
-      prisma.charge.findUniqueOrThrow.mockRejectedValue(
-        new Error('Record not found')
-      );
+      prisma.charge.findUniqueOrThrow.mockRejectedValue(new Error('Record not found'));
 
       // Act / Assert
       await expect(service.findOne(999)).rejects.toThrow('Record not found');
@@ -160,9 +161,7 @@ describe('ChargesService', () => {
     });
 
     it('should throw an error when customer does not exist', async () => {
-      const prismaError: any = new Error(
-        'Foreign key constraint failed'
-      );
+      const prismaError: any = new Error('Foreign key constraint failed');
       prismaError.code = 'P2003';
 
       // Arrange
@@ -170,7 +169,7 @@ describe('ChargesService', () => {
 
       // Act / Assert
       await expect(service.create(createCharge1Dto)).rejects.toThrow(
-        'Foreign key constraint failed'
+        'Foreign key constraint failed',
       );
     });
   });
@@ -196,14 +195,10 @@ describe('ChargesService', () => {
 
     it('should throw an error if charge not found', async () => {
       // Arrange
-      prisma.charge.update.mockRejectedValue(
-        new Error('Record not found')
-      );
+      prisma.charge.update.mockRejectedValue(new Error('Record not found'));
 
       // Act / Assert
-      await expect(service.update(999, updateCharge1Dto)).rejects.toThrow(
-        'Record not found'
-      );
+      await expect(service.update(999, updateCharge1Dto)).rejects.toThrow('Record not found');
     });
   });
 
@@ -223,9 +218,7 @@ describe('ChargesService', () => {
 
     it('should throw an error if charge not found', async () => {
       // Arrange
-      prisma.charge.delete.mockRejectedValue(
-        new Error('Record not found')
-      );
+      prisma.charge.delete.mockRejectedValue(new Error('Record not found'));
 
       // Act / Assert
       await expect(service.remove(999)).rejects.toThrow('Record not found');

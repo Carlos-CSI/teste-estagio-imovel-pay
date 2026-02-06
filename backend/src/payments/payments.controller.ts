@@ -2,7 +2,10 @@ import { Body, Controller, Get, Param, Post, Delete, ParseIntPipe, HttpCode } fr
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { PaymentsService } from './payments.service';
 import { CreatePaymentDto } from './dto/create-payment.dto';
-import { PaymentWithCharge, PaymentWithChargeAndCustomer } from './interfaces/payment-response.interface';
+import {
+  PaymentWithCharge,
+  PaymentWithChargeAndCustomer,
+} from './interfaces/payment-response.interface';
 
 @ApiTags('payments')
 @Controller('payments')

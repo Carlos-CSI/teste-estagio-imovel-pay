@@ -9,11 +9,13 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   app.useGlobalFilters(new AllExceptionsFilter());
- 
-  app.useGlobalPipes(new ValidationPipe({
-    whitelist: true,
-    transform: true,
-  }));
+
+  app.useGlobalPipes(
+    new ValidationPipe({
+      whitelist: true,
+      transform: true,
+    }),
+  );
 
   app.enableCors();
 
@@ -24,7 +26,7 @@ async function bootstrap() {
     .addTag('charges')
     .addTag('customers')
     .build();
-  
+
   const document = SwaggerModule.createDocument(app, config);
 
   SwaggerModule.setup('api', app, document);
