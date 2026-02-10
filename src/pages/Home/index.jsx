@@ -3,33 +3,69 @@ import "./style.css";
 import Lixeira from "../../assets/lixeira.icon.svg";
 
 function Home() {
+  const cobrancas = [
+    {
+      id: "34234543234",
+      cliente: "João da Silva",
+      valor: 150.0,
+      vencimento: "2024-07-01",
+      status: "PENDENTE",
+    },
+    {
+      id: "3423454325345656",
+      cliente: "Bruna",
+      valor: 170.0,
+      vencimento: "2022-05-02",
+      status: "Pago",
+    },
+  ];
   return (
     <div className="container">
       <h1>MINI SISTEMA DE COBRANÇAS</h1>
-      <form>
-        <h2> Criar cobrança</h2>
 
-        <input name="nome" type="text" />
+      <div className="envolver">
+        <div className="formulario">
+          <form>
+            <h2> Cadastrar Cobrança</h2>
 
-        <input name="valor" type="number" />
-        <input name="data" type="date" />
-      </form>
+            <input placeholder="Nome do cliente" name="nome" type="text" />
 
-      <div>
-        <div>
-          <p> Nome: </p>
-
-          <p> Valor: R$</p>
-
-          <p> Data: </p>
-
-          <p>
-            Status: <button> PENDENTE</button>
-          </p>
+            <input placeholder="Valor da cobrança" name="valor" type="number" />
+            <input placeholder="Data de vencimento" name="data" type="date" />
+            <button type="button"> adicionar cobrança </button>
+          </form>
         </div>
-        <button>
-          <img src={Lixeira} alt="Ícone de lixeira" />
-        </button>
+
+        <div className="lista-de-cobrancas">
+          <h2>Lista de cobranças</h2>
+          {cobrancas.map((cobranca) => (
+            <div key={cobranca.id} className="cobranca">
+              <div>
+                <p>
+                  {" "}
+                  Nome: <span>{cobranca.cliente} </span>
+                </p>
+
+                <p>
+                  {" "}
+                  Valor: <span>R$ {cobranca.valor}</span>
+                </p>
+
+                <p>
+                  {" "}
+                  Data: <span>{cobranca.vencimento}</span>
+                </p>
+
+                <p>
+                  Status: <button> {cobranca.status}</button>
+                </p>
+              </div>
+              <button>
+                <img src={Lixeira} alt="Ícone de lixeira" />
+              </button>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
