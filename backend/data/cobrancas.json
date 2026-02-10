@@ -1,0 +1,23 @@
+[
+  {
+    "id": 1770744004064,
+    "cliente": "hugo",
+    "valor": "1.250",
+    "data": "2026-02-03",
+    "status": "Pago"
+  },
+  {
+    "id": 1770744079741,
+    "cliente": "ana  ",
+    "valor": "150.00",
+    "data": "2026-02-26",
+    "status": "PENDENTE"
+  },
+  {
+    "id": 1770745450896,
+    "cliente": "joana",
+    "valor": "78.00",
+    "data": "2025-01-01",
+    "status": "PENDENTE"
+  }
+]
