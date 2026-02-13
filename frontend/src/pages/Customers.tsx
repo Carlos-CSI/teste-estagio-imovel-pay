@@ -4,6 +4,7 @@ import type { Customer } from '../types';
 import { formatCPF } from '../utils/validators';
 import Spinner from '../components/common/Spinner';
 import CustomerDetailsModal from '../components/customers/CustomerDetailsModal';
+import CreateCustomerModal from '../components/customers/CreateCustomerModal';
 
 export default function Customers() {
   const [customers, setCustomers] = useState<Customer[]>([]);
@@ -14,6 +15,7 @@ export default function Customers() {
   // Modal states
   const [showDetailsModal, setShowDetailsModal] = useState(false);
   const [selectedCustomerId, setSelectedCustomerId] = useState<number | null>(null);
+  const [showCreateModal, setShowCreateModal] = useState(false);
 
   useEffect(() => {
     loadCustomers();
@@ -80,14 +82,24 @@ export default function Customers() {
           <label htmlFor="cpf-filter" className="block text-sm font-medium text-gray-700 mb-2">
             Filtrar por CPF
           </label>
-          <input
-            id="cpf-filter"
-            type="text"
-            value={cpfFilter}
-            onChange={handleCpfFilterChange}
-            placeholder="000.000.000-00"
-            className="w-64 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
-          />
+          <div className="flex items-center gap-3">
+            <input
+              id="cpf-filter"
+              type="text"
+              value={cpfFilter}
+              onChange={handleCpfFilterChange}
+              placeholder="000.000.000-00"
+              className="w-64 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+            />
+
+            <button
+              onClick={() => setShowCreateModal(true)}
+              className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none"
+            >
+              Novo Cliente
+            </button>
+          </div>
+
           {cpfFilter && (
             <button
               onClick={() => setCpfFilter('')}
@@ -159,6 +171,13 @@ export default function Customers() {
         isOpen={showDetailsModal}
         onClose={handleCloseDetailsModal}
         onCustomersChange={loadCustomers}
+      />
+      <CreateCustomerModal
+        isOpen={showCreateModal}
+        onClose={() => setShowCreateModal(false)}
+        onCreate={async () => {
+          await loadCustomers();
+        }}
       />
     </div>
   );
