@@ -11,7 +11,6 @@ Aplicação completa com dashboard interativo, gestão de clientes, cobranças e
 - **Tailwind CSS 3.4** - Estilização utilitária
 - **React Router DOM 7** - Roteamento SPA
 - **Axios** - Cliente HTTP com interceptors
-- **React Hook Form** + **Zod** - Formulários e validação
 - **Recharts** - Gráficos e visualizações
 - **Lucide React** - Ícones modernos
 - **Date-fns** - Manipulação segura de datas
@@ -48,12 +47,24 @@ src/
 │
 ├── components/
 │   ├── common/                # Componentes compartilhados
-│   │   └── Spinner.tsx        # Loading spinner
+│   │   ├── Spinner.tsx        # Loading spinner
+│   │   └── Timer.tsx          # Temporizador para countdowns
 │   │
 │   ├── dashboard/             # Componentes do Dashboard
 │   │   ├── StatsCard.tsx      # Cards de estatísticas
 │   │   ├── ChargePieChart.tsx # Gráfico de pizza (cobranças por status)
 │   │   └── RevenueBarChart.tsx # Gráfico de barras (receita mensal)
+│   │
+│   ├── customers/             # Componentes de clientes
+│   │   ├── CustomerDetailsModal.tsx  # Modal de detalhes (usa React Portal)
+│   │   ├── CustomerEditModal.tsx     # Modal de edição de cliente
+│   │   ├── CustomerDeleteModal.tsx   # Modal de confirmação de exclusão
+│   │   └── CreateCustomerModal.tsx   # Modal de criação de novo cliente
+│   │
+│   ├── charges/               # Componentes de cobranças
+│   │   ├── ChargesList.tsx           # Lista de cobranças do cliente
+│   │   ├── ChargesFilters.tsx        # Filtros de cobranças
+│   │   └── ChargePaymentModal.tsx    # Modal de registro de pagamento
 │   │
 │   └── layout/                # Componentes de layout
 │       ├── Layout.tsx         # Layout principal com ToastContainer
@@ -62,6 +73,9 @@ src/
 │
 ├── contexts/                  # Context API
 │   └── AppContext.tsx         # Estado global (toast, loading, sidebar)
+│
+├── hooks/                     # Custom hooks
+│   └── useCustomerDetails.ts  # Hook para detalhes do cliente
 │
 ├── pages/                     # Páginas da aplicação
 │   ├── Dashboard.tsx          # Dashboard com gráficos e estatísticas
@@ -88,14 +102,14 @@ src/
 O Tailwind CSS está configurado com tema personalizado:
 
 ### Paleta de Cores
-- **Primary**: Azul `#3b82f6` (hover: `#2563eb`)
-- **Success**: Verde `#10b981` (hover: `#059669`)
-- **Warning**: Amarelo `#f59e0b` (hover: `#d97706`)
-- **Danger**: Vermelho `#ef4444` (hover: `#dc2626`)
-- **Info**: Azul `#06b6d4` (hover: `#0891b2`)
+- **Primary**: Azul (escala completa de 50 a 900, base: `#3b82f6`)
+- **Success**: Verde `#10b981`
+- **Warning**: Amarelo `#f59e0b`
+- **Danger**: Vermelho `#ef4444`
+- **Info**: Azul `#3b82f6`
 
 ### Classes Customizadas
-- `slide-in-right`: animação de entrada lateral (usada nos toasts)
+- `animate-slide-in`: animação de entrada lateral (keyframe slideIn)
 - Variantes de estado completas: `hover:`, `focus:`, `active:`
 - Responsividade: breakpoints `sm:`, `md:`, `lg:`, `xl:`, `2xl:`
 
@@ -286,9 +300,25 @@ npm run lint
 - Carregamento assíncrono de dados com tratamento de erros
 
 ### 👥 Gestão de Clientes
-- Listagem completa de clientes
-- Visualização de detalhes
-- Formulários com validação (CPF, e-mail, etc.)
+- **Listagem completa de clientes** com tabela responsiva
+- **Filtro por CPF** em tempo real com máscara de formatação
+- **Botão "Novo Cliente"** posicionado ao lado do filtro para fácil acesso
+- **Modal de criação de cliente** com:
+  - Validação de CPF (algoritmo verificador completo)
+  - Máscara automática de CPF durante digitação
+  - Validação de campos obrigatórios (nome e CPF)
+  - Feedback visual de erros e sucesso via toasts
+- **Modal de detalhes do cliente** implementado com **React Portal**:
+  - Renderizado em `document.body` para escapar contextos de stacking
+  - Lista de cobranças do cliente com filtros (status, ordenação)
+  - Ações de editar e excluir cliente
+  - Botão para registrar pagamentos de cobranças
+- **Modal de edição** com validação de campos
+- **Modal de exclusão** com confirmação segura
+- **Gerenciamento de z-index** para modais aninhados:
+  - Modal principal: `z-50`
+  - Modais filhos (edit/delete/payment): `z-[60]`
+  - Garante que modais aninhados apareçam corretamente sobre modais pai
 
 ### 📄 Gestão de Cobranças
 - Criação e edição de cobranças
@@ -304,11 +334,17 @@ npm run lint
 
 ### ♿ Acessibilidade
 - **Navegação por teclado**: todos os componentes interativos são acessíveis via teclado
-- **ARIA labels**: atributos `aria-label`, `aria-expanded`, `aria-controls`, `aria-hidden` implementados
+- **ARIA labels**: atributos `aria-label`, `aria-expanded`, `aria-controls`, `aria-hidden`, `aria-modal`, `role="dialog"` implementados
 - **Gerenciamento de foco**: foco é movido automaticamente ao abrir/fechar o menu lateral
 - **Atalhos de teclado**: tecla `Escape` fecha o menu lateral
 - **Overlay acessível**: overlay do menu é um `<button>` acessível, não apenas uma div clicável
 - **Feedback visual**: estados de hover, focus e active bem definidos
+- **Modais acessíveis**: 
+  - Atributos `role="dialog"` e `aria-modal="true"` em todos os modais
+  - Títulos identificados com `aria-labelledby`
+  - Botões de fechar com `aria-label` descritivos
+  - Backdrop clicável para fechar modais
+  - React Portal garante que modais cubram todo o viewport (incluindo header sticky)
 
 ### 🛡️ Segurança e Validação
 - Validação de CPF com algoritmo verificador
@@ -357,6 +393,7 @@ Base URL: `http://localhost:3000`
 - Componentes funcionais com hooks modernos
 - Callbacks memoizados (`useCallback`) em contextos para evitar re-renders
 - Lazy loading pode ser adicionado futuramente com `React.lazy()`
+- **React Portal** para modais: evita problemas de stacking context e z-index
 
 ### TypeScript
 - Tipagem forte em toda a aplicação
@@ -368,9 +405,49 @@ Base URL: `http://localhost:3000`
 - Formato pt-BR para datas e moedas
 - Comparações de data no nível do dia (`startOfDay`)
 
+## 🎯 Padrões de Implementação
+
+### React Portal para Modais
+
+Os modais principais (como `CustomerDetailsModal`) utilizam `createPortal` do React para renderizar fora da hierarquia DOM normal:
+
+```tsx
+import { createPortal } from 'react-dom';
+
+export default function Modal({ isOpen, onClose, children }) {
+  if (!isOpen) return null;
+
+  const modal = (
+    <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
+      <article className="bg-white rounded-lg">
+        {children}
+      </article>
+    </div>
+  );
+
+  return createPortal(modal, document.body);
+}
+```
+
+**Benefícios:**
+- Escapa de contextos de stacking (inclui header sticky)
+- Backdrop cobre toda a tela, garantindo visual consistente
+- Facilita gerenciamento de z-index entre modais pai e filho
+- Melhora acessibilidade e comportamento de foco
+
+### Estratégia de Z-Index
+
+```
+Header sticky:        z-10
+Modal principal:      z-50
+Modais filhos:        z-[60]
+```
+
+Todos os modais seguem esta convenção para garantir empilhamento correto.
+
 ## 📦 Versão
 
-**v0.5.0** - Frontend completo com todas as funcionalidades principais implementadas.
+**v1.0.0** - Frontend completo com sistema de modais robusto, React Portal, gestão de clientes completa e todas as funcionalidades principais implementadas.
 
 ---
 
