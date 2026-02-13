@@ -8,11 +8,13 @@ import {
   Patch,
   ParseIntPipe,
   HttpCode,
+  Query,
 } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { CustomersService } from './customers.service';
 import { CreateCustomerDto } from './dto/create-customer.dto';
 import { UpdateCustomerDto } from './dto/update-customer.dto';
+import { QueryCustomerChargesDto } from './dto/query-customer-charges.dto';
 import type { Customer } from '@prisma/client';
 import { CustomerWithCharges } from './interfaces/customer-response.interface';
 
@@ -29,10 +31,13 @@ export class CustomersController {
   }
 
   @Get(':id')
-  @ApiOperation({ summary: 'Get customer by ID' })
+  @ApiOperation({ summary: 'Get customer by ID with optional charge filters' })
   @ApiResponse({ status: 200, description: 'Customer returned successfully.' })
-  findOne(@Param('id', ParseIntPipe) id: number): Promise<CustomerWithCharges> {
-    return this.service.findOne(id);
+  findOne(
+    @Param('id', ParseIntPipe) id: number,
+    @Query() query: QueryCustomerChargesDto,
+  ): Promise<CustomerWithCharges> {
+    return this.service.findOne(id, query);
   }
 
   @Post()

@@ -1,6 +1,24 @@
 # API de Gestão de Cobranças e Pagamentos
 
-API RESTful desenvolvida com NestJS para gerenciamento completo de clientes, cobranças e pagamentos, com validação de CPF, enum de métodos de pagamento, regras de domínio (sem pagamentos parciais), testes unitários abrangentes e documentação Swagger interativa.
+API RESTful desenvolvida com NestJS para gerenciamento completo de clientes, cobranças e pagamentos, com validação de CPF, cálculo automático de juros para cobranças vencidas, enum de métodos de pagamento, regras de domínio robustas, testes unitários abrangentes e documentação Swagger interativa.
+
+---
+
+## ✨ Novas Implementações
+
+### Sistema de Cálculo de Juros (v2.0)
+- ✅ **Calculador de juros automático**: 10% ao mês proporcional por dias (30 dias = 1 mês)
+- ✅ **Endpoint de cálculo**: `GET /charges/:id/calculate-payment` - consulta valor com juros
+- ✅ **Validação de pagamentos**: Sistema valida automaticamente valores incluindo juros
+- ✅ **7 testes unitários** cobrindo cenários de cobranças vencidas e não vencidas
+
+### Filtros Avançados para Cobranças do Cliente
+- ✅ **Filtro por status**: Query param `status` para filtrar cobranças (PAGO, PENDENTE, CANCELADO, VENCIDO)
+- ✅ **Ordenação flexível**: Query params `orderBy` (dueDate/amount/status) e `order` (asc/desc)
+- ✅ **Endpoint aprimorado**: `GET /customers/:id` com suporte a query parameters
+- ✅ **Resposta enriquecida**: Inclui detalhes do pagamento associado a cada cobrança
+
+---
 
 ## 📋 Índice
 
@@ -51,7 +69,8 @@ API RESTful desenvolvida com NestJS para gerenciamento completo de clientes, cob
 
 ### Gestão de Clientes (Customers)
 - ✅ **Listar todos os clientes** - `GET /customers` (ordenação alfabética por nome)
-- ✅ **Buscar cliente por ID** - `GET /customers/:id` (inclui charges relacionadas)
+- ✅ **Buscar cliente por ID** - `GET /customers/:id` (inclui charges relacionadas com filtros e ordenação)
+- ✅ **Filtrar e ordenar cobranças do cliente** - Query params: `status`, `orderBy` (dueDate/amount/status), `order` (asc/desc)
 - ✅ **Criar novo cliente** - `POST /customers` (com validação de CPF)
 - ✅ **Atualizar nome do cliente** - `PATCH /customers/:id`
 - ✅ **Remover cliente** - `DELETE /customers/:id` (cascade delete para charges e payments)
@@ -59,6 +78,7 @@ API RESTful desenvolvida com NestJS para gerenciamento completo de clientes, cob
 ### Gestão de Cobranças (Charges)
 - ✅ **Listar todas as cobranças** - `GET /charges` (paginação, filtro por status, inclui customer e payment)
 - ✅ **Buscar cobrança por ID** - `GET /charges/:id` (inclui customer e payment relacionados)
+- ✅ **Calcular valor de pagamento com juros** - `GET /charges/:id/calculate-payment` (calcula juros de 10% ao mês para cobranças vencidas)
 - ✅ **Criar nova cobrança** - `POST /charges` (com validação de customer existente)
 - ✅ **Atualizar cobrança** - `PATCH /charges/:id` (atualiza amount, dueDate ou status)
 - ✅ **Remover cobrança** - `DELETE /charges/:id` (cascade delete para payment relacionado)
@@ -70,7 +90,8 @@ API RESTful desenvolvida com NestJS para gerenciamento completo de clientes, cob
 - ✅ **Criar novo pagamento** - `POST /payments` (atualiza status da charge atomicamente via transação)
 - ✅ **Remover pagamento** - `DELETE /payments/:id`
 - ✅ **Validação de método de pagamento**: Enum `PaymentMethod` (PIX, CREDIT_CARD, DEBIT_CARD, BOLETO, BANK_TRANSFER)
-- ✅ **Regras de domínio**: Rejeita pagamentos parciais; apenas um pagamento por cobrança
+- ✅ **Regras de domínio**: Valida valor correto do pagamento incluindo juros se vencido; apenas um pagamento por cobrança
+- ✅ **Cálculo automático de juros**: Sistema calcula e valida juros de 10% ao mês proporcional por dias (30 dias = 1 mês)
 
 ### Validações Implementadas
 - **CPF**: Validação de formato (11 dígitos) + algoritmo de dígitos verificadores
@@ -80,6 +101,7 @@ API RESTful desenvolvida com NestJS para gerenciamento completo de clientes, cob
 - **Tipos de entrada**: ParseIntPipe para IDs, whitelist para DTOs, validação de valores positivos
 - **Transações atômicas**: Criação de pagamento + atualização de cobrança ocorrem em transação Prisma
 - **Tratamento de concorrência**: Mapeia erro Prisma P2002 (unique constraint) para BadRequestException
+- **Cálculo de juros**: Sistema valida automaticamente que pagamentos incluam juros de 10% ao mês para cobranças vencidas (proporcional por dias)
 
 ## 📁 Estrutura do Projeto
 
@@ -122,6 +144,9 @@ backend/
 │   │   └── interfaces/
 │   │       └── payment-response.interface.ts # Tipos de resposta
 │   ├── commons/                         # Código compartilhado
+│   │   ├── utils/
+│   │   │   ├── interest-calculator.ts       # Utilitário para cálculo de juros (10% ao mês)
+│   │   │   └── interest-calculator.spec.ts  # Testes do calculador de juros (7 testes)
 │   │   └── validators/
 │   │       └── is-cpf.validator.ts          # Validador customizado de CPF
 │   ├── filters/                         # Exception filters
@@ -274,7 +299,8 @@ it('should create and return a new customer', async () => {
 - ✅ **ChargesController**: 100% (12 testes)
 - ✅ **PaymentsService**: 100% (7 testes)
 - ✅ **PaymentsController**: 100% (6 testes)
-- Total: **58 testes passando** (6 suites)
+- ✅ **InterestCalculator**: 100% (7 testes)
+- Total: **65 testes passando** (7 suites)
 
 ## 📖 Documentação da API
 
@@ -293,22 +319,23 @@ A documentação Swagger é gerada automaticamente a partir dos decorators:
 ### Endpoints Principais
 
 #### Customers
-| Método | Endpoint          | Descrição                    | Status |
-|--------|-------------------|------------------------------|--------|
-| GET    | `/customers`      | Lista todos os clientes      | 200    |
-| GET    | `/customers/:id`  | Busca cliente por ID         | 200    |
-| POST   | `/customers`      | Cria novo cliente            | 201    |
-| PATCH  | `/customers/:id`  | Atualiza nome do cliente     | 200    |
-| DELETE | `/customers/:id`  | Remove cliente               | 204    |
+| Método | Endpoint                                    | Descrição                               | Status |
+|--------|---------------------------------------------|-----------------------------------------|--------|
+| GET    | `/customers`                                | Lista todos os clientes                 | 200    |
+| GET    | `/customers/:id?status=PAGO&orderBy=dueDate&order=desc` | Busca cliente por ID com filtros de cobranças | 200 |
+| POST   | `/customers`                                | Cria novo cliente                       | 201    |
+| PATCH  | `/customers/:id`                            | Atualiza nome do cliente                | 200    |
+| DELETE | `/customers/:id`                            | Remove cliente                          | 204    |
 
 #### Charges
-| Método | Endpoint                    | Descrição                               | Status |
-|--------|-----------------------------|-----------------------------------------|--------|
-| GET    | `/charges?status=PAGO&page=1&limit=10` | Lista cobranças (filtro + paginação) | 200 |
-| GET    | `/charges/:id`              | Busca cobrança por ID                   | 200    |
-| POST   | `/charges`                  | Cria nova cobrança                      | 201    |
-| PATCH  | `/charges/:id`              | Atualiza cobrança                       | 200    |
-| DELETE | `/charges/:id`              | Remove cobrança                         | 204    |
+| Método | Endpoint                                | Descrição                                      | Status |
+|--------|-----------------------------------------|------------------------------------------------|--------|
+| GET    | `/charges?status=PAGO&page=1&limit=10`  | Lista cobranças (filtro + paginação)           | 200    |
+| GET    | `/charges/:id`                          | Busca cobrança por ID                          | 200    |
+| GET    | `/charges/:id/calculate-payment`        | Calcula valor de pagamento com juros se vencido | 200    |
+| POST   | `/charges`                              | Cria nova cobrança                             | 201    |
+| PATCH  | `/charges/:id`                          | Atualiza cobrança                              | 200    |
+| DELETE | `/charges/:id`                          | Remove cobrança                                | 204    |
 
 #### Payments
 | Método | Endpoint          | Descrição                                      | Status |
@@ -339,6 +366,42 @@ curl -X POST http://localhost:3000/customers \
 }
 ```
 
+**GET /customers/:id** - Buscar cliente com filtros de cobranças
+```bash
+# Buscar apenas cobranças pagas ordenadas por data de vencimento descendente
+curl "http://localhost:3000/customers/1?status=PAGO&orderBy=dueDate&order=desc"
+
+# Buscar todas cobranças ordenadas por valor
+curl "http://localhost:3000/customers/1?orderBy=amount&order=asc"
+```
+
+**Resposta (200 OK)**:
+```json
+{
+  "id": 1,
+  "name": "João Silva",
+  "cpf": "12345678900",
+  "charges": [
+    {
+      "id": 1,
+      "customerId": 1,
+      "amount": "150.00",
+      "dueDate": "2026-02-15T00:00:00.000Z",
+      "status": "PAGO",
+      "createdAt": "2026-01-01T12:00:00.000Z",
+      "updatedAt": "2026-02-10T10:30:00.000Z",
+      "payment": {
+        "id": 1,
+        "chargeId": 1,
+        "amount": "150.00",
+        "method": "PIX",
+        "paidAt": "2026-02-10T10:30:00.000Z"
+      }
+    }
+  ]
+}
+```
+
 **POST /charges** - Criar cobrança
 ```bash
 curl -X POST http://localhost:3000/charges \
@@ -363,32 +426,50 @@ curl -X POST http://localhost:3000/charges \
 }
 ```
 
+**GET /charges/:id/calculate-payment** - Calcular valor de pagamento com juros
+```bash
+curl http://localhost:3000/charges/1/calculate-payment
+```
+
+**Resposta (200 OK)** - Para cobrança vencida há 30 dias:
+```json
+{
+  "originalAmount": 100.00,
+  "interest": 10.00,
+  "totalAmount": 110.00,
+  "isOverdue": true,
+  "monthsOverdue": 1
+}
+```
+
 **POST /payments** - Criar pagamento (atualiza charge atomicamente)
 ```bash
 curl -X POST http://localhost:3000/payments \
   -H "Content-Type: application/json" \
   -d '{
     "chargeId": 1,
-    "amount": 100.50,
+    "amount": 110.00,
     "method": "PIX"
   }'
 ```
+
+**Observação**: O valor do pagamento deve incluir juros de 10% ao mês para cobranças vencidas (proporcional por dias). Use o endpoint `/charges/:id/calculate-payment` para obter o valor correto.
 
 **Resposta (201 Created)**:
 ```json
 {
   "id": 1,
   "chargeId": 1,
-  "amount": "100.50",
+  "amount": "110.00",
   "method": "PIX",
   "paidAt": "2026-02-05T12:30:00.000Z",
   "charge": {
     "id": 1,
     "customerId": 1,
-    "amount": "100.50",
-    "dueDate": "2026-03-01T00:00:00.000Z",
+    "amount": "100.00",
+    "dueDate": "2026-01-05T00:00:00.000Z",
     "status": "PAGO",
-    "createdAt": "2026-02-05T12:00:00.000Z",
+    "createdAt": "2026-01-01T12:00:00.000Z",
     "updatedAt": "2026-02-05T12:30:00.000Z"
   }
 }
@@ -452,6 +533,54 @@ Implementado no validador customizado `@IsCpf()`:
 
 **Importante**: A validação verifica apenas a validade matemática do CPF. Um CPF pode passar no algoritmo mas estar irregular na Receita Federal (suspenso, cancelado ou pendente de regularização). Para validação completa, seria necessário integrar com APIs oficiais da Receita Federal.
 
+### Cálculo de Juros para Cobranças Vencidas
+
+O sistema implementa um calculador de juros automático para cobranças vencidas, localizado em `commons/utils/interest-calculator.ts`.
+
+#### Regras de Cálculo
+
+- **Taxa de juros**: 10% ao mês
+- **Base de cálculo**: Proporcional por dias corridos (30 dias = 1 mês)
+- **Aplicação**: Automática a partir do dia seguinte ao vencimento
+
+#### Fórmula
+
+```
+Juros = Valor Original × 0.10 × (Dias Vencidos ÷ 30)
+Valor Total = Valor Original + Juros
+```
+
+#### Exemplos
+
+| Valor Original | Dias Vencidos | Meses | Juros | Valor Total |
+|----------------|---------------|-------|-------|-------------|
+| R$ 100,00      | 0 (não vencido) | 0 | R$ 0,00 | R$ 100,00 |
+| R$ 100,00      | 15 dias       | 0.5 | R$ 5,00 | R$ 105,00 |
+| R$ 100,00      | 30 dias       | 1.0 | R$ 10,00 | R$ 110,00 |
+| R$ 100,00      | 60 dias       | 2.0 | R$ 20,00 | R$ 120,00 |
+| R$ 250,50      | 30 dias       | 1.0 | R$ 25,05 | R$ 275,55 |
+
+#### Integração com Pagamentos
+
+Quando um pagamento é criado, o sistema:
+
+1. **Calcula o valor esperado** com juros se a cobrança estiver vencida
+2. **Valida o valor do pagamento** contra o valor esperado (tolerância de 1 centavo para arredondamento)
+3. **Rejeita o pagamento** se o valor não corresponder ao esperado
+
+**Endpoint auxiliar**: Use `GET /charges/:id/calculate-payment` para obter o valor correto antes de criar o pagamento.
+
+```typescript
+// Exemplo de resposta do endpoint calculate-payment
+{
+  "originalAmount": 100.00,
+  "interest": 10.00,
+  "totalAmount": 110.00,
+  "isOverdue": true,
+  "monthsOverdue": 1
+}
+```
+
 ### Tratamento de Erros
 
 O `AllExceptionsFilter` mapeia erros do Prisma para códigos HTTP adequados e **sanitiza mensagens** (evitando vazamento de detalhes internos do BD), enquanto loga detalhes completos server-side:
@@ -502,6 +631,8 @@ return this.prisma.customer.findMany({
 - **Repository Pattern**: Prisma abstrai acesso ao banco
 - **Exception Filters**: Tratamento centralizado de erros
 - **Factory Pattern**: Geração de dados de teste reutilizáveis
+- **Pure Functions**: Utilitários sem efeitos colaterais (e.g., `calculateInterest`)
+- **Business Rules Validation**: Regras de domínio aplicadas na camada de serviço
 
 ### Boas Práticas de Teste
 
@@ -520,7 +651,7 @@ return this.prisma.customer.findMany({
 | `npm run start:dev` | Inicia em modo desenvolvimento (hot-reload) |
 | `npm run build` | Compila TypeScript para JavaScript |
 | `npm run start` | Inicia em modo produção |
-| `npm test` | Executa testes unitários (58 testes) |
+| `npm test` | Executa testes unitários (65 testes) |
 | `npm run test:watch` | Testes em modo watch |
 | `npm run test:cov` | Gera relatório de cobertura |
 | `npm run lint` | Executa ESLint e corrige problemas automaticamente |

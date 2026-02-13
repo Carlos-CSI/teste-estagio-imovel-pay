@@ -67,4 +67,11 @@ export class ChargesController {
   async remove(@Param('id', ParseIntPipe) id: number) {
     await this.service.remove(id);
   }
+
+  @Get(':id/calculate-payment')
+  @ApiOperation({ summary: 'Calculate payment amount with interest if overdue' })
+  @ApiResponse({ status: 200, description: 'Payment amount calculated successfully.' })
+  calculatePaymentAmount(@Param('id', ParseIntPipe) id: number) {
+    return this.service.calculatePaymentAmount(id);
+  }
 }

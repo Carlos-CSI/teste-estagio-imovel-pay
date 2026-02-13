@@ -8,6 +8,7 @@ import {
 } from './interfaces/payment-response.interface';
 import { Decimal } from '@prisma/client/runtime/library';
 import type { Payment } from '@prisma/client';
+import { calculateInterest } from '../commons/utils/interest-calculator';
 
 @Injectable()
 export class PaymentsService {
@@ -32,9 +33,16 @@ export class PaymentsService {
       throw new BadRequestException(`Charge ${data.chargeId} already has a payment registered`);
     }
 
-    // Reject partial payments — domain rule: no partial/parcelado
-    if (amount.lt(charge.amount)) {
-      throw new BadRequestException('Partial payments are not allowed');
+    // Calculate expected amount with interest if overdue
+    const calculation = calculateInterest(charge.amount, charge.dueDate);
+    const expectedAmount = calculation.totalAmount;
+    const tolerance = 0.01; // 1 cent tolerance for rounding
+
+    // Validate payment amount matches expected amount (with interest if overdue)
+    if (Math.abs(Number(amount) - expectedAmount) > tolerance) {
+      throw new BadRequestException(
+        `Invalid payment amount. Expected: ${expectedAmount.toFixed(2)} (original: ${calculation.originalAmount.toFixed(2)}${calculation.interest > 0 ? ` + interest: ${calculation.interest.toFixed(2)}` : ''})`,
+      );
     }
 
     const newStatus = 'PAGO';

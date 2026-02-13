@@ -65,14 +65,16 @@ describe('CustomersService', () => {
       prisma.customer.findUniqueOrThrow.mockResolvedValue(customer1WithCharges);
 
       // Act
-      const result = await service.findOne(customer1.id);
+      const result = await service.findOne(customer1.id, {} as any);
 
       // Assert
       expect(result).toEqual(customer1WithCharges);
-      expect(prisma.customer.findUniqueOrThrow).toHaveBeenCalledWith({
-        where: { id: customer1.id },
-        include: { charges: true },
-      });
+      expect(prisma.customer.findUniqueOrThrow).toHaveBeenCalledWith(
+        expect.objectContaining({
+          where: { id: customer1.id },
+          include: expect.objectContaining({ charges: expect.any(Object) }),
+        }),
+      );
     });
 
     it('should throw an error if customer not found', async () => {
@@ -80,7 +82,7 @@ describe('CustomersService', () => {
       prisma.customer.findUniqueOrThrow.mockRejectedValue(new Error('Record not found'));
 
       // Act / Assert
-      await expect(service.findOne(999)).rejects.toThrow('Record not found');
+      await expect(service.findOne(999, {} as any)).rejects.toThrow('Record not found');
     });
   });
 

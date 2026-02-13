@@ -93,22 +93,23 @@ describe('PaymentsService', () => {
       );
     });
 
-    it('should reject partial payments', async () => {
+    it('should reject payments with incorrect amount (not matching expected with interest)', async () => {
       // Arrange
-      const partialPaymentDto = makeCreatePaymentDto({ amount: 50.0 });
+      const incorrectPaymentDto = makeCreatePaymentDto({ amount: 50.0 });
       const chargeWithHigherAmount = makeCharge({
         id: 1,
         status: 'PENDENTE',
         amount: new Decimal('100.00'),
+        dueDate: new Date('2026-01-01'), // Not overdue for current test date
       });
 
       prisma.charge.findUnique.mockResolvedValue(chargeWithHigherAmount);
       prisma.payment.findUnique.mockResolvedValue(null);
 
       // Act / Assert
-      await expect(service.create(partialPaymentDto)).rejects.toThrow(BadRequestException);
-      await expect(service.create(partialPaymentDto)).rejects.toThrow(
-        'Partial payments are not allowed',
+      await expect(service.create(incorrectPaymentDto)).rejects.toThrow(BadRequestException);
+      await expect(service.create(incorrectPaymentDto)).rejects.toThrow(
+        /Invalid payment amount/,
       );
     });
 

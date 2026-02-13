@@ -2,8 +2,10 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateCustomerDto } from './dto/create-customer.dto';
 import { UpdateCustomerDto } from './dto/update-customer.dto';
+import { QueryCustomerChargesDto } from './dto/query-customer-charges.dto';
 import type { Customer } from '@prisma/client';
 import { CustomerWithCharges } from './interfaces/customer-response.interface';
+import { Prisma } from '@prisma/client';
 
 @Injectable()
 export class CustomersService {
@@ -15,10 +17,26 @@ export class CustomersService {
     });
   }
 
-  findOne(id: number): Promise<CustomerWithCharges> {
+  async findOne(id: number, query: QueryCustomerChargesDto): Promise<CustomerWithCharges> {
+    const { status, orderBy = 'dueDate', order = 'asc' } = query;
+
+    // Build where clause for charges
+    const chargeWhere: Prisma.ChargeWhereInput = status ? { status } : {};
+
+    // Build orderBy clause for charges
+    const chargeOrderBy: Prisma.ChargeOrderByWithRelationInput = {
+      [orderBy]: order,
+    };
+
     return this.prisma.customer.findUniqueOrThrow({
       where: { id },
-      include: { charges: true },
+      include: {
+        charges: {
+          where: chargeWhere,
+          orderBy: chargeOrderBy,
+          include: { payment: true },
+        },
+      },
     });
   }
 

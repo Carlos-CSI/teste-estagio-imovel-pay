@@ -63,11 +63,11 @@ describe('CustomersController', () => {
       service.findOne.mockResolvedValue(customer1WithCharges);
 
       // Act
-      const result = await controller.findOne(customer1.id);
+      const result = await controller.findOne(customer1.id, {} as any);
 
       // Assert
       expect(result).toEqual(customer1WithCharges);
-      expect(service.findOne).toHaveBeenCalledWith(customer1.id);
+      expect(service.findOne).toHaveBeenCalledWith(customer1.id, {});
     });
 
     it('should throw an error if customer not found', async () => {
@@ -75,8 +75,8 @@ describe('CustomersController', () => {
       service.findOne.mockRejectedValue(new Error('Record not found'));
 
       // Act / Assert
-      await expect(controller.findOne(999)).rejects.toThrow('Record not found');
-      expect(service.findOne).toHaveBeenCalledWith(999);
+      await expect(controller.findOne(999, {} as any)).rejects.toThrow('Record not found');
+      expect(service.findOne).toHaveBeenCalledWith(999, {});
     });
   });
 

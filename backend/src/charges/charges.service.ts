@@ -4,6 +4,7 @@ import { CreateChargeDto } from './dto/create-charge.dto';
 import { UpdateChargeDto } from './dto/update-charge.dto';
 import { QueryChargesDto } from './dto/query-charges.dto';
 import { Prisma } from '@prisma/client';
+import { calculateInterest, InterestCalculation } from '../commons/utils/interest-calculator';
 import {
   PaginatedChargesResponse,
   ChargeWithCustomer,
@@ -82,5 +83,18 @@ export class ChargesService {
 
   async remove(id: number): Promise<void> {
     await this.prisma.charge.delete({ where: { id } });
+  }
+
+  async calculatePaymentAmount(id: number): Promise<InterestCalculation> {
+    const charge = await this.prisma.charge.findUniqueOrThrow({
+      where: { id },
+      include: { payment: true },
+    });
+
+    if (charge.payment) {
+      throw new Error('Charge already paid');
+    }
+
+    return calculateInterest(charge.amount, charge.dueDate);
   }
 }
