@@ -6,10 +6,10 @@ interface RevenueBarChartProps {
 
 export default function RevenueBarChart({ data }: RevenueBarChartProps) {
   return (
-    <div className="bg-white rounded-lg border border-gray-200 p-6">
-      <h3 className="text-lg font-semibold text-gray-900 mb-4">
+    <figure className="bg-white rounded-lg border border-gray-200 p-6">
+      <figcaption className="text-lg font-semibold text-gray-900 mb-4">
         Receitas por Mês
-      </h3>
+      </figcaption>
       
       <ResponsiveContainer width="100%" height={300}>
         <BarChart data={data}>
@@ -34,6 +34,6 @@ export default function RevenueBarChart({ data }: RevenueBarChartProps) {
           <Bar dataKey="pending" fill="#f59e0b" name="Pendente" />
         </BarChart>
       </ResponsiveContainer>
-    </div>
+    </figure>
   );
 }

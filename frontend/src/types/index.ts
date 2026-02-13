@@ -73,3 +73,11 @@ export interface PaymentWithChargeAndCustomer extends Payment {
 export interface ChargeWithRelations extends ChargeWithCustomer {
   payment?: Payment;
 }
+
+export interface InterestCalculation {
+  originalAmount: number;
+  interest: number;
+  totalAmount: number;
+  isOverdue: boolean;
+  monthsOverdue: number;
+}

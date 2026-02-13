@@ -20,7 +20,7 @@ const colorClasses = {
 
 export default function StatsCard({ title, value, icon: Icon, color, trend }: StatsCardProps) {
   return (
-    <div className="bg-white rounded-lg border border-gray-200 p-6 hover:shadow-md transition-shadow">
+    <article className="bg-white rounded-lg border border-gray-200 p-6 hover:shadow-md transition-shadow">
       <div className="flex items-start justify-between">
         <div className="flex-1">
           <p className="text-sm font-medium text-gray-600">{title}</p>
@@ -44,6 +44,6 @@ export default function StatsCard({ title, value, icon: Icon, color, trend }: St
           <Icon className="w-6 h-6" />
         </div>
       </div>
-    </div>
+    </article>
   );
 }

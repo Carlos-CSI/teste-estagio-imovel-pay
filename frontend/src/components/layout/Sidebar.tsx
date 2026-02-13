@@ -87,7 +87,7 @@ export default function Sidebar() {
           </div>
 
           {/* Navigation */}
-          <nav className="flex-1 p-4 space-y-1">
+          <nav className="flex-1 p-4 space-y-1" aria-label="Navegação principal">
             {menuItems.map((item) => (
               <NavLink
                 key={item.to}
@@ -107,14 +107,14 @@ export default function Sidebar() {
           </nav>
 
           {/* Footer */}
-          <div className="p-4 border-t border-gray-200">
+          <footer className="p-4 border-t border-gray-200">
             <div className="p-3 bg-gray-50 rounded-lg">
                 <p className="text-xs text-gray-600">Versão 0.5.0 © 2026 Imóvel Pay</p>
                 <hr className="my-2 border-gray-200" />
                 <p className="text-xs text-gray-600">Desenvolvido por <span className="font-medium"><a href="https://github.com/christianbvolz" target="_blank" rel="noreferrer" className="hover:underline">Christian Volz</a></span></p>
         
               </div>
-          </div>
+          </footer>
         </div>
       </aside>
     </>

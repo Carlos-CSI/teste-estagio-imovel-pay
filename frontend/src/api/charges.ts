@@ -3,7 +3,8 @@ import type {
   PaginatedChargesResponse, 
   ChargeWithCustomer, 
   ChargeWithRelations,
-  ChargeStatus 
+  ChargeStatus,
+  InterestCalculation
 } from '../types';
 
 export interface CreateChargeData {
@@ -52,5 +53,11 @@ export const chargesApi = {
   // Delete charge
   delete: async (id: number): Promise<void> => {
     await api.delete(`/charges/${id}`);
+  },
+
+  // Calculate payment amount with interest
+  calculatePaymentAmount: async (id: number): Promise<InterestCalculation> => {
+    const response = await api.get<InterestCalculation>(`/charges/${id}/calculate-payment`);
+    return response.data;
   },
 };

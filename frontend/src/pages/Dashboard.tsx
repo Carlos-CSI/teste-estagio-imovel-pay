@@ -8,7 +8,6 @@ import { chargesApi } from '../api/charges';
 import { customersApi } from '../api/customers';
 import { paymentsApi } from '../api/payments';
 import { formatCurrency } from '../utils/formatters';
-import parseCurrencyToNumber from '../utils/number';
 import { useApp } from '../contexts/AppContext';
 import { ChargeStatus } from '../types';
 
@@ -50,11 +49,11 @@ export default function Dashboard() {
         const totalCharges = chargesData.data.length;
 
         const totalRevenue = chargesData.data.reduce((sum, charge) => {
-          return sum + parseCurrencyToNumber(charge.amount);
+          return sum + Number(charge.amount);
         }, 0);
 
         const paidAmount = paymentsData.reduce((sum, payment) => {
-          return sum + parseCurrencyToNumber(payment.amount);
+          return sum + Number(payment.amount);
         }, 0);
 
         // Count charges by status
@@ -113,19 +112,23 @@ export default function Dashboard() {
   ];
 
   if (isLoading) {
-    return <Spinner />;
+    return (
+      <section className="flex justify-center items-center h-64" aria-live="polite" aria-busy="true">
+        <Spinner />
+      </section>
+    );
   }
 
   return (
     <div className="space-y-6">
       {/* Page Header */}
-      <div>
-        <h2 className="text-2xl font-bold text-gray-900">Dashboard</h2>
+      <header>
+        <h1 className="text-2xl font-bold text-gray-900">Dashboard</h1>
         <p className="text-gray-600 mt-1">Visão geral do sistema de cobranças</p>
-      </div>
+      </header>
 
       {/* Stats Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <section aria-label="Estatísticas principais" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <StatsCard
           title="Total de Clientes"
           value={stats.totalCustomers}
@@ -154,19 +157,19 @@ export default function Dashboard() {
           color="green"
           trend={{ value: 20, isPositive: true }}
         />
-      </div>
+      </section>
 
       {/* Charts Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <section aria-label="Gráficos de relatório" className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <ChargePieChart data={pieChartData} />
         <RevenueBarChart data={revenueData} />
-      </div>
+      </section>
 
       {/* Recent Activity */}
-      <div className="bg-white rounded-lg border border-gray-200 p-6">
-        <h3 className="text-lg font-semibold text-gray-900 mb-4">
+      <section className="bg-white rounded-lg border border-gray-200 p-6" aria-labelledby="summary-heading">
+        <h2 id="summary-heading" className="text-lg font-semibold text-gray-900 mb-4">
           Resumo Rápido
-        </h3>
+        </h2>
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div className="p-4 bg-yellow-50 rounded-lg border border-yellow-200">
@@ -184,7 +187,7 @@ export default function Dashboard() {
             <p className="text-2xl font-bold text-red-900 mt-1">{chargesByStatus.overdue}</p>
           </div>
         </div>
-      </div>
+      </section>
     </div>
   );
 }

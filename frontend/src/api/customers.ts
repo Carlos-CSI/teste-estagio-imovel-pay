@@ -1,5 +1,11 @@
 import api from './index';
-import type { Customer, CustomerWithCharges } from '../types';
+import type { Customer, CustomerWithCharges, ChargeStatus } from '../types';
+
+interface GetCustomerByIdParams {
+  status?: ChargeStatus;
+  orderBy?: 'dueDate' | 'amount' | 'status';
+  order?: 'asc' | 'desc';
+}
 
 export const customersApi = {
   // List all customers
@@ -8,9 +14,9 @@ export const customersApi = {
     return response.data;
   },
 
-  // Get customer by ID
-  getById: async (id: number): Promise<CustomerWithCharges> => {
-    const response = await api.get<CustomerWithCharges>(`/customers/${id}`);
+  // Get customer by ID with optional charge filters
+  getById: async (id: number, params?: GetCustomerByIdParams): Promise<CustomerWithCharges> => {
+    const response = await api.get<CustomerWithCharges>(`/customers/${id}`, { params });
     return response.data;
   },
 

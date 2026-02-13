@@ -3,20 +3,24 @@ import { ptBR } from 'date-fns/locale';
 
 /**
  * Format a numeric value to Brazilian currency (R$)
- */
-/**
- * Format a numeric value to Brazilian currency (R$)
- * Accepts numbers or strings. For strings, normalize common
- * pt-BR formats like "1.234,56" -> "1234.56" before parsing.
+ * Accepts numbers or strings. For strings, handles both US (1234.56) and BR (1.234,56) formats.
  * Returns 'R$ 0,00' for invalid input.
  */
 export const formatCurrency = (value: number | string): string => {
   let numValue: number;
 
   if (typeof value === 'string') {
-    // remove spaces, remove thousand separators and convert comma to dot
-    const normalized = value.trim().replace(/\s+/g, '').replace(/\./g, '').replace(',', '.');
-    numValue = parseFloat(normalized);
+    const trimmed = value.trim().replace(/\s+/g, '');
+    
+    // Check if it's in Brazilian format (has comma as decimal separator)
+    if (trimmed.includes(',')) {
+      // Brazilian format: remove thousand separators (dots) and convert comma to dot
+      const normalized = trimmed.replace(/\./g, '').replace(',', '.');
+      numValue = parseFloat(normalized);
+    } else {
+      // US/Standard format: already has dot as decimal separator, just parse it
+      numValue = parseFloat(trimmed);
+    }
   } else {
     numValue = value;
   }

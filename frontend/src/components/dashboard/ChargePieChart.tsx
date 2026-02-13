@@ -6,10 +6,10 @@ interface ChargePieChartProps {
 
 export default function ChargePieChart({ data }: ChargePieChartProps) {
   return (
-    <div className="bg-white rounded-lg border border-gray-200 p-6">
-      <h3 className="text-lg font-semibold text-gray-900 mb-4">
+    <figure className="bg-white rounded-lg border border-gray-200 p-6">
+      <figcaption className="text-lg font-semibold text-gray-900 mb-4">
         Status das Cobranças
-      </h3>
+      </figcaption>
       
       <ResponsiveContainer width="100%" height={300}>
         <PieChart>
@@ -31,6 +31,6 @@ export default function ChargePieChart({ data }: ChargePieChartProps) {
           <Legend />
         </PieChart>
       </ResponsiveContainer>
-    </div>
+    </figure>
   );
 }
