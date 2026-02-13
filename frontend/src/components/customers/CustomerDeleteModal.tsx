@@ -48,7 +48,7 @@ export default function CustomerDeleteModal({
   }
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4" role="dialog" aria-modal="true" aria-labelledby="delete-customer-title">
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[60] p-4" role="dialog" aria-modal="true" aria-labelledby="delete-customer-title">
       <article className="bg-white rounded-lg max-w-md w-full">
         <header className="sticky top-0 bg-white z-10 p-6 border-b border-gray-200 rounded-t-lg">
           <h2 id="delete-customer-title" className="text-xl font-bold text-gray-900">Confirmar Exclusão</h2>
