@@ -1,6 +1,6 @@
 import express from "express"
 import bodyParser from "body-parser"
-import cors from "cors"
+import cors from 'cors'
 import { BillingRepository } from "./repository/BillingRepository"
 import { BillingController } from "./controller/BillingController"
 

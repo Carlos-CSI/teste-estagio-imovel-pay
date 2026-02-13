@@ -6,7 +6,22 @@ interface BillingModelWithId extends BillingModel {
 }
 
 export class BillingRepository{
-    billings: BillingModelWithId[] = []
+    billings: BillingModelWithId[] = [
+    {
+        "clientName": "Pedro Santoro",
+        "value": 10,
+        "dueDate": new Date("2023-10-01"),
+        "status": BillingStatus.PAID,
+        "id": "ae3647f6-7b0e-4dd2-8591-40ab2a5fa48d"
+    },
+    {
+        "clientName": "Gabriel Veliago",
+        "value": 2000,
+        "dueDate":  new Date("2025-10-02"),
+        "status": BillingStatus.PENDING,
+        "id": "0e6d06c7-2e06-4a40-8773-faf6378d9743"
+    }
+]
 
     find() {
         return this.billings
