@@ -3,7 +3,6 @@ import Layout from './components/layout/Layout';
 import Dashboard from './pages/Dashboard';
 import Customers from './pages/Customers';
 import Charges from './pages/Charges';
-import Payments from './pages/Payments';
 
 function App() {
   return (
@@ -14,7 +13,6 @@ function App() {
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="customers" element={<Customers />} />
           <Route path="charges" element={<Charges />} />
-          <Route path="payments" element={<Payments />} />
         </Route>
       </Routes>
     </BrowserRouter>

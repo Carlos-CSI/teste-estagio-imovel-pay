@@ -94,8 +94,9 @@ export default function Customers() {
 
             <button
               onClick={() => setShowCreateModal(true)}
-              className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none"
+              className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition flex items-center gap-2"
             >
+              <span className="text-xl leading-none">+</span>
               Novo Cliente
             </button>
           </div>
@@ -135,7 +136,7 @@ export default function Customers() {
                     CPF
                   </th>
                   <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Ações
+                    Detalhes
                   </th>
                 </tr>
               </thead>

@@ -3,7 +3,7 @@ import { createPortal } from 'react-dom';
 import type { Charge } from '../../types';
 import { formatCPF } from '../../utils/validators';
 import { formatCurrency, formatDate } from '../../utils/formatters';
-import ChargesList from '../charges/ChargesList';
+import ChargesTableLocal from '../charges/ChargesTableLocal';
 import { useCustomerDetails } from '../../hooks/useCustomerDetails';
 import CustomerEditModal from './CustomerEditModal';
 import CustomerDeleteModal from './CustomerDeleteModal';
@@ -121,7 +121,7 @@ export default function CustomerDetailsModal({
                 <h3 id="charges-heading" className="font-semibold text-gray-900">Cobranças ({customer.charges?.length || 0})</h3>
               </div>
 
-              <ChargesList charges={customer.charges || []} loading={loading} onPaymentClick={handleOpenPaymentModal} />
+              <ChargesTableLocal charges={customer.charges || []} loading={loading} onPaymentClick={handleOpenPaymentModal} />
             </section>
 
             <section aria-labelledby="payments-heading">

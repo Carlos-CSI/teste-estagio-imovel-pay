@@ -23,6 +23,8 @@ export interface QueryChargesParams {
   page?: number;
   limit?: number;
   status?: ChargeStatus;
+  orderBy?: 'dueDate' | 'amount' | 'status';
+  order?: 'asc' | 'desc';
 }
 
 export const chargesApi = {

@@ -13,7 +13,6 @@ const menuItems = [
   { to: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
   { to: '/customers', icon: Users, label: 'Clientes' },
   { to: '/charges', icon: FileText, label: 'Cobranças' },
-  { to: '/payments', icon: DollarSign, label: 'Pagamentos' },
 ];
 
 export default function Sidebar() {

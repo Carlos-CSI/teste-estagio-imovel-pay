@@ -29,5 +29,4 @@ export const ROUTES = {
   CUSTOMER_DETAILS: '/customers/:id',
   CHARGES: '/charges',
   CHARGE_DETAILS: '/charges/:id',
-  PAYMENTS: '/payments',
 } as const;

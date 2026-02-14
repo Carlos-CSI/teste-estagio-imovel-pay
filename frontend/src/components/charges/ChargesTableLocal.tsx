@@ -2,17 +2,19 @@ import { useState, useRef, useEffect, useMemo } from 'react';
 import type { Charge } from '../../types';
 import { formatCurrency, formatDate, formatChargeStatus, getStatusBadgeClass } from '../../utils/formatters';
 
-interface ChargesListProps {
+interface ChargesTableLocalProps {
   charges: Charge[];
   loading?: boolean;
   onPaymentClick?: (charge: Charge) => void;
+  showCustomerColumn?: boolean;
 }
 
-export default function ChargesList({ 
+export default function ChargesTableLocal({ 
   charges, 
   loading = false,
   onPaymentClick,
-}: ChargesListProps) {
+  showCustomerColumn = false,
+}: ChargesTableLocalProps) {
   const [showStatusDropdown, setShowStatusDropdown] = useState(false);
   const [statusFilter, setStatusFilter] = useState('');
   const [orderBy, setOrderBy] = useState<'dueDate' | 'amount' | 'status'>('dueDate');
@@ -33,10 +35,8 @@ export default function ChargesList({
 
   const handleSort = (column: 'dueDate' | 'amount') => {
     if (orderBy === column) {
-      // Toggle order direction
       setOrder(order === 'asc' ? 'desc' : 'asc');
     } else {
-      // Set new column and default to ascending
       setOrderBy(column);
       setOrder('asc');
     }
@@ -49,12 +49,10 @@ export default function ChargesList({
 
   // Filter and sort charges locally
   const filteredAndSortedCharges = useMemo(() => {
-    // First, filter by status
     let result = statusFilter 
       ? charges.filter(charge => charge.status === statusFilter)
       : [...charges];
 
-    // Then, sort
     result.sort((a, b) => {
       let compareValue = 0;
       
@@ -96,6 +94,11 @@ export default function ChargesList({
       <table className="min-w-full divide-y divide-gray-200">
         <thead className="bg-gray-50">
           <tr>
+            {showCustomerColumn && (
+              <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Cliente
+              </th>
+            )}
             <th 
               className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100 select-none"
               onClick={() => handleSort('amount')}
@@ -169,46 +172,55 @@ export default function ChargesList({
             </th>
             {onPaymentClick && (
               <th className="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Ações
+                Pagamento
               </th>
             )}
           </tr>
         </thead>
-        {filteredAndSortedCharges.length !== 0 ? <tbody className="bg-white divide-y divide-gray-200">
-          {filteredAndSortedCharges.map((charge) => (
-            <tr key={charge.id} className="hover:bg-gray-50">
-              <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-900">
-               {formatCurrency(charge.amount)}
-              </td>
-              <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-600">
-                {formatDate(charge.dueDate)}
-              </td>
-              <td className="px-4 py-3 whitespace-nowrap text-sm">
-                <span 
-                  className={`inline-flex px-2 py-1 text-xs font-medium border rounded ${getStatusBadgeClass(charge.status)}`}
-                >
-                  {formatChargeStatus(charge.status)}
-                </span>
-              </td>
-              {onPaymentClick && (
-                <td className="px-4 py-3 whitespace-nowrap text-right text-sm font-medium">
-                  {!(charge.status === 'PAGO' || charge.status === 'CANCELADO') ? (
-                    <button
-                      onClick={() => onPaymentClick(charge)}
-                      className={`inline-flex items-center px-3 py-1.5 border rounded transition border-green-300 text-green-700 bg-green-50 hover:bg-green-100`}
-                    >
-                      Pagar
-                    </button>
-                  ) : null}
+        {filteredAndSortedCharges.length > 0 ? (
+          <tbody className="bg-white divide-y divide-gray-200">
+            {filteredAndSortedCharges.map((charge) => (
+              <tr key={charge.id} className="hover:bg-gray-50">
+                {showCustomerColumn && (
+                  <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-900">
+                    {charge.customer?.name || '-'}
+                  </td>
+                )}
+                <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-900">
+                  {formatCurrency(charge.amount)}
                 </td>
-              )}
-            </tr>
-          ))}
-        </tbody> : null} 
+                <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-600">
+                  {formatDate(charge.dueDate)}
+                </td>
+                <td className="px-4 py-3 whitespace-nowrap text-sm">
+                  <span 
+                    className={`inline-flex px-2 py-1 text-xs font-medium border rounded ${getStatusBadgeClass(charge.status)}`}
+                  >
+                    {formatChargeStatus(charge.status)}
+                  </span>
+                </td>
+                {onPaymentClick && (
+                  <td className="px-4 py-3 whitespace-nowrap text-right text-sm font-medium">
+                    {!(charge.status === 'PAGO' || charge.status === 'CANCELADO') ? (
+                      <button
+                        onClick={() => onPaymentClick(charge)}
+                        className="inline-flex items-center px-3 py-1.5 border rounded transition border-green-300 text-green-700 bg-green-50 hover:bg-green-100"
+                      >
+                        Pagar
+                      </button>
+                    ) : null}
+                  </td>
+                )}
+              </tr>
+            ))}
+          </tbody>
+        ) : null}
       </table>
-      {filteredAndSortedCharges.length === 0 ? <div className="text-center py-8 text-gray-500 text-sm">
-      Nenhuma cobrança encontrada
-      </div> : null}
+      {filteredAndSortedCharges.length === 0 && (
+        <div className="text-center py-8 text-gray-500 text-sm">
+          Nenhuma cobrança encontrada
+        </div>
+      )}
     </div>
   );
 }
