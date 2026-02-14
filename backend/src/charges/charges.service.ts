@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, BadRequestException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateChargeDto } from './dto/create-charge.dto';
 import { UpdateChargeDto } from './dto/update-charge.dto';
@@ -16,12 +16,15 @@ export class ChargesService {
   constructor(private prisma: PrismaService) {}
 
   async findAll(query: QueryChargesDto): Promise<PaginatedChargesResponse> {
-    const { page = 1, limit = 10, status } = query;
+    const { page = 1, limit = 10, status, orderBy = 'dueDate', order = 'asc' } = query;
+
+    // Build orderBy object based on field
+    const orderByClause = { [orderBy]: order };
 
     const [data, total] = await Promise.all([
       this.prisma.charge.findMany({
         where: status ? { status } : {},
-        orderBy: { dueDate: 'asc' },
+        orderBy: orderByClause,
         include: { customer: true },
         skip: (page - 1) * limit,
         take: limit,
@@ -56,18 +59,33 @@ export class ChargesService {
         customerId: data.customerId,
         amount: new Prisma.Decimal(data.amount),
         dueDate: new Date(data.dueDate),
+        status: 'PENDENTE', // Always create as PENDENTE
       },
       include: { customer: true },
     });
   }
 
-  update(id: number, data: UpdateChargeDto): Promise<ChargeWithCustomer> {
+  async update(id: number, data: UpdateChargeDto): Promise<ChargeWithCustomer> {
     const updateData: Prisma.ChargeUpdateInput = {};
 
     if (data.amount !== undefined) {
       updateData.amount = new Prisma.Decimal(data.amount);
     }
     if (data.dueDate !== undefined) {
+      // Ensure new dueDate is not more than 1 year after creation
+      const existing = await this.prisma.charge.findUniqueOrThrow({ where: { id } });
+      const createdAt = new Date(existing.createdAt as Date);
+      createdAt.setHours(0, 0, 0, 0);
+      const max = new Date(createdAt);
+      max.setFullYear(max.getFullYear() + 1);
+
+      const newDue = new Date(data.dueDate);
+      newDue.setHours(0, 0, 0, 0);
+
+      if (newDue > max) {
+        throw new BadRequestException('Due date cannot be more than 1 year after creation date');
+      }
+
       updateData.dueDate = new Date(data.dueDate);
     }
     if (data.status !== undefined) {

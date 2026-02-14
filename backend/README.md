@@ -102,6 +102,7 @@ API RESTful desenvolvida com NestJS para gerenciamento completo de clientes, cob
 - **Transações atômicas**: Criação de pagamento + atualização de cobrança ocorrem em transação Prisma
 - **Tratamento de concorrência**: Mapeia erro Prisma P2002 (unique constraint) para BadRequestException
 - **Cálculo de juros**: Sistema valida automaticamente que pagamentos incluam juros de 10% ao mês para cobranças vencidas (proporcional por dias)
+ - **Validação de vencimento (máximo 1 ano)**: A data de vencimento (`dueDate`) é validada para não exceder 1 ano a partir da data de criação — aplicada no DTO de criação e reforçada no serviço ao atualizar cobranças.
 
 ## 📁 Estrutura do Projeto
 

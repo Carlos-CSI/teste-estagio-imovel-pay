@@ -1,4 +1,4 @@
-import { IsOptional, IsEnum, IsInt, Min } from 'class-validator';
+import { IsOptional, IsEnum, IsInt, Min, IsIn } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import { ChargeStatus } from '@prisma/client';
 import { Type } from 'class-transformer';
@@ -37,4 +37,26 @@ export class QueryChargesDto {
   @IsOptional()
   @IsEnum(ChargeStatus, { message: 'Status must be PENDENTE, PAGO, or CANCELADO' })
   status?: ChargeStatus;
+
+  @ApiProperty({
+    example: 'dueDate',
+    description: 'Order by field',
+    enum: ['dueDate', 'amount', 'status'],
+    required: false,
+    default: 'dueDate',
+  })
+  @IsOptional()
+  @IsIn(['dueDate', 'amount', 'status'])
+  orderBy?: 'dueDate' | 'amount' | 'status' = 'dueDate';
+
+  @ApiProperty({
+    example: 'asc',
+    description: 'Order direction',
+    enum: ['asc', 'desc'],
+    required: false,
+    default: 'asc',
+  })
+  @IsOptional()
+  @IsIn(['asc', 'desc'])
+  order?: 'asc' | 'desc' = 'asc';
 }
