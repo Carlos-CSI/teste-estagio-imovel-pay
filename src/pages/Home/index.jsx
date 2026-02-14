@@ -1,24 +1,42 @@
+import { useEffect, useState, useRef } from "react";
 import "./style.css";
-
 import Lixeira from "../../assets/lixeira.icon.svg";
+import api from "../../services/api";
 
 function Home() {
-  const cobrancas = [
-    {
-      id: "34234543234",
-      cliente: "João da Silva",
-      valor: 150.0,
-      vencimento: "2024-07-01",
-      status: "PENDENTE",
-    },
-    {
-      id: "3423454325345656",
-      cliente: "Bruna",
-      valor: 170.0,
-      vencimento: "2022-05-02",
-      status: "Pago",
-    },
-  ];
+  const [cobrancas, setCobrancas] = useState([]);
+
+  const inputNome = useRef();
+  const inputValorCobranca = useRef();
+  const inputDataVencimento = useRef();
+
+  async function mostrarCobrancas() {
+    const cobrancasDaApi = await api.get("/cobranca");
+
+    setCobrancas(cobrancasDaApi.data);
+  }
+
+  async function criarCobranca() {
+    await api.post("/cobranca", {
+      nome: inputNome.current.value,
+      valor: inputValorCobranca.current.value,
+      vencimento: inputDataVencimento.current.value,
+      status: "pendente",
+    });
+
+    mostrarCobrancas();
+  }
+
+  async function deletarCobrancas(id) {
+    await api.delete(`/cobranca/${id}`);
+
+    mostrarCobrancas();
+  }
+
+  useEffect(() => {
+    mostrarCobrancas();
+  }, []);
+
   return (
     <div className="container">
       <h1>MINI SISTEMA DE COBRANÇAS</h1>
@@ -28,11 +46,28 @@ function Home() {
           <form>
             <h2> Cadastrar Cobrança</h2>
 
-            <input placeholder="Nome do cliente" name="nome" type="text" />
+            <input
+              placeholder="Nome do cliente"
+              name="nome"
+              type="text"
+              ref={inputNome}
+            />
 
-            <input placeholder="Valor da cobrança" name="valor" type="number" />
-            <input placeholder="Data de vencimento" name="data" type="date" />
-            <button type="button"> adicionar cobrança </button>
+            <input
+              placeholder="Valor da cobrança"
+              name="valor"
+              type="number"
+              ref={inputValorCobranca}
+            />
+            <input
+              placeholder="Data de vencimento"
+              name="data"
+              type="date"
+              ref={inputDataVencimento}
+            />
+            <button type="button" onClick={criarCobranca}>
+              adicionar cobrança
+            </button>
           </form>
         </div>
 
@@ -43,7 +78,7 @@ function Home() {
               <div>
                 <p>
                   {" "}
-                  Nome: <span>{cobranca.cliente} </span>
+                  Nome: <span>{cobranca.nome} </span>
                 </p>
 
                 <p>
@@ -53,14 +88,14 @@ function Home() {
 
                 <p>
                   {" "}
-                  Data: <span>{cobranca.vencimento}</span>
+                  Data de vencimento: <span>{cobranca.vencimento}</span>
                 </p>
 
                 <p>
                   Status: <button> {cobranca.status}</button>
                 </p>
               </div>
-              <button>
+              <button onClick={() => deletarCobrancas(cobranca.id)}>
                 <img src={Lixeira} alt="Ícone de lixeira" />
               </button>
             </div>
