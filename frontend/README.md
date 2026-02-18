@@ -62,8 +62,10 @@ src/
 │   │   └── CreateCustomerModal.tsx   # Modal de criação de novo cliente
 │   │
 │   ├── charges/               # Componentes de cobranças
-│   │   ├── ChargesList.tsx           # Lista de cobranças do cliente
+│   │   ├── ChargesTable.tsx          # Tabela global de cobranças
+│   │   ├── ChargesTableLocal.tsx     # Tabela de cobranças no contexto do cliente
 │   │   ├── ChargesFilters.tsx        # Filtros de cobranças
+│   │   ├── CreateChargeModal.tsx     # Modal de criação de cobrança
 │   │   └── ChargePaymentModal.tsx    # Modal de registro de pagamento
 │   │
 │   └── layout/                # Componentes de layout
@@ -80,8 +82,7 @@ src/
 ├── pages/                     # Páginas da aplicação
 │   ├── Dashboard.tsx          # Dashboard com gráficos e estatísticas
 │   ├── Customers.tsx          # Gestão de clientes
-│   ├── Charges.tsx            # Gestão de cobranças
-│   └── Payments.tsx           # Gestão de pagamentos
+│   └── Charges.tsx            # Gestão de cobranças
 │
 ├── types/                     # TypeScript types
 │   └── index.ts              # Tipos principais e interfaces
@@ -132,7 +133,6 @@ O Tailwind CSS está configurado com tema personalizado:
 /dashboard           → Dashboard com gráficos e estatísticas
 /customers           → Listagem e gestão de clientes
 /charges             → Listagem e gestão de cobranças
-/payments            → Listagem e gestão de pagamentos
 ```
 
 Todas as rotas utilizam o mesmo layout (`Layout.tsx`) com sidebar e header.
@@ -321,16 +321,17 @@ npm run lint
   - Garante que modais aninhados apareçam corretamente sobre modais pai
 
 ### 📄 Gestão de Cobranças
-- Criação e edição de cobranças
-- Filtros e paginação
-- Indicadores visuais de status
+- Criação de cobranças via modal com validação de campos
+- Edição e exclusão de cobranças
+- Filtros por status e ordenação
+- Indicadores visuais de status (pendente, paga, vencida)
 - Validação de datas e valores
 
-### 💰 Gestão de Pagamentos
-- Registro de pagamentos
+### 💰 Registro de Pagamentos
+- Registro de pagamentos direto na cobrança
 - Múltiplos métodos de pagamento (PIX, Boleto, Cartão)
-- Vinculação automática com cobranças
-- Validações robustas
+- Vinculação automática com a cobrança correspondente
+- Validações robustas de valor e método
 
 ### ♿ Acessibilidade
 - **Navegação por teclado**: todos os componentes interativos são acessíveis via teclado
@@ -372,8 +373,6 @@ Base URL: `http://localhost:3000`
 - `DELETE /charges/:id` - Deletar cobrança
 
 ### Pagamentos
-- `GET /payments` - Listar todos os pagamentos
-- `GET /payments/:id` - Buscar pagamento por ID
 - `POST /payments` - Criar novo pagamento
 - `DELETE /payments/:id` - Deletar pagamento
 
