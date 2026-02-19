@@ -1,0 +1,55 @@
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "debian-openssl-3.0.x"]
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+enum ChargeStatus {
+  PENDENTE
+  PAGO
+  CANCELADO
+  VENCIDO
+}
+
+enum PaymentMethod {
+  PIX
+  CREDIT_CARD
+  DEBIT_CARD
+  BOLETO
+  BANK_TRANSFER
+}
+
+model Customer {
+  id      Int      @id @default(autoincrement())
+  name    String
+  cpf     String  @unique
+  charges Charge[]
+}
+
+model Charge {
+  id         Int          @id @default(autoincrement())
+  customerId Int
+    customer   Customer     @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  amount     Decimal      @db.Decimal(10,2)
+  dueDate    DateTime     @map("due_date")
+  status     ChargeStatus @default(PENDENTE)
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
+  payment    Payment?
+
+  @@index([status])
+  @@index([dueDate])
+}
+
+model Payment {
+  id       Int      @id @default(autoincrement())
+  chargeId Int     @unique
+  charge   Charge  @relation(fields: [chargeId], references: [id], onDelete: Cascade)
+  amount   Decimal  @db.Decimal(10,2)
+  paidAt   DateTime @default(now())
+  method   PaymentMethod?
+}
