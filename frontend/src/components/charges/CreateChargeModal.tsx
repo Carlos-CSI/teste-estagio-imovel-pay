@@ -4,6 +4,7 @@ import { customersApi } from '../../api/customers';
 import { chargesApi } from '../../api/charges';
 import type { Customer } from '../../types';
 import { formatCPF } from '../../utils/validators';
+import { useApp } from '../../contexts/AppContext';
 
 interface CreateChargeModalProps {
   isOpen: boolean;
@@ -16,6 +17,7 @@ export default function CreateChargeModal({
   onClose,
   onSuccess,
 }: CreateChargeModalProps) {
+  const { addToast } = useApp();
   const [customers, setCustomers] = useState<Customer[]>([]);
   const [loading, setLoading] = useState(false);
   const [loadingCustomers, setLoadingCustomers] = useState(true);
@@ -123,10 +125,13 @@ export default function CreateChargeModal({
         dueDate: new Date(dueDate).toISOString(),
       });
 
+      addToast('success', 'Cobrança criada com sucesso!');
       onSuccess();
       onClose();
     } catch (err: any) {
-      setError(err.response?.data?.message || 'Erro ao criar cobrança');
+      const message = err.response?.data?.message || 'Erro ao criar cobrança';
+      setError(message);
+      addToast('error', message);
     } finally {
       setLoading(false);
     }
