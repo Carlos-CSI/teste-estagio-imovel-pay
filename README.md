@@ -36,10 +36,10 @@ cp .env.example .env
 Rode o docker compose para iniciar os serviços:
 
 ```bash
-docker compose up --build
+docker compose up -d
 ```
 
-Comando para encerrar os serviços:
+Comando para encerrar os serviços(-v limpa os dados do volume local):
 
 ```bash
 docker compose down -v
