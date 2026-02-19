@@ -28,6 +28,10 @@ export default function Dashboard() {
     cancelled: 0,
   });
 
+  const [revenueData, setRevenueData] = useState<
+    Array<{ month: string; paid: number; pending: number }>
+  >([]);
+
   useEffect(() => {
     let mounted = true;
 
@@ -81,6 +85,37 @@ export default function Dashboard() {
         });
 
         setChargesByStatus(statusCount);
+
+        // Build revenue data for the last 6 months from real API data
+        const now = new Date();
+        const revenue = Array.from({ length: 6 }, (_, i) => {
+          const date = new Date(now.getFullYear(), now.getMonth() - (5 - i), 1);
+          const year = date.getFullYear();
+          const month = date.getMonth();
+          const label = date.toLocaleString('pt-BR', { month: 'short' });
+
+          const paid = paymentsData
+            .filter((p) => {
+              const d = new Date(p.paidAt);
+              return d.getFullYear() === year && d.getMonth() === month;
+            })
+            .reduce((sum, p) => sum + Number(p.amount), 0);
+
+          const pending = chargesData.data
+            .filter((c) => {
+              const d = new Date(c.dueDate);
+              return (
+                d.getFullYear() === year &&
+                d.getMonth() === month &&
+                (c.status === ChargeStatus.PENDENTE || c.status === ChargeStatus.VENCIDO)
+              );
+            })
+            .reduce((sum, c) => sum + Number(c.amount), 0);
+
+          return { month: label, paid, pending };
+        });
+
+        setRevenueData(revenue);
       } catch (error) {
         console.error('Error loading dashboard data:', error);
         if (mounted) addToast('error', 'Erro ao carregar dados do dashboard');
@@ -101,15 +136,6 @@ export default function Dashboard() {
     { name: 'Cancelado', value: chargesByStatus.cancelled, color: '#6b7280' },
   ];
 
-  // Mock data for revenue chart
-  const revenueData = [
-    { month: 'Jan', paid: 12500, pending: 8000 },
-    { month: 'Fev', paid: 15000, pending: 6500 },
-    { month: 'Mar', paid: 18000, pending: 7200 },
-    { month: 'Abr', paid: 16500, pending: 5800 },
-    { month: 'Mai', paid: 20000, pending: 9000 },
-    { month: 'Jun', paid: 22000, pending: 7500 },
-  ];
 
   if (isLoading) {
     return (
