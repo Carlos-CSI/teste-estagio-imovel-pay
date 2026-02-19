@@ -98,10 +98,16 @@ Gera o Prisma Client com base no schema.prisma:
 npm run prisma:generate  
 ```
 
-Cria as tabelas no banco de dados e gera os Seeds, Populando dados iniciais para melhor visualização:
+Cria as tabelas no banco de dados:
 
 ```bash
 npm run prisma:migrate  
+```
+
+Gera os Seeds, Populando dados iniciais para melhor visualização:
+
+```bash
+npm run prisma:seed 
 ```
 
 inicia o servidor em modo de desenvolvimento com hot reload:
