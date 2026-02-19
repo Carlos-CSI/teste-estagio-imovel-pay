@@ -11,56 +11,85 @@ app.use(express.json());
 
 app.use(cors());
 
-// Funcao de criar uma cobrança
+// Rota responsável por criar uma cobrança
 app.post("/cobranca", async (req, res) => {
-  await prisma.cobranca.create({
-    data: {
-      nome: req.body.nome,
-      valor: Number(req.body.valor),
-      vencimento: new Date(req.body.vencimento),
-      status: req.body.status,
-    },
-  });
+  try {
+    await prisma.cobranca.create({
+      data: {
+        nome: req.body.nome,
+        valor: Number(req.body.valor),
+        vencimento: new Date(req.body.vencimento),
+        status: req.body.status,
+      },
+    });
 
-  res.status(201).json(req.body);
+    res.status(201).json(req.body);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      message: "Erro ao criar cobrança.",
+    });
+  }
 });
 
-// Funcao de mostrar as cobranças
+// Rota responsável por listar todas as cobranças
 
 app.get("/cobranca", async (req, res) => {
-  const cobrancas = await prisma.cobranca.findMany();
-
-  res.status(200).json(cobrancas);
+  try {
+    const cobrancas = await prisma.cobranca.findMany();
+    res.status(200).json(cobrancas);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      message: "Erro ao buscar cobranças.",
+    });
+  }
 });
 
-// Funcao de alterar os dados de uma cobrança
+// Rota responsável por alterar os dados de uma cobrança
 
+// Rota responsável por alterar os dados de uma cobrança
 app.put("/cobranca/:id", async (req, res) => {
-  //
-  await prisma.cobranca.update({
-    where: {
-      id: req.params.id,
-    },
-    data: {
-      nome: req.body.nome,
-      valor: req.body.valor,
-      vencimento: req.body.vencimento,
-      status: req.body.status,
-    },
-  });
+  try {
+    await prisma.cobranca.update({
+      where: {
+        id: req.params.id,
+      },
+      data: {
+        nome: req.body.nome,
+        valor: req.body.valor,
+        vencimento: req.body.vencimento,
+        status: req.body.status,
+      },
+    });
 
-  res.status(201).json(req.body);
+    res.status(201).json(req.body);
+  } catch (error) {
+    console.error("Erro ao atualizar cobrança:", error);
+
+    res.status(500).json({
+      message: "Erro ao atualizar cobrança.",
+    });
+  }
 });
 
-// Funcao de Deletar uma cobrança
+// Rota responsável pora Deletar uma cobrança
 app.delete("/cobranca/:id", async (req, res) => {
-  await prisma.cobranca.delete({
-    where: {
-      id: req.params.id,
-    },
-  });
+  try {
+    await prisma.cobranca.delete({
+      where: {
+        id: req.params.id,
+      },
+    });
 
-  res.status(200).json({ message: "Cobrança deletada com sucesso!" });
+    res.status(200).json({ message: "Cobrança deletada com sucesso!" });
+  } catch (error) {
+    console.error("Erro ao deletar cobrança:", error);
+
+    res.status(500).json({
+      message: "Erro ao deletar cobrança.",
+    });
+  }
 });
 
 app.listen(3000);

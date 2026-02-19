@@ -125,3 +125,22 @@ form {
     background-color: #e74c3c;
   }
 }
+
+.filtro-area {
+  padding: 0px 10px;
+  display: flex;
+  align-items: center;
+
+  gap: 10px;
+  margin: 10px 0 16px 0;
+}
+
+.filtro-area select {
+  padding: 6px 10px;
+  border-radius: 8px;
+}
+
+.filtro-area .total {
+  margin-left: auto;
+  font-weight: bold;
+}
