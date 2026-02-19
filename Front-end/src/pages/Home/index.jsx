@@ -17,6 +17,22 @@ function Home() {
   }
 
   async function criarCobranca() {
+    // validações
+    if (inputNome.current.value.length < 3) {
+      alert("O nome precisa ter no mínimo 3 caracteres.");
+      inputNome.current.focus();
+      return;
+    }
+
+    if (
+      !inputValorCobranca.current.value ||
+      inputValorCobranca.current.value <= 0
+    ) {
+      alert("O valor deve ser maior que zero.");
+      inputValorCobranca.current.focus();
+      return;
+    }
+
     await api.post("/cobranca", {
       nome: inputNome.current.value,
       valor: inputValorCobranca.current.value,
@@ -24,6 +40,13 @@ function Home() {
       status: "pendente",
     });
 
+    mostrarCobrancas();
+  }
+
+  async function alternarStatus(cobranca) {
+    const novoStatus = cobranca.status === "pendente" ? "pago" : "pendente";
+
+    await api.put(`/cobranca/${cobranca.id}`, { status: novoStatus });
     mostrarCobrancas();
   }
 
@@ -39,12 +62,12 @@ function Home() {
 
   return (
     <div className="container">
-      <h1>MINI SISTEMA DE COBRANÇAS</h1>
+      <h1 className="titulo-formulario">MINI SISTEMA DE COBRANÇAS</h1>
 
       <div className="envolver">
         <div className="formulario">
           <form>
-            <h2> Cadastrar Cobrança</h2>
+            <h2 className="titulo-cadastro-cobrancas"> Cadastrar cobrança</h2>
 
             <input
               placeholder="Nome do cliente"
@@ -72,7 +95,7 @@ function Home() {
         </div>
 
         <div className="lista-de-cobrancas">
-          <h2>Lista de cobranças</h2>
+          <h2 className="titulo-lista-cobrancas">Lista de cobranças</h2>
           {cobrancas.map((cobranca) => (
             <div key={cobranca.id} className="cobranca">
               <div>
@@ -88,11 +111,24 @@ function Home() {
 
                 <p>
                   {" "}
-                  Data de vencimento: <span>{cobranca.vencimento}</span>
+                  Data de vencimento:{" "}
+                  <span>
+                    {cobranca.vencimento
+                      .split("T")[0]
+                      .split("-")
+                      .reverse()
+                      .join("/")}
+                  </span>
                 </p>
 
                 <p>
-                  Status: <button> {cobranca.status}</button>
+                  Status:{" "}
+                  <button
+                    className={`status ${cobranca.status}`}
+                    onClick={() => alternarStatus(cobranca)}
+                  >
+                    {cobranca.status}
+                  </button>
                 </p>
               </div>
               <button onClick={() => deletarCobrancas(cobranca.id)}>

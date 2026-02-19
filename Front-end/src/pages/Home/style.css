@@ -12,7 +12,7 @@
   max-width: 900px;
 }
 
-h1 {
+.titulo-formulario {
   color: blue;
   font-size: 32px;
 }
@@ -35,6 +35,11 @@ form {
 
   max-width: 80%;
   width: 400px;
+
+  & .titulo-cadastro-cobrancas {
+    color: blue;
+    font-size: 24px;
+  }
 
   & button {
     border-radius: 30px;
@@ -69,6 +74,12 @@ form {
   padding: 30px;
   border-radius: 30px;
   background-color: white;
+  & .titulo-lista-cobrancas {
+    margin: auto;
+    margin-top: 10px;
+    color: blue;
+    font-size: 24px;
+  }
 }
 
 .cobranca {
@@ -96,7 +107,21 @@ form {
     color: #f9fafb;
   }
   & button:hover {
-    opacity: 0.8;
     transition: 0.3s;
+    background-color: #e74c3c;
+  }
+  .status {
+    padding: 4px 10px;
+    border-radius: 6px;
+    border: none;
+    color: white;
+  }
+
+  .status.pago {
+    background-color: #2563eb;
+  }
+
+  .status.pendente {
+    background-color: #e74c3c;
   }
 }
