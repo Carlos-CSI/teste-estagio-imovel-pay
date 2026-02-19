@@ -41,7 +41,11 @@ export class PaymentsService {
     // Validate payment amount matches expected amount (with interest if overdue)
     if (Math.abs(Number(amount) - expectedAmount) > tolerance) {
       throw new BadRequestException(
-        `Invalid payment amount. Expected: ${expectedAmount.toFixed(2)} (original: ${calculation.originalAmount.toFixed(2)}${calculation.interest > 0 ? ` + interest: ${calculation.interest.toFixed(2)}` : ''})`,
+        `Invalid payment amount. Expected: ${expectedAmount.toFixed(
+          2,
+        )} (original: ${calculation.originalAmount.toFixed(2)}${
+          calculation.interest > 0 ? ` + interest: ${calculation.interest.toFixed(2)}` : ''
+        })`,
       );
     }
 

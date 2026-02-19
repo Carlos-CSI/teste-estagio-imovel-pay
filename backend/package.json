@@ -9,7 +9,6 @@
     "test": "jest",
     "lint": "eslint \"{src,test}/**/*.{ts,js}\" --fix",
     "format": "prettier --write \"{src,test}/**/*.{ts,js,json,md}\"",
-    "prepare": "husky install",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "prisma:generate": "prisma generate",
@@ -18,15 +17,6 @@
   },
   "prisma": {
     "seed": "ts-node prisma/seed.ts"
-  },
-  "lint-staged": {
-    "*.ts": [
-      "eslint --fix",
-      "prettier --write"
-    ],
-    "*.js": [
-      "prettier --write"
-    ]
   },
   "dependencies": {
     "@nestjs/common": "^9.0.0",
@@ -57,8 +47,6 @@
     "@typescript-eslint/eslint-plugin": "^5.0.0",
     "prettier": "^2.0.0",
     "eslint-config-prettier": "^8.0.0",
-    "eslint-plugin-prettier": "^4.0.0",
-    "lint-staged": "^13.0.0",
-    "husky": "^8.0.0"
+    "eslint-plugin-prettier": "^4.0.0"
   }
 }

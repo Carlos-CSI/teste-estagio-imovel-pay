@@ -8,7 +8,7 @@ import {
 
 @ValidatorConstraint({ async: false })
 export class IsWithinOneYearConstraint implements ValidatorConstraintInterface {
-  validate(dateString: string, args?: ValidationArguments) {
+  validate(dateString: string, _args?: ValidationArguments) {
     if (!dateString) return false;
     const date = new Date(dateString);
     const now = new Date();

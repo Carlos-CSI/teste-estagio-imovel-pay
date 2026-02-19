@@ -108,9 +108,7 @@ describe('PaymentsService', () => {
 
       // Act / Assert
       await expect(service.create(incorrectPaymentDto)).rejects.toThrow(BadRequestException);
-      await expect(service.create(incorrectPaymentDto)).rejects.toThrow(
-        /Invalid payment amount/,
-      );
+      await expect(service.create(incorrectPaymentDto)).rejects.toThrow(/Invalid payment amount/);
     });
 
     it('should map Prisma P2002 to BadRequestException', async () => {

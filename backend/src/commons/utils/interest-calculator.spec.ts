@@ -59,13 +59,13 @@ describe('calculateInterest', () => {
   });
 
   it('should work with Decimal amounts', () => {
-    const amount = new Decimal(250.50);
+    const amount = new Decimal(250.5);
     const dueDate = new Date('2026-01-12');
     const currentDate = new Date('2026-02-11'); // 30 days later
 
     const result = calculateInterest(amount, dueDate, currentDate);
 
-    expect(result.originalAmount).toBe(250.50);
+    expect(result.originalAmount).toBe(250.5);
     expect(result.interest).toBe(25.05); // 10% of 250.50 for 1 month
     expect(result.totalAmount).toBe(275.55);
     expect(result.isOverdue).toBe(true);

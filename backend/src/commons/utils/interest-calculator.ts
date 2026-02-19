@@ -19,7 +19,7 @@ export function calculateInterest(
 ): InterestCalculation {
   const originalAmount = typeof amount === 'number' ? amount : Number(amount);
   const dueDateObj = new Date(dueDate);
-  
+
   // Check if overdue
   const isOverdue = currentDate > dueDateObj;
 
@@ -36,10 +36,10 @@ export function calculateInterest(
   // Calculate days overdue
   const msPerDay = 1000 * 60 * 60 * 24;
   const daysOverdue = Math.floor((currentDate.getTime() - dueDateObj.getTime()) / msPerDay);
-  
+
   // Calculate interest: 10% per month, proportional by days (30 days = 1 month)
   const monthsOverdue = daysOverdue / 30;
-  const interestRate = 0.10; // 10% per month
+  const interestRate = 0.1; // 10% per month
   const interest = originalAmount * interestRate * monthsOverdue;
   const totalAmount = Number((originalAmount + interest).toFixed(2));
 

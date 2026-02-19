@@ -16,7 +16,10 @@ export class CreateChargeDto {
   @Min(0.01)
   amount: number;
 
-  @ApiProperty({ example: '2026-03-01T00:00:00.000Z', description: 'Due date (must be today or future date)' })
+  @ApiProperty({
+    example: '2026-03-01T00:00:00.000Z',
+    description: 'Due date (must be today or future date)',
+  })
   @IsDateString()
   @IsFutureDate({ message: 'the date must be today or a future date' })
   @IsWithinOneYear({ message: 'the date must be at most 1 year from creation' })

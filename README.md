@@ -27,10 +27,22 @@ Sistema de gerenciamento de cobranças com backend em NestJS e frontend em React
 
 ### Opção 1 — Tudo via Docker Compose
 
+Na raiz do projeto, crie o .env com base no exemplo:
+
 ```bash
-# Na raiz do projeto
-cp .env.example .env   # ajuste as variáveis se necessário
+cp .env.example .env
+```
+
+Rode o docker compose para iniciar os serviços:
+
+```bash
 docker compose up --build
+```
+
+Comando para encerrar os serviços:
+
+```bash
+docker compose down -v
 ```
 
 Serviços disponíveis:
@@ -46,30 +58,82 @@ Serviços disponíveis:
 
 ### Opção 2 — Localmente (sem Docker para a aplicação)
 
-O banco de dados ainda precisa rodar via Docker:
+Se não possuir um servidor MySQL localmente, rode o banco de dados via Docker:
+
+Na raiz do projeto, crie o .env com base no exemplo:
 
 ```bash
-# Na raiz do projeto — sobe apenas o MySQL
-docker compose up db
+cp .env.example .env
+```
+
+Na raiz do projeto, suba apenas o serviço DB:
+
+```bash
+docker compose up db -d
 ```
 
 **Backend:**
 
+Entre na pasta do Backend:
+
 ```bash
 cd backend
-npm install              # instala as dependências do projeto
-npm run prisma:generate  # gera o Prisma Client com base no schema.prisma
-npm run prisma:migrate   # cria as tabelas no banco de dados
-npm run prisma:seed      # recomendado: popula dados iniciais para melhor visualização
-npm run start:dev        # inicia o servidor em modo de desenvolvimento com hot reload
+```
+
+Crie o arquivo .env a partir do exemplo ou ajuste as variáveis com os dados do MySQL local:
+
+```bash
+cp .env.example .env 
+```
+
+instale as dependências do projeto:
+
+```bash
+npm install  
+```
+
+Gera o Prisma Client com base no schema.prisma:
+
+```bash
+npm run prisma:generate  
+```
+
+Cria as tabelas no banco de dados e gera os Seeds, Populando dados iniciais para melhor visualização:
+
+```bash
+npm run prisma:migrate  
+```
+
+inicia o servidor em modo de desenvolvimento com hot reload:
+
+```bash
+npm run start:dev  
 ```
 
 **Frontend:**
 
+Entre na pasta do Frontend:
+
 ```bash
 cd frontend
-npm install   # instala as dependências do projeto
-npm run dev   # inicia o servidor de desenvolvimento Vite
+```
+
+Crie o arquivo .env a partir do exemplo e ajuste as variáveis:
+
+```bash
+cp .env.example .env
+```
+
+Instala as dependências do projeto:
+
+```bash
+npm install
+```
+
+Inicia o servidor de desenvolvimento Vite:
+
+```bash
+npm run dev
 ```
 
 O [frontend/.env](frontend/.env) já aponta para `http://localhost:3000` por padrão.
