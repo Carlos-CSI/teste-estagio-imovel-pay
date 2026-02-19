@@ -4,22 +4,6 @@ API RESTful desenvolvida com NestJS para gerenciamento completo de clientes, cob
 
 ---
 
-## ✨ Novas Implementações
-
-### Sistema de Cálculo de Juros (v2.0)
-- ✅ **Calculador de juros automático**: 10% ao mês proporcional por dias (30 dias = 1 mês)
-- ✅ **Endpoint de cálculo**: `GET /charges/:id/calculate-payment` - consulta valor com juros
-- ✅ **Validação de pagamentos**: Sistema valida automaticamente valores incluindo juros
-- ✅ **7 testes unitários** cobrindo cenários de cobranças vencidas e não vencidas
-
-### Filtros Avançados para Cobranças do Cliente
-- ✅ **Filtro por status**: Query param `status` para filtrar cobranças (PAGO, PENDENTE, CANCELADO, VENCIDO)
-- ✅ **Ordenação flexível**: Query params `orderBy` (dueDate/amount/status) e `order` (asc/desc)
-- ✅ **Endpoint aprimorado**: `GET /customers/:id` com suporte a query parameters
-- ✅ **Resposta enriquecida**: Inclui detalhes do pagamento associado a cada cobrança
-
----
-
 ## 📋 Índice
 
 - [Tecnologias](#-tecnologias)
@@ -675,3 +659,6 @@ Para contornar hooks (não recomendado):
 ```bash
 git commit --no-verify
 ```
+---
+
+**Desenvolvido por:** [Christian Volz](https://github.com/christianbvolz)

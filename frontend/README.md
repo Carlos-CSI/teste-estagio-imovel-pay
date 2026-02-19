@@ -444,13 +444,6 @@ Modais filhos:        z-[60]
 
 Todos os modais seguem esta convenção para garantir empilhamento correto.
 
-## 📦 Versão
-
-**v1.0.0** - Frontend completo com sistema de modais robusto, React Portal, gestão de clientes completa e todas as funcionalidades principais implementadas.
-
 ---
 
-**Desenvolvido por:** [Christian Volz](https://github.com/christianbvolz)  
-**Backend:** NestJS + Prisma + PostgreSQL  
-**Frontend:** React + TypeScript + Vite
-```
+**Desenvolvido por:** [Christian Volz](https://github.com/christianbvolz)
