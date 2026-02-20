@@ -1,0 +1,41 @@
+{
+  "name": "teste-estagio-imovel-pay",
+  "version": "1.0.0",
+  "description": "Bem-vindo(a)!",
+  "workspaces": [
+    "frontend",
+    "backend"
+  ],
+  "scripts": {
+    "backend": "npm run dev --workspace=backend",
+    "frontend": "npm run dev --workspace=frontend",
+    "dev": "concurrently \"npm run backend\" \"npm run frontend\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Carlos-CSI/teste-estagio-imovel-pay.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Carlos-CSI/teste-estagio-imovel-pay/issues"
+  },
+  "homepage": "https://github.com/Carlos-CSI/teste-estagio-imovel-pay#readme",
+  "devDependencies": {
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.6",
+    "concurrently": "^9.2.1",
+    "drizzle-kit": "^0.31.9",
+    "tsx": "^4.21.0"
+  },
+  "dependencies": {
+    "body-parser": "^2.2.2",
+    "cors": "^2.8.6",
+    "dotenv": "^17.3.1",
+    "drizzle-orm": "^0.45.1",
+    "express": "^5.2.1",
+    "mysql2": "^3.17.3"
+  }
+}
