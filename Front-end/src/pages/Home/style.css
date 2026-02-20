@@ -1,0 +1,147 @@
+.container {
+  margin: auto;
+
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+
+  align-items: center;
+
+  padding-top: 10px;
+
+  max-width: 900px;
+}
+
+.titulo-formulario {
+  color: blue;
+  font-size: 32px;
+}
+
+.envolver {
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+
+  width: 100%;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  padding: 30px;
+  border-radius: 30px;
+  background-color: white;
+
+  max-width: 80%;
+  width: 400px;
+
+  & .titulo-cadastro-cobrancas {
+    color: blue;
+    font-size: 24px;
+  }
+
+  & button {
+    border-radius: 30px;
+    background-color: #2563eb;
+    height: 30px;
+    font-weight: bold;
+    cursor: pointer;
+    color: #f9fafb;
+  }
+
+  & button:hover {
+    opacity: 0.8;
+    transition: 0.3s;
+  }
+
+  & input {
+    border: 1.5px solid #d1d5db;
+    border-radius: 30px;
+    height: 40px;
+    background-color: #f3f4f6;
+    color: #1f2937;
+    font-size: 13px;
+    padding: 10px;
+    outline: none;
+  }
+}
+
+.lista-de-cobrancas {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  padding: 30px;
+  border-radius: 30px;
+  background-color: white;
+  & .titulo-lista-cobrancas {
+    margin: auto;
+    margin-top: 10px;
+    color: blue;
+    font-size: 24px;
+  }
+}
+
+.cobranca {
+  display: flex;
+  justify-content: space-between;
+  background-color: #edeef1;
+  margin: 10px;
+  padding: 10px;
+  width: 100%;
+  border-radius: 11px;
+
+  & p {
+    font-weight: bold;
+
+    & span {
+      font-weight: normal;
+    }
+  }
+  & button {
+    border-radius: 4px;
+    background-color: #2563eb;
+    height: 30px;
+    font-weight: bold;
+    cursor: pointer;
+    color: #f9fafb;
+  }
+  & button:hover {
+    transition: 0.3s;
+    background-color: #e74c3c;
+  }
+  .status {
+    padding: 4px 10px;
+    border-radius: 6px;
+    border: none;
+    color: white;
+  }
+
+  .status.pago {
+    background-color: #2563eb;
+  }
+
+  .status.pendente {
+    background-color: #e74c3c;
+  }
+}
+
+.filtro-area {
+  margin-top: 20px;
+  padding: 0px 10px;
+  display: flex;
+  align-items: center;
+
+  gap: 10px;
+  margin: 10px 0 16px 0;
+}
+
+.filtro-area select {
+  padding: 6px 10px;
+  border-radius: 8px;
+}
+
+.filtro-area .total {
+  margin-left: auto;
+  font-weight: bold;
+}

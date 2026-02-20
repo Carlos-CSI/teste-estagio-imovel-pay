@@ -1,0 +1,16 @@
+# Dependências
+**/node_modules
+
+# Variáveis de ambiente
+**/.env
+
+# Cache do Vite
+.vite
+
+# Build
+dist
+dist-ssr
+
+# Logs
+logs
+*.log
