@@ -6,6 +6,6 @@ export enum BillingStatus{
 export interface BillingModel{
     clientName: string
     value: number
-    dueDate: Date
+    dueDate: string
     status: BillingStatus
 }

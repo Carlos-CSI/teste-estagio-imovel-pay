@@ -1,47 +1,29 @@
-import { randomUUID } from "node:crypto";
 import { BillingModel, BillingStatus } from "../model/BillingModel";
+import { db } from "../db";
+import { billingsTable } from "../db/schema";
+import { eq } from "drizzle-orm";
 
 interface BillingModelWithId extends BillingModel {
-    id: string 
+    id: number
 }
 
-export class BillingRepository{
-    billings: BillingModelWithId[] = [
-    {
-        "clientName": "Pedro Santoro",
-        "value": 10,
-        "dueDate": new Date("2023-10-01"),
-        "status": BillingStatus.PAID,
-        "id": "ae3647f6-7b0e-4dd2-8591-40ab2a5fa48d"
-    },
-    {
-        "clientName": "Gabriel Veliago",
-        "value": 2000,
-        "dueDate":  new Date("2025-10-02"),
-        "status": BillingStatus.PENDING,
-        "id": "0e6d06c7-2e06-4a40-8773-faf6378d9743"
-    }
-]
+export class BillingRepository {
+    
 
     find() {
-        return this.billings
+        return db.select().from(billingsTable)
     }
 
-    create(billing:BillingModel) {
-        const billingWithId = {...billing, id:randomUUID()}
-        this.billings.push(billingWithId)
-        return billingWithId
+    async create(billing: BillingModel) {
+        const [result] = await db.insert(billingsTable).values({...billing, dueDate: new Date(billing.dueDate)})
+        const [newBilling] = await db.select().from(billingsTable).where(eq(billingsTable.id, result.insertId))
+        return newBilling
     }
 
-    update (id: string, status: BillingStatus) {
-        const billing = this.billings.find((item)=> {
-            return item.id === id 
-        })
-        if (!billing){
-            return null
-        }
-        billing.status = status
-        return billing
+    async update(id: number, status: BillingStatus) {
+        const [result] = await db.update(billingsTable).set({status}).where(eq(billingsTable.id, id))
+        const [newBilling] = await db.select().from(billingsTable).where(eq(billingsTable.id, id))
+        return newBilling
     }
 }
 
