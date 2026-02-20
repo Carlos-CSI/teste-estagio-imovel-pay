@@ -80,7 +80,11 @@ function Home() {
   // useEffect para mostrar as cobranças assim que o componente for montado, fazendo a chamada para a função mostrarCobrancas.
 
   useEffect(() => {
-    mostrarCobrancas();
+    async function carregar() {
+      await mostrarCobrancas();
+    }
+
+    carregar();
   }, []);
 
   return (

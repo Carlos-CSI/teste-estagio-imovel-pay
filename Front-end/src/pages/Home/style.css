@@ -127,6 +127,7 @@ form {
 }
 
 .filtro-area {
+  margin-top: 20px;
   padding: 0px 10px;
   display: flex;
   align-items: center;
