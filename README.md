@@ -1,137 +1,110 @@
-# 🚀 Teste Técnico – Estágio em Desenvolvimento
+﻿# Teste Tecnico - Mini Sistema de Cobrancas
 
-Bem-vindo(a)!
+Projeto com backend e frontend para gerenciar cobrancas.
 
-Este repositório contém o **teste técnico para a vaga de estágio em desenvolvimento**.  
-O objetivo deste desafio **não é avaliar nível sênior**, mas entender **como você pensa, organiza o código, aprende e resolve problemas**.
+## Tecnologias
 
-Leia tudo com atenção antes de começar 👇
+- Backend: Node.js + Express
+- Frontend: React + Vite
+- Persistencia: em memoria (sem banco)
 
----
+## Estrutura
 
-## 🏢 Contexto Geral
+- `backend`: API REST
+- `frontend`: interface web
 
-Trabalhamos com sistemas reais voltados para **pagamentos, cobranças e operações financeiras**.  
-Neste desafio, você irá desenvolver uma aplicação **simples**, inspirada nesse contexto, sem necessidade de integrações externas ou regras complexas.
+## Requisitos
 
----
+- Node.js 20+
+- npm 10+
 
-## ⏰ Prazo de Entrega
+## Como rodar
 
-- **Data limite:** **20/02/2026**
-- Pull Requests enviados após essa data **não serão considerados**
+1. Backend
 
----
+```bash
+cd backend
+npm install
+npm run dev
+```
 
-## ⚠️ Regras Importantes
+API em: `http://localhost:3001`
 
-- Este repositório é **público**
-- **Não é permitido** commitar diretamente na branch `master`
-- Crie **uma branch com o seu nome**  
-  Exemplo: `joao-silva`
-- Ao finalizar, abra **um Pull Request para a branch `master`**
-- Não há template, boilerplate ou código inicial
-- Toda a estrutura do projeto deve ser criada por você
+2. Frontend
 
----
+```bash
+cd frontend
+npm install
+npm run dev
+```
 
-## 🛠️ Stack (Sugestão)
+App em: `http://localhost:5173`
 
-A stack abaixo é **apenas uma sugestão**, baseada no que utilizamos no dia a dia.  
-Você pode adaptar conforme seu conhecimento, desde que mantenha uma separação clara entre backend e frontend.
+## Endpoints da API
 
-### Backend (sugestão)
-- PHP (preferencialmente seguindo padrões MVC, como CodeIgniter)
-**ou**
-- Node.js (Express ou similar)
+### `GET /cobrancas`
+Lista todas as cobrancas.
 
-### Frontend (sugestão)
-- React.js
+Resposta:
 
-### Banco de Dados (recomendação)
-- MySQL  
+```json
+[
+  {
+    "id": 1,
+    "nomeCliente": "Maria",
+    "valor": 150.75,
+    "dataVencimento": "2026-03-10",
+    "status": "PENDENTE"
+  }
+]
+```
 
-📌 O uso de banco de dados **não é obrigatório**, mas o MySQL é recomendado caso você opte por persistência de dados.
+### `POST /cobrancas`
+Cria uma cobranca.
 
-❌ **Não é necessário**
-- Autenticação
-- Deploy
-- Estilização avançada
+Body:
 
----
+```json
+{
+  "nomeCliente": "Maria",
+  "valor": 150.75,
+  "dataVencimento": "2026-03-10"
+}
+```
 
-## 📌 Desafio Proposto
+### `PATCH /cobrancas/:id/status`
+Atualiza o status para `PAGO`.
 
-### Mini Sistema de Cobranças (Simplificado)
+## Regras implementadas
 
-Você deverá criar um sistema simples para **gerenciar cobranças**, contendo backend e frontend.
+- Campos obrigatorios: `nomeCliente`, `valor`, `dataVencimento`
+- `valor` deve ser numero maior que zero
+- `dataVencimento` deve ser data valida
+- `status` inicia como `PENDENTE`
 
----
+## Funcionalidades do frontend
 
-## ✅ Requisitos Funcionais (MVP)
+- Listagem de cobrancas
+- Criacao de cobranca
+- Atualizacao de status para `PAGO`
+- Estado de loading e mensagens de erro
 
-### 🔧 Backend
+## Organizacao de codigo
 
-Criar uma API que permita:
+Backend em camadas:
 
-1. Listar cobranças
-2. Criar uma nova cobrança
-3. Atualizar o status de uma cobrança
+- `routes`
+- `controllers`
+- `services`
+- `repositories`
 
-#### Campos mínimos de uma cobrança:
-- Nome do cliente
-- Valor
-- Data de vencimento
-- Status (`PENDENTE` ou `PAGO`)
+Frontend com componentes:
 
-📎 Observações:
-- Os dados podem ser armazenados:
-  - Em memória
-  - Em arquivo (JSON, por exemplo)
-  - Em banco de dados (opcional)
-- Validações básicas são esperadas (campos obrigatórios)
+- `CobrancaForm`
+- `CobrancaList`
+- `services/api.js`
 
----
+## Observacoes
 
-### 🎨 Frontend
-
-Criar uma interface simples que permita:
-
-1. Visualizar a lista de cobranças
-2. Criar uma nova cobrança
-3. Alterar o status de uma cobrança para `PAGO`
-
-📎 Observações:
-- O layout pode ser simples
-- O foco é funcionalidade, organização e clareza
-- Utilize componentes e estado de forma básica
-
----
-
-## 🧩 Requisitos Não Funcionais
-
-- Código organizado e legível
-- Nomes claros para variáveis, funções e arquivos
-- Separação mínima de responsabilidades
-- README explicando como rodar o projeto
-
----
-
-## ⭐ Pontos Bônus (Não Obrigatórios)
-
-Os itens abaixo **não são obrigatórios e não são eliminatórios**,  
-mas serão considerados como **diferenciais positivos** na avaliação:
-
-- Testes unitários básicos (backend e/ou frontend)
-- Uso de MySQL para persistência de dados
-- Organização clara de camadas (ex: controller, service, repository)
-- Tratamento simples de erros (mensagens claras)
-- Estados de loading no frontend
-- Commits bem descritos
-- Comentários explicando decisões técnicas importantes
-- Pequenas melhorias além do MVP (ex: filtros ou ordenação)
-
-📌 A ausência desses itens **não prejudica** sua avaliação.
-
-
-
+- Os dados ficam em memoria e sao reiniciados quando o backend reinicia.
+- Nao ha autenticacao, deploy ou estilização avancada por escopo do desafio.
