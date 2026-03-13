@@ -1,8 +1,13 @@
+import { putCliente } from './api';
 import styled from 'styled-components'
 export default function Cliente({infos,refresh}){
     const {cliente,pendencias,valor_total}=infos
     function alterarStatus(){
-        
+        putCliente(cliente).then(res=>{
+            refresh()
+        }).catch(err=>{
+            console.log(err)
+        })
     }
     return (
         <Infos>
@@ -12,7 +17,7 @@ export default function Cliente({infos,refresh}){
                     <p>{cliente}</p>
                 </Etiqueta>
                 <Etiqueta>
-                    <h6>Pendencias:</h6>
+                    <h6>Pendências:</h6>
                     <p>{pendencias}</p>
                 </Etiqueta>
                 <Etiqueta>

@@ -88,7 +88,9 @@ export default function TelaCobrancas(){
 }
 function Ordenacao({titulo,coluna,alterar,ordenacao,crescente}){
     return(
-        <EscolhaOrdenacao onClick={()=>alterar(coluna)}>
+        <EscolhaOrdenacao 
+            selecionado={ordenacao===coluna} 
+            onClick={()=>alterar(coluna)}>
             <p>{titulo}</p>
             {ordenacao===coluna?
                 (crescente?<TiArrowSortedDown />:<TiArrowSortedUp />)
@@ -106,7 +108,7 @@ function Filtro({titulo,setFiltro,filtro}){
     )
 }
 const Topo=styled.div`
-background:black;
+background:#3d3c3c;
 justify-content:center;
 main{
 display:flex;
@@ -114,6 +116,10 @@ display:flex;
  max-width:820px;
  width:100%;
 }
+ h5{
+ font-weight:400;
+ font-size:14px;
+ }
 @media(min-width:850px){
 main{
     flex-direction:row;
@@ -129,17 +135,20 @@ height:100%;
 const EscolhaFiltro=styled.button`
 height:25px;
 padding:0 10px 0 10px;
-background:${p=>p.selecionado?'#d6d6d6':'#515151'};
-color:${p=>p.selecionado?'black':'white'};
+background:${p=>p.selecionado?'black':'#d6d6d6'};
+color:${p=>p.selecionado?'white':'black'};
 border-radius:13px;
 margin-left:10px;
 `
 const EscolhaOrdenacao=styled.button`
 height:25px;
 padding:0 10px 0 10px;
-background:#d6d6d6;
+background:${p=>p.selecionado?'black':'#d6d6d6'};
+color:${p=>p.selecionado?'white':'black'};
 border-radius:13px;
 margin-left:10px;
+font-size:20px;
+p{font-size:13px}
 `
 const Selecoes=styled.div`
 align-items:center;

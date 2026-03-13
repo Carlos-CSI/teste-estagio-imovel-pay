@@ -36,20 +36,23 @@ const Tela=styled.div`
 align-items:center;
 justify-content:center;
 height:60px;
-background:#444444;
+background:#212121;
 padding:10px;
 main{
-max-width:820px;
-width:100%;
-display:flex;
-align-items:center;
-justify-content:space-between;
+    max-width:820px;
+    width:100%;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
 }
 `
 const BotaoNavegacao=styled.button`
-width:150px;
+width:33%;
 height:40px;
 color:${p=>p.selecionado?'white':'darkgray'};
 background:transparent;
-border-radius:10px
+border-radius:10px;
+p{
+    font-size:16px;
+}
 `

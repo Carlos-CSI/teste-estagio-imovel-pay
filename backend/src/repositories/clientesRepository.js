@@ -22,3 +22,16 @@ export async function selectClientes(ordenacao,asc){
         console.log('Erro em repository selectClientes: ',error)
     }
 }
+export async function updateCliente(cliente){
+    try {
+        const db=await connectDB()
+        const query = `
+            UPDATE cobrancas 
+            SET status = 'PAGO'
+            WHERE cliente= ?
+        `;
+        await db.query(query,[cliente]);
+    } catch (error) {
+        console.log('Erro em repository updateCobrancas: ',error)
+    }
+}

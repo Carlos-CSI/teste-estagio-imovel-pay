@@ -1,6 +1,6 @@
 import { connectDB } from '../../db.js'
 
-export async function createCobranca (cobranca){
+export async function createCobranca(cobranca){
     const {cliente,valor,dataVencimento,dataCriacao}=cobranca
     try {
         const db=await connectDB()
@@ -14,7 +14,7 @@ export async function createCobranca (cobranca){
     }
 }
 
-export async function selectCobrancas (ordenacao,asc,filtro){
+export async function selectCobrancas(ordenacao,asc,filtro){
     try {
         const db=await connectDB()
         const query = `
@@ -28,7 +28,7 @@ export async function selectCobrancas (ordenacao,asc,filtro){
         console.log('Erro em repository selectCobrancas: ',error)
     }
 }
-export async function updateCobranca (id){
+export async function updateCobranca(id){
     try {
         const db=await connectDB()
         const query = `
