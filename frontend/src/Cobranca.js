@@ -114,7 +114,7 @@ aside{
 const Holder=styled.div`
 flex-direction:column;
 width:calc(100% - 30px);
-height:120px;
+max-height:120px;
 background:darkgray;
 margin-top:15px;
 border-radius:10px;
@@ -124,7 +124,7 @@ h5{
   font-weight:400;
   text-align:center;
 }
-max-width:850px;
+max-width:820px;
 @media(min-width:850px){
     h5{
         text-align:end;width:calc(100% - 10px);

@@ -2,24 +2,153 @@ import { useEffect, useState } from 'react';
 import { getCobrancas } from './api';
 import styled from 'styled-components'
 import Cobranca from './Cobranca';
-
+import { TiArrowSortedDown } from "react-icons/ti";
+import { TiArrowSortedUp } from "react-icons/ti";
 export default function TelaCobrancas(){
     const [cobrancas,setCobrancas]=useState([])
-    function buscar(){
-    getCobrancas().then(res=>{
-        setCobrancas(res.data)
-    }).catch(err=>{
-        console.log(err)
-    })
+    const [ordenacao,setOrdenacao]=useState('data_criacao')
+    const [crescente,setCrescente]=useState(true)
+    const [filtro,setFiltro]=useState('TODOS')
+    function alterarOrdenacao(coluna){
+        if(ordenacao===coluna){
+            setCrescente(!crescente)
+        }else{
+            setOrdenacao(coluna)
+        }
     }
-    useEffect(buscar,[])
+    function buscar(){
+        getCobrancas(ordenacao,crescente,filtro).then(res=>{
+            setCobrancas(res.data)
+        }).catch(err=>{
+            console.log(err)
+        })
+    }
+    useEffect(buscar,[ordenacao,crescente,filtro])
     return (
         <Tela>
-            {cobrancas.map(infos=><Cobranca refresh={buscar} infos={infos}/>)}
+            <Topo>
+            <main>
+                <Selecoes>
+                    <h5>Ordenar por: </h5>
+                    <Ordenacao 
+                        titulo='Cliente' 
+                        coluna={'cliente'} 
+                        alterar={alterarOrdenacao} 
+                        ordenacao={ordenacao} 
+                        crescente={crescente}
+                    />
+                    <Ordenacao 
+                        titulo='Valor' 
+                        coluna={'valor'} 
+                        alterar={alterarOrdenacao} 
+                        ordenacao={ordenacao} 
+                        crescente={crescente}
+                    />
+                    <Ordenacao 
+                        titulo='Vencimento' 
+                        coluna={'data_vencimento'} 
+                        alterar={alterarOrdenacao} 
+                        ordenacao={ordenacao} 
+                        crescente={crescente}
+                    />
+                    <Ordenacao 
+                        titulo='Recente' 
+                        coluna={'data_criacao'} 
+                        alterar={alterarOrdenacao} 
+                        ordenacao={ordenacao} 
+                        crescente={crescente}
+                    />
+                </Selecoes>
+                <Selecoes>
+                    <h5>Filtrar por: </h5>
+                    <Filtro 
+                        titulo='TODOS' 
+                        filtro={filtro} 
+                        setFiltro={setFiltro} 
+                    />
+                    <Filtro 
+                        titulo='PENDENTE' 
+                        filtro={filtro} 
+                        setFiltro={setFiltro} 
+                    />
+                    <Filtro 
+                        titulo='PAGO' 
+                        filtro={filtro} 
+                        setFiltro={setFiltro} 
+                    />
+                </Selecoes>
+            </main>
+            </Topo>
+            
+            <Lista>
+                {cobrancas.map(infos=><Cobranca refresh={buscar} infos={infos}/>)}
+            </Lista>
         </Tela>
     )
 }
+function Ordenacao({titulo,coluna,alterar,ordenacao,crescente}){
+    return(
+        <EscolhaOrdenacao onClick={()=>alterar(coluna)}>
+            <p>{titulo}</p>
+            {ordenacao==coluna?
+                (crescente?<TiArrowSortedDown />:<TiArrowSortedUp />)
+            :<></>}
+        </EscolhaOrdenacao>
+    )
+}
+function Filtro({titulo,setFiltro,filtro}){
+    return(
+        <EscolhaFiltro
+            selecionado={filtro==titulo} 
+            onClick={()=>setFiltro(titulo)}>
+            <p>{titulo}</p>
+        </EscolhaFiltro>
+    )
+}
+const Topo=styled.div`
+background:black;
+justify-content:center;
+main{
+display:flex;
+ flex-direction:column;
+ max-width:820px;
+ width:100%;
+}
+@media(min-width:850px){
+main{
+    flex-direction:row;
+    justify-content:space-between;
+}
+}
+`
 const Tela=styled.div`
+flex-direction:column;
+overflow:auto;
+height:100%;
+`
+const EscolhaFiltro=styled.button`
+height:25px;
+padding:0 10px 0 10px;
+background:${p=>p.selecionado?'white':'gray'};
+border-radius:13px;
+margin-left:10px;
+`
+const EscolhaOrdenacao=styled.button`
+height:25px;
+padding:0 10px 0 10px;
+background:white;
+border-radius:13px;
+margin-left:10px;
+`
+const Selecoes=styled.div`
+align-items:center;
+height:40px;
+color:white;
+padding:0 20px 0 20px;
+`
+const Lista=styled.div`
+width:100%;
+height:calc(100% - 40px);
 align-items:center;
 flex-direction:column;
 overflow:auto;

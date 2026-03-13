@@ -2,7 +2,6 @@ import dayjs from 'dayjs'
 import { createCobranca, selectCobrancas, updateCobranca } from './repository.js'
 export async function postCobranca (req,res){
     const {cliente,valor:valorString,dataVencimento:objetoData}=req.body
-    console.log('cliente: ',cliente,'valor: ',valorString)
     const valor=parseFloat(valorString)
     const {dia,mes,ano}=objetoData
     const dataVencimento =dayjs(`20${ano}-${mes}-${dia}`).format('YYYY-MM-DD')
@@ -18,8 +17,9 @@ export async function postCobranca (req,res){
     }
 }
 export async function getCobrancas (req,res){
+    const {ordenacao,asc,filtro}=req.query
     try {
-        const response=await selectCobrancas()
+        const response=await selectCobrancas(ordenacao,asc,filtro)
         res.status(200).send(response)
     } catch (error) {
         console.log('Erro em controller getCobrancas: ',error)

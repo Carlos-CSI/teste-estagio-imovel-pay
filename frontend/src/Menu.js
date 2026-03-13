@@ -29,7 +29,7 @@ height:60px;
 background:#444444;
 padding:10px;
 main{
-max-width:850px;
+max-width:820px;
 width:100%;
 display:flex;
 align-items:center;

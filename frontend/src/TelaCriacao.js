@@ -25,17 +25,6 @@ export default function TelaCriacao(){
           console.log(err)
         })
       }
-      useEffect(() => {
-    function handleKey(e) {
-      if (e.key === "Enter") {
-        salvar();
-      }
-    }
-    window.addEventListener("keyup", handleKey);
-    return () => {
-      window.removeEventListener("keyup", handleKey);
-    };
-  }, []);
     return (
         <Tela>
             <form onSubmit={salvar}>
