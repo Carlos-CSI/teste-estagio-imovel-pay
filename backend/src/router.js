@@ -1,7 +1,6 @@
 import Router from 'express'
+import { postCobranca } from './controller.js'
 
 export const cobrancasRouter=Router()
 
-cobrancasRouter.get('/cobrancas', async (req,res)=>{
-    
-} )
+cobrancasRouter.post('/cobrancas', postCobranca )
