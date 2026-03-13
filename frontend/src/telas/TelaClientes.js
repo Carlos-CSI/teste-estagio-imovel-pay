@@ -1,0 +1,127 @@
+import { useEffect, useState } from 'react';
+import { getClientes, } from '../api';
+import styled from 'styled-components'
+import { TiArrowSortedDown } from "react-icons/ti";
+import { TiArrowSortedUp } from "react-icons/ti";
+import Cliente from '../componentes/Cliente';
+import { Oval } from 'react-loader-spinner';
+export default function TelaClientes(){
+    const [clientes,setClientes]=useState([])
+    const [ordenacao,setOrdenacao]=useState('cliente')
+    const [crescente,setCrescente]=useState(true)
+    const [loading,setLoading]=useState(false)
+    function alterarOrdenacao(coluna){
+        if(ordenacao===coluna){
+            setCrescente(!crescente)
+        }else{
+            setOrdenacao(coluna)
+        }
+    }
+    function buscar(){
+        setLoading(true)
+        getClientes(ordenacao,crescente).then(res=>{
+            setClientes(res.data)
+            setLoading(false)
+        }).catch(err=>{
+            setLoading(false)
+            console.log(err)
+        })
+    }
+    useEffect(buscar,[ordenacao,crescente])
+    return (
+        loading?
+        <Tela>
+            {loading?<Oval height={150} width={150} color="white" wrapperStyle={{marginTop:'50px'}}/>:<></>}
+        </Tela>:
+        <Tela>
+            <Topo>
+            <main>
+                <Selecoes>
+                    <h5>Ordenar por: </h5>
+                    <Ordenacao 
+                        titulo='Cliente' 
+                        coluna={'cliente'} 
+                        alterar={alterarOrdenacao} 
+                        ordenacao={ordenacao} 
+                        crescente={crescente}
+                    />
+                    <Ordenacao 
+                        titulo='Valor Pendente' 
+                        coluna={'valor_total'} 
+                        alterar={alterarOrdenacao} 
+                        ordenacao={ordenacao} 
+                        crescente={crescente}
+                    />
+                </Selecoes>
+            </main>
+            </Topo>
+            <Lista>
+                {clientes.map(infos=><Cliente refresh={buscar} infos={infos}/>)}
+            </Lista>
+        </Tela>
+    )
+}
+function Ordenacao({titulo,coluna,alterar,ordenacao,crescente}){
+    return(
+        <EscolhaOrdenacao 
+            selecionado={ordenacao===coluna}
+            onClick={()=>alterar(coluna)}>
+            <p>{titulo}</p>
+            {ordenacao===coluna?
+                (crescente?<TiArrowSortedDown />:<TiArrowSortedUp />)
+            :<></>}
+        </EscolhaOrdenacao>
+    )
+}
+
+const Topo=styled.div`
+background:#3d3c3c;
+justify-content:center;
+width:100%;
+main{
+display:flex;
+ flex-direction:column;
+ max-width:820px;
+ width:100%;
+}
+ h5{
+ font-weight:400;
+ font-size:14px;
+ }
+@media(min-width:850px){
+main{
+    flex-direction:row;
+    justify-content:space-between;
+}
+}
+`
+const Tela=styled.div`
+flex-direction:column;
+overflow:auto;
+height:100%;
+align-items:center;
+`
+const EscolhaOrdenacao=styled.button`
+height:25px;
+padding:0 10px 0 10px;
+background:${p=>p.selecionado?'black':'#d6d6d6'};
+color:${p=>p.selecionado?'white':'black'};
+border-radius:13px;
+margin-left:10px;
+font-size:20px;
+p{font-size:13px}
+`
+const Selecoes=styled.div`
+align-items:center;
+height:40px;
+color:white;
+padding:0 20px 0 20px;
+`
+const Lista=styled.div`
+width:100%;
+height:calc(100% - 40px);
+align-items:center;
+flex-direction:column;
+overflow:auto;
+padding-bottom:20px;
+`
