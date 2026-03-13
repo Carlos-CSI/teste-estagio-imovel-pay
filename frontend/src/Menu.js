@@ -30,7 +30,7 @@ padding:10px;
 const BotaoNavegacao=styled.button`
 width:150px;
 height:40px;
-background:${p=>p.selecionado?'transparent':'darkgray'};
-color:white;
+color:${p=>p.selecionado?'darkgray':'white'};
+background:transparent;
 border-radius:10px
 `

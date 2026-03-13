@@ -1,5 +1,5 @@
 import dayjs from 'dayjs'
-import { createCobranca, selectCobrancas } from './repository.js'
+import { createCobranca, selectCobrancas, updateCobranca } from './repository.js'
 export async function postCobranca (req,res){
     const {cliente,valor:valorString,dataVencimento}=req.body
     const valor=parseFloat(valorString)
@@ -20,6 +20,17 @@ export async function getCobrancas (req,res){
         res.status(200).send(response)
     } catch (error) {
         console.log('Erro em controller getCobrancas: ',error)
+        res.sendStatus(500)
+    }
+}
+export async function putCobranca (req,res){
+    const {id:idString}=req.params
+    const id=parseInt(idString)
+    try {
+        await updateCobranca(id)
+        res.sendStatus(204)
+    } catch (error) {
+        console.log('Erro em controller putCobrancas: ',error)
         res.sendStatus(500)
     }
 }

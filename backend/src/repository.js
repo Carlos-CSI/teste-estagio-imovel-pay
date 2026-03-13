@@ -8,8 +8,7 @@ export async function createCobranca (cobranca){
             INSERT INTO cobrancas (cliente, valor, data_vencimento, data_criacao, status)
             VALUES (?,?,?,?,'PENDENTE')
         `;
-        const [result] = await db.query(query, [cliente,valor,dataVencimento,dataCriacao]);
-        return result.insertId;
+        await db.query(query, [cliente,valor,dataVencimento,dataCriacao]);
     } catch (error) {
         console.log('Erro em repository createCobranca: ',error)
     }
@@ -25,5 +24,18 @@ export async function selectCobrancas (){
         return rows;
     } catch (error) {
         console.log('Erro em repository selectCobrancas: ',error)
+    }
+}
+export async function updateCobranca (id){
+    try {
+        const db=await connectDB()
+        const query = `
+            UPDATE cobrancas 
+            SET status = 'PAGO'
+            WHERE id= ?
+        `;
+        await db.query(query,[id]);
+    } catch (error) {
+        console.log('Erro em repository updateCobrancas: ',error)
     }
 }

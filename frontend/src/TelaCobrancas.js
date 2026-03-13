@@ -15,7 +15,7 @@ export default function TelaCobrancas(){
     useEffect(buscar,[])
     return (
         <Tela>
-            {cobrancas.map(infos=><Cobranca infos={infos}/>)}
+            {cobrancas.map(infos=><Cobranca refresh={buscar} infos={infos}/>)}
         </Tela>
     )
 }
