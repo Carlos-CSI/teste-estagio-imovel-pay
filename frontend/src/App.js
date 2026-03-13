@@ -4,6 +4,7 @@ import styled from 'styled-components'
 import TelaCriacao from './TelaCriacao';
 import TelaCobrancas from './TelaCobrancas';
 import { Menu } from './Menu';
+import TelaClientes from './TelaClientes';
 
 function App() {
   
@@ -12,8 +13,9 @@ function App() {
       <Tela>
         <Menu/>
           <Routes>
-            <Route path='/' element={<TelaCobrancas/>}/>
             <Route path='/nova-cobranca' element={<TelaCriacao/>}/>
+            <Route path='/' element={<TelaCobrancas/>}/>
+            <Route path='/pendencias-clientes' element={<TelaClientes/>}/>
           </Routes>
       </Tela>
     </BrowserRouter>

@@ -33,7 +33,7 @@ export default function Cobranca({infos,refresh}){
                     </Status>
                     {status!=='PAGO'?
                     <Botao onClick={alterarStatus}>
-                        <p>Alterar status</p>
+                        <p>Quitar</p>
                     </Botao>
                     :<></>}
                 </aside>

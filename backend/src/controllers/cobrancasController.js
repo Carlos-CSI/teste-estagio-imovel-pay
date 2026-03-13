@@ -1,5 +1,5 @@
 import dayjs from 'dayjs'
-import { createCobranca, selectCobrancas, updateCobranca } from './repository.js'
+import { createCobranca, selectCobrancas, updateCobranca } from '../repositories/cobrancaRepository.js'
 export async function postCobranca (req,res){
     const {cliente}=req.body
     const {dataVencimento,valor}=res.locals

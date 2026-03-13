@@ -5,12 +5,16 @@ export function Menu(){
         <Tela>
             <main>
                 <Navegacao
+                    titulo="Nova cobrança"
+                    path={'/nova-cobranca'}
+                />
+                <Navegacao
                     titulo="Lista cobranças"
                     path={'/'}
                 />
                 <Navegacao
-                    titulo="Nova cobrança"
-                    path={'/nova-cobranca'}
+                    titulo="Pendências clientes"
+                    path={'/pendencias-clientes'}
                 />
             </main>
       </Tela>

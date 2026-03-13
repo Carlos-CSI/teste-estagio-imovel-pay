@@ -1,4 +1,4 @@
-import { connectDB } from '../db.js'
+import { connectDB } from '../../db.js'
 
 export async function createCobranca (cobranca){
     const {cliente,valor,dataVencimento,dataCriacao}=cobranca
