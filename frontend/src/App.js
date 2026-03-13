@@ -1,10 +1,10 @@
 import './App.css';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import styled from 'styled-components'
-import TelaCriacao from './TelaCriacao';
-import TelaCobrancas from './TelaCobrancas';
-import { Menu } from './Menu';
-import TelaClientes from './TelaClientes';
+import TelaCriacao from './telas/TelaCriacao';
+import TelaCobrancas from './telas/TelaCobrancas';
+import { Menu } from './telas/Menu';
+import TelaClientes from './telas/TelaClientes';
 
 function App() {
   

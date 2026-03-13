@@ -1,4 +1,4 @@
-import { putCliente } from './api';
+import { putCliente } from '../api';
 import styled from 'styled-components'
 export default function Cliente({infos,refresh}){
     const {cliente,pendencias,valor_total}=infos

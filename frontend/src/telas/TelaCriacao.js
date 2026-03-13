@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
-import { postCobranca } from './api';
+import { postCobranca } from '../api';
 import styled from 'styled-components'
-
+import { Oval } from 'react-loader-spinner';
 export default function TelaCriacao(){
     const [cliente,setCliente]=useState('')
     const [diaVencimento,setDiaVencimento]=useState('')
@@ -10,12 +10,15 @@ export default function TelaCriacao(){
     const [cobrancaCriada,setCobrancaCriada]=useState(false)
     const [valor,setValor]=useState('')
     const [erro,setErro]=useState(false)
+    const [loading,setLoading]=useState(false)
     function salvar(e){
         e.preventDefault()
+        setLoading(true)
         const dataVencimento={
             dia:diaVencimento,mes:mesVencimento,ano:anoVencimento
         }
         postCobranca({cliente,dataVencimento,valor}).then(res=>{
+            setLoading(false)
             setCliente('')
             setDiaVencimento('')
             setMesVencimento('')
@@ -24,6 +27,7 @@ export default function TelaCriacao(){
             setCobrancaCriada(true)
             setTimeout(() => {setCobrancaCriada(false)}, 4000);
         }).catch(err=>{
+            setLoading(false)
             setErro(err.response.data)
             console.log(err)
         })
@@ -32,6 +36,10 @@ export default function TelaCriacao(){
         setErro('')
       },[cliente,valor,diaVencimento,mesVencimento,anoVencimento])
     return (
+        loading?
+        <Tela>
+            {loading?<Oval height={150} width={150} color="white" wrapperStyle={{marginTop:'50px'}}/>:<></>}
+        </Tela>:
         <Tela>
             <form onSubmit={salvar}>
                 <input 

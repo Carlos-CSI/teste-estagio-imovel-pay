@@ -1,6 +1,6 @@
-import { putCobranca } from './api';
+import { putCobranca } from '../api';
 import styled from 'styled-components'
-import { formatarData, formatarHorario } from './utils';
+import { formatarData, formatarHorario } from '../utils';
 export default function Cobranca({infos,refresh}){
     const {id,cliente,valor,data_vencimento,data_criacao,status}=infos
     function alterarStatus(){

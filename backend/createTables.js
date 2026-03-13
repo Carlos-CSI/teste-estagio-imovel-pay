@@ -13,17 +13,15 @@ export async function criarTabelas() {
 
   await connection.query(`
     CREATE TABLE IF NOT EXISTS cobrancas (
-      id INT AUTO_INCREMENT PRIMARY KEY,
-      cliente VARCHAR(100),
-      valor DECIMAL(10,2),
-      data_vencimento DATE,
-      data_criacao DATETIME,
-      status ENUM('PENDENTE','PAGO')
-    )
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        cliente VARCHAR(100) NOT NULL,
+        valor DECIMAL(10,2) NOT NULL,
+        data_vencimento DATE NOT NULL,
+        data_criacao DATETIME NOT NULL,
+        status ENUM('PENDENTE','PAGO') NOT NULL
+    );
   `);
-
   console.log("Tabela criada ou já existente");
-
   await connection.end();
 }
 

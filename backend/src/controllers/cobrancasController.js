@@ -5,7 +5,6 @@ export async function postCobranca (req,res){
     const {dataVencimento,valor}=res.locals
     try {
         const dataCriacao=dayjs().format('YYYY-MM-DD hh:mm:ss')
-        console.log('passei')
         await createCobranca({
             cliente,valor,dataVencimento,dataCriacao
         })

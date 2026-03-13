@@ -1,13 +1,15 @@
 import { useEffect, useState } from 'react';
-import { getClientes, } from './api';
+import { getClientes, } from '../api';
 import styled from 'styled-components'
 import { TiArrowSortedDown } from "react-icons/ti";
 import { TiArrowSortedUp } from "react-icons/ti";
-import Cliente from './Cliente';
+import Cliente from '../componentes/Cliente';
+import { Oval } from 'react-loader-spinner';
 export default function TelaClientes(){
     const [clientes,setClientes]=useState([])
     const [ordenacao,setOrdenacao]=useState('cliente')
     const [crescente,setCrescente]=useState(true)
+    const [loading,setLoading]=useState(false)
     function alterarOrdenacao(coluna){
         if(ordenacao===coluna){
             setCrescente(!crescente)
@@ -16,14 +18,21 @@ export default function TelaClientes(){
         }
     }
     function buscar(){
+        setLoading(true)
         getClientes(ordenacao,crescente).then(res=>{
             setClientes(res.data)
+            setLoading(false)
         }).catch(err=>{
+            setLoading(false)
             console.log(err)
         })
     }
     useEffect(buscar,[ordenacao,crescente])
     return (
+        loading?
+        <Tela>
+            {loading?<Oval height={150} width={150} color="white" wrapperStyle={{marginTop:'50px'}}/>:<></>}
+        </Tela>:
         <Tela>
             <Topo>
             <main>
@@ -68,6 +77,7 @@ function Ordenacao({titulo,coluna,alterar,ordenacao,crescente}){
 const Topo=styled.div`
 background:#3d3c3c;
 justify-content:center;
+width:100%;
 main{
 display:flex;
  flex-direction:column;
@@ -89,6 +99,7 @@ const Tela=styled.div`
 flex-direction:column;
 overflow:auto;
 height:100%;
+align-items:center;
 `
 const EscolhaOrdenacao=styled.button`
 height:25px;
