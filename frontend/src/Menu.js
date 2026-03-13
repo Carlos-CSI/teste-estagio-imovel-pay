@@ -1,25 +1,31 @@
 import { useLocation, useNavigate } from "react-router-dom"
 import styled from "styled-components"
 export function Menu(){
-    const navigate=useNavigate()
-    const {pathname}=useLocation()
     return (
         <Tela>
             <main>
-                <BotaoNavegacao 
-                    selecionado={pathname==='/'} 
-                    onClick={()=>navigate('/')}
-                    >
-                    <p>Cobranças</p>
-                </BotaoNavegacao>
-                <BotaoNavegacao 
-                    selecionado={pathname==='/nova-cobranca'} 
-                    onClick={()=>navigate('/nova-cobranca')}
-                    >
-                    <p>Nova cobrança</p>
-                </BotaoNavegacao>
+                <Navegacao
+                    titulo="Lista cobranças"
+                    path={'/'}
+                />
+                <Navegacao
+                    titulo="Nova cobrança"
+                    path={'/nova-cobranca'}
+                />
             </main>
       </Tela>
+    )
+}
+function Navegacao({titulo,path}){
+    const navigate=useNavigate()
+    const {pathname}=useLocation()
+    return(
+        <BotaoNavegacao 
+            selecionado={pathname===path} 
+            onClick={()=>navigate(path)}
+            >
+            <p>{titulo}</p>
+        </BotaoNavegacao>
     )
 }
 const Tela=styled.div`

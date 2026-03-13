@@ -90,7 +90,7 @@ function Ordenacao({titulo,coluna,alterar,ordenacao,crescente}){
     return(
         <EscolhaOrdenacao onClick={()=>alterar(coluna)}>
             <p>{titulo}</p>
-            {ordenacao==coluna?
+            {ordenacao===coluna?
                 (crescente?<TiArrowSortedDown />:<TiArrowSortedUp />)
             :<></>}
         </EscolhaOrdenacao>
@@ -99,7 +99,7 @@ function Ordenacao({titulo,coluna,alterar,ordenacao,crescente}){
 function Filtro({titulo,setFiltro,filtro}){
     return(
         <EscolhaFiltro
-            selecionado={filtro==titulo} 
+            selecionado={filtro===titulo} 
             onClick={()=>setFiltro(titulo)}>
             <p>{titulo}</p>
         </EscolhaFiltro>
@@ -129,14 +129,15 @@ height:100%;
 const EscolhaFiltro=styled.button`
 height:25px;
 padding:0 10px 0 10px;
-background:${p=>p.selecionado?'white':'gray'};
+background:${p=>p.selecionado?'#d6d6d6':'#515151'};
+color:${p=>p.selecionado?'black':'white'};
 border-radius:13px;
 margin-left:10px;
 `
 const EscolhaOrdenacao=styled.button`
 height:25px;
 padding:0 10px 0 10px;
-background:white;
+background:#d6d6d6;
 border-radius:13px;
 margin-left:10px;
 `

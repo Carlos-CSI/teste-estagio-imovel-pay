@@ -70,7 +70,7 @@ border-radius:10px
 `
 const Status=styled.div`
 background:${p=>p.pago?'#89ff89':'#f98686'};
-color:${p=>p.pago?'green':'red'};
+color:${p=>p.pago?'green':'#aa0000'};
 width: fit-content;
 h4{
   margin:5px;

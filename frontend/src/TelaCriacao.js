@@ -9,22 +9,28 @@ export default function TelaCriacao(){
     const [anoVencimento,setAnoVencimento]=useState('26')
     const [cobrancaCriada,setCobrancaCriada]=useState(false)
     const [valor,setValor]=useState('')
-    function salvar(){
+    const [erro,setErro]=useState(false)
+    function salvar(e){
+        e.preventDefault()
         const dataVencimento={
             dia:diaVencimento,mes:mesVencimento,ano:anoVencimento
         }
         postCobranca({cliente,dataVencimento,valor}).then(res=>{
-          setCliente('')
-          setDiaVencimento('')
-          setMesVencimento('')
-          setAnoVencimento('26')
-          setValor('')
-          setCobrancaCriada(true)
-          setTimeout(() => {setCobrancaCriada(false)}, 4000);
+            setCliente('')
+            setDiaVencimento('')
+            setMesVencimento('')
+            setAnoVencimento('26')
+            setValor('')
+            setCobrancaCriada(true)
+            setTimeout(() => {setCobrancaCriada(false)}, 4000);
         }).catch(err=>{
-          console.log(err)
+            setErro(err.response.data)
+            console.log(err)
         })
       }
+      useEffect(()=>{
+        setErro('')
+      },[cliente,valor,diaVencimento,mesVencimento,anoVencimento])
     return (
         <Tela>
             <form onSubmit={salvar}>
@@ -60,6 +66,11 @@ export default function TelaCriacao(){
                     <p>Cobrança criada!</p>
                 </Sucesso>
             :<></>}
+            {erro?
+                <Erro>
+                    <p>{erro}</p>
+                </Erro>
+            :<></>}
       </Tela>
     )
 }
@@ -93,20 +104,30 @@ input{
 }
 `
 const Botao=styled.button`
-width:150px;
+width:260px;
 height:40px;
 background:black;
 color:white;
-margin-top:20px;
+margin-top:30px;
 border-radius:10px
 `
 const Sucesso=styled.div`
-width:180px;
+width:260px;
 height:40px;
 align-items:center;
 justify-content:center;
 background:#43f943;
 color:green;
+margin-top:20px;
+border-radius:10px
+`
+const Erro=styled.div`
+width:260px;
+height:40px;
+align-items:center;
+justify-content:center;
+background:#f98686;
+color:#aa0000;
 margin-top:20px;
 border-radius:10px
 `

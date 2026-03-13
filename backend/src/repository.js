@@ -15,17 +15,6 @@ export async function createCobranca (cobranca){
 }
 
 export async function selectCobrancas (ordenacao,asc,filtro){
-    const ordenacoesPermitidas = ['data_criacao','data_vencimento','valor','cliente',];
-    const filtrosPermitidas = ['TODOS','PENDENTE','PAGO'];
-    if (!filtrosPermitidas.includes(filtro)) {
-        throw new Error('Filtro inválida');
-    }
-    if (!ordenacoesPermitidas.includes(ordenacao)) {
-        throw new Error('Ordenação inválida');
-    }
-    if (asc!=='DESC'&&asc!=='ASC') {
-        throw new Error('Ordenação inválida');
-    }
     try {
         const db=await connectDB()
         const query = `

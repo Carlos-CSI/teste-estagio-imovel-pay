@@ -1,7 +1,10 @@
 import axios from "axios"
 
 const baseURL='http://localhost:4000'
-const api = axios.create({baseURL})
+const api = axios.create({
+  baseURL,
+ validateStatus: status => status >= 200 && status < 300
+})
 
 export const getCobrancas = async (ordenacao,crescente,filtro) => {
   return api.get(`/cobrancas?ordenacao=${ordenacao}&asc=${crescente?'ASC':'DESC'}&filtro=${filtro}`)

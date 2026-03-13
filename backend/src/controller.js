@@ -1,12 +1,11 @@
 import dayjs from 'dayjs'
 import { createCobranca, selectCobrancas, updateCobranca } from './repository.js'
 export async function postCobranca (req,res){
-    const {cliente,valor:valorString,dataVencimento:objetoData}=req.body
-    const valor=parseFloat(valorString)
-    const {dia,mes,ano}=objetoData
-    const dataVencimento =dayjs(`20${ano}-${mes}-${dia}`).format('YYYY-MM-DD')
-    const dataCriacao=dayjs().format('YYYY-MM-DD hh:mm:ss')
+    const {cliente}=req.body
+    const {dataVencimento,valor}=res.locals
     try {
+        const dataCriacao=dayjs().format('YYYY-MM-DD hh:mm:ss')
+        console.log('passei')
         await createCobranca({
             cliente,valor,dataVencimento,dataCriacao
         })
@@ -27,10 +26,9 @@ export async function getCobrancas (req,res){
     }
 }
 export async function putCobranca (req,res){
-    const {id:idString}=req.params
-    const id=parseInt(idString)
+    const {id}=req.params
     try {
-        await updateCobranca(id)
+        await updateCobranca(parseInt(id))
         res.sendStatus(204)
     } catch (error) {
         console.log('Erro em controller putCobrancas: ',error)
