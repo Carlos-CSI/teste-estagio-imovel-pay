@@ -8,7 +8,7 @@
     "backend"
   ],
   "scripts": {
-    "iniciate":"npm i && npm run iniciate -w backend",
+    "iniciate":"npm i && npm run database -w backend",
     "start": "concurrently --names \"frontend,backend\" \"npm start -w frontend\" \"npm start -w backend\" ",
     "dev": "concurrently --names \"frontend,backend\" \"npm start -w frontend\" \"npm run dev -w backend\" "
   },
