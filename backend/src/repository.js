@@ -14,3 +14,16 @@ export async function createCobranca (cobranca){
         console.log('Erro em repository createCobranca: ',error)
     }
 }
+
+export async function selectCobrancas (){
+    try {
+        const db=await connectDB()
+        const query = `
+            SELECT * FROM cobrancas 
+        `;
+        const [rows] = await db.query(query,[]);
+        return rows;
+    } catch (error) {
+        console.log('Erro em repository selectCobrancas: ',error)
+    }
+}
