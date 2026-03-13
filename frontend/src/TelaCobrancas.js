@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { getCobrancas, postCobranca } from './api';
+import { getCobrancas } from './api';
 import styled from 'styled-components'
 import Cobranca from './Cobranca';
 
@@ -22,13 +22,6 @@ export default function TelaCobrancas(){
 const Tela=styled.div`
 align-items:center;
 flex-direction:column;
-
-`
-const Botao=styled.button`
-width:150px;
-height:40px;
-background:black;
-color:white;
-margin-top:20px;
-border-radius:10px
+overflow:auto;
+padding-bottom:20px;
 `

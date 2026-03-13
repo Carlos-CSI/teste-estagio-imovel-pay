@@ -7,9 +7,9 @@ export const getCobrancas = async () => {
   return api.get(`/cobrancas`)
 }
 export const postCobranca = async (cobranca) => {
+  console.log('cliente: ',cobranca.cliente,'valor: ',cobranca.valor)
   return api.post(`/cobrancas`,cobranca)
 }
 export const putCobranca = async (id) => {
-  console.log('id que chegou no api',id)
   return api.put(`/cobrancas/${id}`)
 }

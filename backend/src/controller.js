@@ -1,8 +1,11 @@
 import dayjs from 'dayjs'
 import { createCobranca, selectCobrancas, updateCobranca } from './repository.js'
 export async function postCobranca (req,res){
-    const {cliente,valor:valorString,dataVencimento}=req.body
+    const {cliente,valor:valorString,dataVencimento:objetoData}=req.body
+    console.log('cliente: ',cliente,'valor: ',valorString)
     const valor=parseFloat(valorString)
+    const {dia,mes,ano}=objetoData
+    const dataVencimento =dayjs(`20${ano}-${mes}-${dia}`).format('YYYY-MM-DD')
     const dataCriacao=dayjs().format('YYYY-MM-DD hh:mm:ss')
     try {
         await createCobranca({
